@@ -3,778 +3,981 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PowerRank FR — Classe-toi face à la compétition nationale</title>
-<meta name="description" content="Calcule tes points IPF GL, ton Wilks2 et ton niveau national de force athlétique (FFForce) : N2, N1, Élite, Europe." />
+<title>FORCE.FR — Connais ton niveau de powerlifter</title>
+<meta name="description" content="FORCE.FR : calcule tes points IPF GL et Wilks2, ton percentile national FFForce, prépare tes tentatives, convertis tes charges et suis ta progression. L'outil de référence des powerlifters français." />
+<meta name="theme-color" content="#0A0A0A" />
 
-<!-- Google Fonts -->
+<!-- ====== Google Fonts (seule dépendance externe) ====== -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
 <style>
-  :root {
-    --bg: #0D0D0D;
-    --surface: #161616;
-    --surface-2: #1f1f1f;
-    --border: #2a2a2a;
-    --accent: #e11d2a;
-    --accent-soft: rgba(225, 29, 42, 0.16);
-    --white: #ffffff;
-    --muted: #9aa0aa;
-    --muted-2: #6b7280;
-    --ok: #22c55e;
-    --warn: #f59e0b;
-    --elite: #ef4444;
-    --gray: #6b7280;
-    --radius: 14px;
-    --shadow: 0 10px 40px rgba(0,0,0,0.5);
-  }
+/* =========================================================
+   DESIGN GLOBAL — Cyberpunk athlétique / HUD militaire
+   ========================================================= */
+:root{
+  --bg:#0A0A0A;
+  --bg-2:#101012;
+  --surface:rgba(255,255,255,0.04);
+  --surface-solid:#141418;
+  --border:rgba(255,255,255,0.10);
+  --primary:#3B82F6;       /* bleu électrique */
+  --accent:#00FFD1;        /* cyan néon */
+  --danger:#FF3B3B;        /* rouge élite */
+  --white:#FFFFFF;
+  --muted:#A0A0A0;
+  --ok:#22c55e;
+  --warn:#f59e0b;
+  --radius:16px;
+  --t:0.3s ease;           /* transition standard */
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 
-  html { scroll-behavior: smooth; }
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
 
-  body {
-    background:
-      radial-gradient(1200px 600px at 50% -10%, #2a0a0c 0%, transparent 55%),
-      var(--bg);
-    color: var(--white);
-    font-family: 'Inter', system-ui, sans-serif;
-    line-height: 1.5;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+h1,h2,h3,h4,.num,.brand{font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px}
+h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;text-transform:uppercase}
+h3{font-size:1.4rem;font-weight:700}
+a{color:var(--accent);text-decoration:none}
+.muted{color:var(--muted)}
+.accent{color:var(--accent)}
+.blue{color:var(--primary)}
+.danger{color:var(--danger)}
 
-  .wrap {
-    max-width: 940px;
-    margin: 0 auto;
-    padding: 32px 20px 80px;
-  }
+/* ---------- Navbar fixe ---------- */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;
+  background:rgba(10,10,10,0.72);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.brand{
+  font-size:1.6rem;font-weight:900;text-transform:uppercase;
+  display:flex;align-items:center;gap:2px;cursor:pointer;
+}
+.brand .dot{color:var(--primary)}
+.nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.nav-tabs button{
+  background:transparent;border:1px solid transparent;color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:1px;
+  padding:8px 14px;border-radius:10px;cursor:pointer;transition:var(--t);
+}
+.nav-tabs button:hover{color:var(--white);border-color:var(--border)}
+.nav-tabs button.active{
+  color:var(--white);
+  border-color:var(--primary);
+  box-shadow:0 0 14px rgba(59,130,246,.45);
+  background:rgba(59,130,246,.12);
+}
+.burger{display:none;background:none;border:1px solid var(--border);color:#fff;
+  font-size:1.4rem;padding:4px 12px;border-radius:8px;cursor:pointer}
 
-  /* ---------- Header ---------- */
-  header { text-align: center; margin-bottom: 36px; }
+/* ---------- Layout pages ---------- */
+main{padding-top:64px}
+.page{display:none;animation:fade .4s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  .logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 14px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid var(--border);
-    background: var(--surface);
-    padding: 7px 16px;
-    border-radius: 999px;
-  }
-  .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.section{max-width:1100px;margin:0 auto;padding:64px 22px}
+.section-title{text-align:center;margin-bottom:10px}
+.section-sub{text-align:center;color:var(--muted);max-width:680px;margin:0 auto 44px}
 
-  h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: clamp(38px, 8vw, 72px);
-    line-height: 0.95;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 18px 0 10px;
-  }
-  h1 .hl { color: var(--accent); }
+/* ---------- Cards glassmorphism ---------- */
+.card{
+  background:var(--surface);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;transition:var(--t);position:relative;overflow:hidden;
+}
+.card.glow:hover{
+  border-color:var(--primary);
+  box-shadow:0 0 0 1px var(--primary),0 0 24px rgba(59,130,246,.35);
+  transform:translateY(-4px);
+}
+.grid{display:grid;gap:20px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
 
-  .subtitle { color: var(--muted); font-size: 16px; max-width: 520px; margin: 0 auto; }
+/* ---------- Boutons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.15rem;
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:14px 30px;border-radius:12px;border:none;cursor:pointer;transition:var(--t);
+}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 0 22px rgba(59,130,246,.5)}
+.btn-primary:hover{background:#2f6fe0;box-shadow:0 0 34px rgba(59,130,246,.8);transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn-ghost:hover{background:rgba(0,255,209,.12);box-shadow:0 0 20px rgba(0,255,209,.4)}
+.btn-sm{padding:8px 16px;font-size:.95rem}
 
-  /* ---------- Card / Form ---------- */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
-    box-shadow: var(--shadow);
-  }
+/* ---------- Formulaires ---------- */
+label.field{display:block;margin-bottom:16px}
+label.field span{display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:1px;font-weight:600}
+input,select{
+  width:100%;background:var(--bg-2);border:1px solid var(--border);color:#fff;
+  padding:12px 14px;border-radius:10px;font-family:'Inter',sans-serif;font-size:1rem;
+  transition:var(--t);
+}
+input:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+input.invalid{border-color:var(--danger)}
+.err{color:var(--danger);font-size:.8rem;margin-top:4px;min-height:1em;display:block}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;background:var(--bg-2);border:1px solid var(--border);color:var(--muted);
+  padding:10px;border-radius:10px;cursor:pointer;font-weight:600;transition:var(--t)}
+.seg button.on{background:rgba(59,130,246,.18);border-color:var(--primary);color:#fff}
 
-  .card h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .card .hint { color: var(--muted-2); font-size: 13px; margin-bottom: 22px; }
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+.hero-overlay{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(10,10,10,.7),rgba(10,10,10,.92)),
+             radial-gradient(900px 500px at 50% 30%,rgba(59,130,246,.18),transparent 70%)}
+#particles{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hero-inner{position:relative;z-index:3;padding:24px;max-width:880px}
+.hero h1{font-size:clamp(2.6rem,8vw,6rem);font-weight:900;text-transform:uppercase;line-height:.95;
+  letter-spacing:2px;text-shadow:0 0 40px rgba(59,130,246,.5)}
+.hero h1 .reveal{display:inline-block;opacity:0;transform:translateY(30px);
+  animation:rise .8s forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero p.lead{font-size:clamp(1.05rem,2.5vw,1.4rem);color:#d6d6d6;margin:20px 0 34px}
+.counter-wrap{margin-top:40px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-size:.95rem}
+.counter{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:800;color:var(--accent);
+  display:block;text-shadow:0 0 24px rgba(0,255,209,.5)}
 
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .grid .span-2 { grid-column: span 2; }
+/* ---------- Étapes ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step}
+.step{position:relative;padding-top:18px}
+.step .n{font-family:'Barlow Condensed',sans-serif;font-size:3.4rem;font-weight:900;
+  color:var(--primary);line-height:1;opacity:.85}
+.step .ico{font-size:1.6rem;margin:6px 0}
 
-  .field { display: flex; flex-direction: column; gap: 7px; }
-  .field label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-  }
+/* ---------- Galerie photos ---------- */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.shot{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;cursor:pointer}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
+.shot:hover img{transform:scale(1.08)}
+.shot .cap{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;
+  background:linear-gradient(transparent 40%,rgba(10,10,10,.85));
+  opacity:0;transition:var(--t);font-family:'Barlow Condensed',sans-serif;
+  font-size:1.3rem;font-weight:700;text-transform:uppercase}
+.shot:hover .cap{opacity:1}
 
-  input[type="number"], select {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--white);
-    border-radius: 10px;
-    padding: 13px 14px;
-    font-size: 16px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: border-color .15s, box-shadow .15s;
-    width: 100%;
-  }
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  input[type="number"] { -moz-appearance: textfield; }
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--border);padding:30px 22px;text-align:center;color:var(--muted);font-size:.9rem}
 
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-  input.invalid, select.invalid { border-color: var(--elite); }
+/* =========================================================
+   CALCULATEUR — résultats
+   ========================================================= */
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.gauge svg{transform:rotate(0deg)}
+.gauge .pct{font-family:'Barlow Condensed',sans-serif;font-size:3.2rem;font-weight:900}
+.bar-row{margin-bottom:18px}
+.bar-row .top{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:6px}
+.bar-track{height:14px;background:var(--bg-2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;width:0;border-radius:20px;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.badge{display:inline-block;padding:8px 22px;border-radius:30px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:1.5rem;text-transform:uppercase;letter-spacing:2px}
+.stat-big{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1}
+.stat-lbl{color:var(--muted);text-transform:uppercase;font-size:.8rem;letter-spacing:1.5px}
+.hidden{display:none!important}
 
-  .err { color: #fca5a5; font-size: 12px; min-height: 14px; font-weight: 500; }
+/* =========================================================
+   CONVERTISSEUR — barre + plaques
+   ========================================================= */
+.barbell{display:flex;align-items:center;justify-content:center;gap:0;min-height:200px;
+  background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;overflow-x:auto}
+.plate{display:flex;align-items:center;justify-content:center;border-radius:4px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;
+  color:#000;flex-shrink:0;border:1px solid rgba(0,0,0,.4);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.sleeve{height:14px;background:linear-gradient(#bbb,#777);flex-shrink:0}
+.bar-center{height:8px;background:linear-gradient(#ddd,#999);flex:1;min-width:60px}
+.shortcuts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 
-  .sex-toggle { display: flex; gap: 8px; }
-  .sex-toggle button {
-    flex: 1;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 10px;
-    padding: 13px 8px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .sex-toggle button.active {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--white);
-  }
+/* ---------- Tableaux ---------- */
+table{width:100%;border-collapse:collapse;margin-top:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--muted);text-transform:uppercase;font-size:.8rem;letter-spacing:1px;font-family:'Barlow Condensed',sans-serif}
+tr.pr-row{background:rgba(0,255,209,.08)}
 
-  .lifts-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 26px 0 14px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .lifts-title::after { content:""; flex:1; height:1px; background: var(--border); }
+/* ---------- Tentatives ---------- */
+.att-safe{color:var(--ok)} .att-mid{color:var(--warn)} .att-risk{color:var(--danger)}
 
-  .submit {
-    margin-top: 24px;
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 16px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 20px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: filter .15s, transform .05s;
-  }
-  .submit:hover { filter: brightness(1.1); }
-  .submit:active { transform: translateY(1px); }
+/* ---------- Guide ---------- */
+.guide-sec{margin-bottom:54px}
+.guide-sec .illus{width:100%;height:220px;object-fit:cover;border-radius:var(--radius);margin-bottom:20px;border:1px solid var(--border)}
+.formula{background:var(--bg-2);border:1px solid var(--border);border-left:3px solid var(--accent);
+  padding:14px 18px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;margin:14px 0;overflow-x:auto}
+details{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--surface)}
+summary{padding:14px 18px;cursor:pointer;font-weight:600;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem}
+details[open]{border-color:var(--primary)}
+details p{padding:0 18px 16px;color:var(--muted)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%);
+  background:var(--surface-solid);border:1px solid var(--accent);color:#fff;padding:14px 24px;border-radius:12px;
+  box-shadow:0 0 30px rgba(0,255,209,.4);z-index:2000;transition:transform .4s ease}
+.toast.show{transform:translateX(-50%) translateY(0)}
 
-  /* ---------- Tooltip ---------- */
-  .info {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 15px; height: 15px; border-radius: 50%;
-    border: 1px solid var(--muted-2); color: var(--muted-2);
-    font-size: 10px; font-weight: 700; cursor: help;
-    position: relative; font-family: 'Inter', sans-serif;
-  }
-  .info:hover { border-color: var(--accent); color: var(--accent); }
-  .info .tip {
-    position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
-    background: #000; border: 1px solid var(--border);
-    color: var(--white); font-weight: 400; text-transform: none; letter-spacing: 0;
-    padding: 10px 12px; border-radius: 8px; width: 230px; font-size: 12px; line-height: 1.4;
-    opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 20;
-    box-shadow: var(--shadow);
-  }
-  .info:hover .tip { opacity: 1; }
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media(max-width:860px){
+  .grid-3,.steps,.gallery{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .nav-tabs{position:fixed;top:62px;right:0;left:0;flex-direction:column;
+    background:rgba(10,10,10,.97);backdrop-filter:blur(14px);padding:12px;gap:6px;
+    border-bottom:1px solid var(--border);display:none}
+  .nav-tabs.open{display:flex}
+  .nav-tabs button{width:100%;text-align:left}
+  .burger{display:block}
+}
 
-  /* ---------- Results ---------- */
-  #results { margin-top: 32px; display: none; }
-  #results.show { display: block; animation: fadeUp .5s ease; }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(20px);} to {opacity:1; transform:none;} }
-
-  .profile {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: 28px;
-    align-items: center;
-  }
-
-  /* Gauge */
-  .gauge-box { text-align: center; }
-  .gauge { position: relative; width: 240px; height: 240px; margin: 0 auto; }
-  .gauge svg { transform: rotate(-90deg); }
-  .gauge-center {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-  }
-  .gauge-pct {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; font-size: 64px; line-height: 1;
-  }
-  .gauge-pct small { font-size: 26px; color: var(--muted); }
-  .gauge-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
-
-  .badge {
-    display: inline-block; margin-top: 14px;
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-    font-size: 18px; letter-spacing: 2px; text-transform: uppercase;
-    padding: 8px 20px; border-radius: 999px; color: #fff;
-  }
-
-  .stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
-  .stat {
-    background: var(--surface-2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px 18px;
-  }
-  .stat .k { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); display:flex; align-items:center; gap:5px; }
-  .stat .v {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-    font-size: 34px; line-height: 1.1; margin-top: 4px;
-  }
-  .stat .v small { font-size: 16px; color: var(--muted); font-weight: 600; }
-
-  /* Lift bars */
-  .lifts-block { margin-top: 28px; }
-  .section-head {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    font-size: 18px; text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 16px; display:flex; align-items:center; gap:10px;
-  }
-  .section-head::after { content:""; flex:1; height:1px; background: var(--border); }
-
-  .bar-row { margin-bottom: 18px; }
-  .bar-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
-  .bar-name { font-weight: 600; font-size: 14px; }
-  .bar-name span { color: var(--muted); font-weight: 400; }
-  .bar-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; }
-  .bar-val small { font-size: 13px; color: var(--muted); }
-  .track { background: var(--surface-2); border-radius: 999px; height: 12px; overflow: hidden; border:1px solid var(--border); }
-  .fill {
-    height: 100%; width: 0; border-radius: 999px;
-    background: linear-gradient(90deg, #7f1d1d, var(--accent));
-    transition: width 1.1s cubic-bezier(.2,.7,.2,1);
-  }
-
-  /* Échelle de paliers (Départemental -> Monde) */
-  .ladder { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; }
-  .tier {
-    flex:1 0 auto; min-width:62px; text-align:center;
-    padding:11px 4px 9px; border-radius:9px;
-    background: var(--surface-2); border:1px solid var(--border);
-    font-family:'Barlow Condensed',sans-serif; font-weight:700;
-    font-size:14px; letter-spacing:.5px; color: var(--muted-2);
-    transition: all .3s ease;
-  }
-  .tier .tname { display:block; }
-  .tier .tmin { font-size:10px; font-weight:500; color: var(--muted-2); opacity:.7; font-family:'Inter',sans-serif; }
-  .tier.passed { color: var(--white); background:#190d0d; border-color:#3a1616; }
-  .tier.active {
-    color:#0d0d0d; background: var(--c); border-color: var(--c);
-    box-shadow: 0 0 22px -4px var(--c); transform: translateY(-3px);
-  }
-  .tier.active .tmin { color: rgba(13,13,13,.7); opacity:1; }
-  .next-tier { margin-top:12px; font-size:13px; color: var(--muted); }
-  .next-tier b { color: var(--white); font-weight:600; }
-
-  .gl-row { display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-top:22px; }
-  .gl-cell { background: var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center; }
-  .gl-cell .lbl { font-size: 10px; text-transform: uppercase; letter-spacing:1px; color: var(--muted); }
-  .gl-cell .num { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:24px; margin-top:2px; }
-  .gl-cell.tot { background: var(--accent-soft); border-color: var(--accent); }
-
-  .actions { display:flex; gap:12px; margin-top:26px; flex-wrap: wrap; }
-  .btn-ghost {
-    flex:1; min-width: 140px; background: var(--surface-2); border:1px solid var(--border);
-    color: var(--white); border-radius:10px; padding:13px; cursor:pointer;
-    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
-    letter-spacing:1px; text-transform:uppercase; transition: all .15s;
-  }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-ghost.copied { border-color: var(--ok); color: var(--ok); }
-
-  footer { text-align:center; color: var(--muted-2); font-size: 12px; margin-top: 40px; line-height:1.7; }
-  footer a { color: var(--muted); }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 720px) {
-    .grid { grid-template-columns: 1fr 1fr; }
-    .grid .span-2 { grid-column: span 2; }
-    .profile { grid-template-columns: 1fr; }
-    .gl-row { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 460px) {
-    .wrap { padding: 24px 14px 60px; }
-    .card { padding: 20px 16px; }
-    .grid { grid-template-columns: 1fr; }
-    .grid .span-2 { grid-column: span 1; }
-    .stats { grid-template-columns: 1fr; }
-  }
+/* Accessibilité : mouvement réduit */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .bar-fill{transition:none!important}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header>
-    <div class="logo"><span class="dot"></span> PowerRank FR</div>
-    <h1>RÉVÈLE TA <br /><span class="hl">FORCE BRUTE&nbsp;.</span></h1>
-    <p class="subtitle">Calcule tes points IPF GL, ton Wilks2 et ton niveau réel face aux compétiteurs français de force athlétique.</p>
-  </header>
+<!-- ============================ NAVBAR ============================ -->
+<nav class="navbar">
+  <div class="brand" onclick="go('accueil')">FORCE<span class="dot">.</span>FR</div>
+  <button class="burger" onclick="document.getElementById('navTabs').classList.toggle('open')">☰</button>
+  <div class="nav-tabs" id="navTabs">
+    <button data-tab="accueil" class="active" onclick="go('accueil')">Accueil</button>
+    <button data-tab="calculateur" onclick="go('calculateur')">Calculateur</button>
+    <button data-tab="convertisseur" onclick="go('convertisseur')">Convertisseur</button>
+    <button data-tab="tentatives" onclick="go('tentatives')">Tentatives</button>
+    <button data-tab="progression" onclick="go('progression')">Progression</button>
+    <button data-tab="guide" onclick="go('guide')">Guide</button>
+  </div>
+</nav>
 
-  <!-- ===== FORM ===== -->
-  <form class="card" id="form" novalidate>
-    <h2>Ton profil</h2>
-    <p class="hint">Saisis tes données et tes meilleurs lifts. Tout reste dans ton navigateur.</p>
+<main>
 
-    <div class="grid">
-      <div class="field">
-        <label for="age">Âge</label>
-        <input type="number" id="age" inputmode="numeric" placeholder="ex. 27" min="8" max="100" />
-        <div class="err" id="err-age"></div>
+<!-- ======================================================================
+     ONGLET 1 — ACCUEIL
+     ====================================================================== -->
+<section class="page active" id="accueil">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <canvas id="particles"></canvas>
+    <div class="hero-inner">
+      <h1 id="heroTitle"></h1>
+      <p class="lead">Le premier outil de référence pour les powerlifters français.</p>
+      <button class="btn btn-primary" onclick="go('calculateur')">Calculer mon niveau</button>
+      <div class="counter-wrap">
+        <span class="counter" id="counter">0</span>
+        compétiteurs FFForce analysés
       </div>
+    </div>
+  </div>
 
-      <div class="field">
-        <label for="bw">Poids de corps <span style="color:var(--muted-2)">(kg)</span></label>
-        <input type="number" id="bw" inputmode="decimal" step="0.1" placeholder="ex. 82.5" min="25" max="250" />
-        <div class="err" id="err-bw"></div>
-      </div>
+  <!-- POURQUOI -->
+  <div class="section">
+    <h2 class="section-title">Pourquoi <span class="blue">FORCE.FR</span> ?</h2>
+    <p class="section-sub">Des données, des outils, de la progression — pensés pour la force athlétique française.</p>
+    <div class="grid grid-3">
+      <div class="card glow"><div style="font-size:2rem">📊</div><h3>Percentiles nationaux</h3>
+        <p class="muted">Sache exactement où tu te situes parmi les compétiteurs FFForce.</p></div>
+      <div class="card glow"><div style="font-size:2rem">⚡</div><h3>Outils de compète</h3>
+        <p class="muted">Prépare tes tentatives et optimise chaque session.</p></div>
+      <div class="card glow"><div style="font-size:2rem">📈</div><h3>Suivi de progression</h3>
+        <p class="muted">Visualise tes gains sur le long terme.</p></div>
+    </div>
+  </div>
 
-      <div class="field">
-        <label>Sexe</label>
-        <div class="sex-toggle" id="sex">
-          <button type="button" data-sex="M" class="active">Homme</button>
-          <button type="button" data-sex="F">Femme</button>
+  <!-- COMMENT CA MARCHE -->
+  <div class="section">
+    <h2 class="section-title">Comment ça marche</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="ico">📝</div><h3>Entre tes données</h3>
+        <p class="muted">Ton poids, ton âge et tes performances aux trois mouvements.</p></div>
+      <div class="step"><div class="n">2</div><div class="ico">🧮</div><h3>L'algorithme calcule</h3>
+        <p class="muted">Points GL, Wilks2 et ton percentile national en un instant.</p></div>
+      <div class="step"><div class="n">3</div><div class="ico">🏆</div><h3>Découvre ton niveau</h3>
+        <p class="muted">Situe-toi face à la compétition et progresse.</p></div>
+    </div>
+  </div>
+
+  <!-- GALERIE -->
+  <div class="section">
+    <h2 class="section-title">L'esprit de la barre</h2>
+    <div class="gallery">
+      <div class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1517963879433-6ad2a04bec8e?w=600" alt="Powerlifting"><div class="cap">Le squat, roi des mouvements</div></div>
+      <div class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600" alt="Barbell"><div class="cap">La barre ne ment jamais</div></div>
+      <div class="shot"><img loading="lazy" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600" alt="Gym"><div class="cap">Soulève, recommence, progresse</div></div>
+    </div>
+  </div>
+
+  <footer>FORCE.FR — Outil indépendant, non affilié à la FFForce.</footer>
+</section>
+
+<!-- ======================================================================
+     ONGLET 2 — CALCULATEUR DE NIVEAU
+     ====================================================================== -->
+<section class="page" id="calculateur">
+  <div class="section">
+    <h2 class="section-title">Calculateur de niveau</h2>
+    <p class="section-sub">Entre tes données pour obtenir tes points GL, ton Wilks2 et ton percentile national.</p>
+
+    <div class="grid grid-2">
+      <!-- Formulaire -->
+      <div class="card">
+        <label class="field"><span>Prénom (optionnel)</span>
+          <input id="c_prenom" type="text" placeholder="Ton prénom" maxlength="20"></label>
+        <label class="field"><span>Sexe</span>
+          <div class="seg" id="c_sexe">
+            <button class="on" data-v="H" onclick="segSet(this,'c_sexe')">Homme</button>
+            <button data-v="F" onclick="segSet(this,'c_sexe')">Femme</button>
+          </div></label>
+        <div class="grid grid-2" style="gap:0 16px">
+          <label class="field"><span>Âge</span><input id="c_age" type="number" min="12" max="100" placeholder="ex. 27"><span class="err" id="e_age"></span></label>
+          <label class="field"><span>Poids de corps (kg)</span><input id="c_bw" type="number" min="25" max="250" step="0.1" placeholder="ex. 82"><span class="err" id="e_bw"></span></label>
         </div>
-        <div class="err"></div>
-      </div>
-    </div>
-
-    <div class="lifts-title">Tes meilleurs lifts (kg)</div>
-
-    <div class="grid">
-      <div class="field">
-        <label for="squat">Squat</label>
-        <input type="number" id="squat" inputmode="decimal" step="0.5" placeholder="ex. 180" min="1" max="600" />
-        <div class="err" id="err-squat"></div>
-      </div>
-      <div class="field">
-        <label for="bench">Développé couché</label>
-        <input type="number" id="bench" inputmode="decimal" step="0.5" placeholder="ex. 120" min="1" max="500" />
-        <div class="err" id="err-bench"></div>
-      </div>
-      <div class="field">
-        <label for="deadlift">Soulevé de terre</label>
-        <input type="number" id="deadlift" inputmode="decimal" step="0.5" placeholder="ex. 220" min="1" max="600" />
-        <div class="err" id="err-deadlift"></div>
-      </div>
-    </div>
-
-    <button type="submit" class="submit">Calculer mon classement</button>
-  </form>
-
-  <!-- ===== RESULTS ===== -->
-  <section id="results" class="card" aria-live="polite">
-
-    <div class="profile">
-      <!-- Gauge -->
-      <div class="gauge-box">
-        <div class="gauge">
-          <svg width="240" height="240" viewBox="0 0 240 240">
-            <circle cx="120" cy="120" r="104" fill="none" stroke="#1f1f1f" stroke-width="18" />
-            <circle id="gaugeArc" cx="120" cy="120" r="104" fill="none" stroke="var(--accent)"
-                    stroke-width="18" stroke-linecap="round"
-                    stroke-dasharray="653.45" stroke-dashoffset="653.45" />
-          </svg>
-          <div class="gauge-center">
-            <div class="gauge-pct"><span id="gaugeNum">0</span><small>%</small></div>
-            <div class="gauge-label">Mieux que le peloton</div>
-          </div>
+        <div class="grid grid-2" style="gap:0 16px">
+          <label class="field"><span>Squat (kg)</span><input id="c_s" type="number" min="0" max="600" step="0.5" placeholder="ex. 180"><span class="err" id="e_s"></span></label>
+          <label class="field"><span>Développé couché (kg)</span><input id="c_b" type="number" min="0" max="500" step="0.5" placeholder="ex. 120"><span class="err" id="e_b"></span></label>
         </div>
-        <div class="badge" id="levelBadge">—</div>
+        <label class="field"><span>Soulevé de terre (kg)</span><input id="c_d" type="number" min="0" max="600" step="0.5" placeholder="ex. 220"><span class="err" id="e_d"></span></label>
+        <button class="btn btn-primary" style="width:100%" onclick="calcLevel()">Analyser ma performance</button>
       </div>
 
-      <!-- Stats -->
-      <div class="stats">
-        <div class="stat">
-          <div class="k">Total</div>
-          <div class="v" id="statTotal">—<small> kg</small></div>
+      <!-- Résultats -->
+      <div class="card" id="c_results">
+        <p class="muted" style="text-align:center;padding:40px 0">Tes résultats apparaîtront ici 👈</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     ONGLET 3 — CONVERTISSEUR DE CHARGES
+     ====================================================================== -->
+<section class="page" id="convertisseur">
+  <div class="section">
+    <h2 class="section-title">Convertisseur de charges</h2>
+    <p class="section-sub">Visualise les plaques à charger sur la barre. Conversion kg ↔ lbs instantanée.</p>
+
+    <div class="card" style="margin-bottom:22px">
+      <div class="grid grid-2" style="gap:0 16px">
+        <label class="field"><span>Unité</span>
+          <div class="seg" id="cv_unit">
+            <button class="on" data-v="kg" onclick="cvUnit('kg')">Kg</button>
+            <button data-v="lbs" onclick="cvUnit('lbs')">Lbs</button>
+          </div></label>
+        <label class="field"><span>Poids de la barre</span>
+          <div class="seg" id="cv_bar">
+            <button class="on" data-v="20" onclick="cvBar(20)">20 kg</button>
+            <button data-v="15" onclick="cvBar(15)">15 kg</button>
+          </div></label>
+      </div>
+      <label class="field"><span>Charge totale (<span id="cv_ulbl">kg</span>)</span>
+        <input id="cv_total" type="number" min="0" step="0.5" value="100" oninput="renderBar()"></label>
+      <div class="shortcuts">
+        <button class="btn btn-ghost btn-sm" onclick="cvAdd(2.5)">+2.5</button>
+        <button class="btn btn-ghost btn-sm" onclick="cvAdd(5)">+5</button>
+        <button class="btn btn-ghost btn-sm" onclick="cvAdd(10)">+10</button>
+        <button class="btn btn-ghost btn-sm" onclick="cvAdd(20)">+20</button>
+        <button class="btn btn-ghost btn-sm" onclick="cvReset()">Reset</button>
+      </div>
+      <p class="muted" style="margin-top:12px" id="cv_conv"></p>
+    </div>
+
+    <div class="barbell" id="cv_barbell"></div>
+    <div id="cv_table"></div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     ONGLET 4 — CALCULATEUR DE TENTATIVES
+     ====================================================================== -->
+<section class="page" id="tentatives">
+  <div class="section">
+    <h2 class="section-title">Calculateur de tentatives</h2>
+    <p class="section-sub">Génère une stratégie de 3 tentatives par mouvement selon les règles IPF.</p>
+
+    <div class="card" style="margin-bottom:22px">
+      <div class="grid grid-3" style="gap:0 16px">
+        <label class="field"><span>Max squat (kg)</span><input id="t_s" type="number" min="0" step="0.5" placeholder="ex. 200"></label>
+        <label class="field"><span>Max bench (kg)</span><input id="t_b" type="number" min="0" step="0.5" placeholder="ex. 130"></label>
+        <label class="field"><span>Max deadlift (kg)</span><input id="t_d" type="number" min="0" step="0.5" placeholder="ex. 240"></label>
+      </div>
+      <label class="field"><span>Objectif</span>
+        <select id="t_goal">
+          <option value="safe">Sécuriser un total</option>
+          <option value="pr" selected>Attaquer un PR</option>
+          <option value="aggro">Stratégie agressive</option>
+        </select></label>
+      <label class="field"><span>Sexe (pour les points GL)</span>
+        <div class="seg" id="t_sexe">
+          <button class="on" data-v="H" onclick="segSet(this,'t_sexe')">Homme</button>
+          <button data-v="F" onclick="segSet(this,'t_sexe')">Femme</button>
+        </div></label>
+      <label class="field"><span>Poids de corps (kg, pour les points GL)</span><input id="t_bw" type="number" min="25" step="0.1" placeholder="ex. 90"></label>
+      <button class="btn btn-primary" style="width:100%" onclick="calcAttempts()">Générer ma stratégie</button>
+    </div>
+    <div id="t_results"></div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     ONGLET 5 — PROGRESSION
+     ====================================================================== -->
+<section class="page" id="progression">
+  <div class="section">
+    <h2 class="section-title">Progression</h2>
+    <p class="section-sub">Suivi 100% local — aucun compte requis. Tes données restent sur ton appareil.</p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="margin-bottom:14px">Nouvelle session</h3>
+        <label class="field"><span>Date</span><input id="p_date" type="date"></label>
+        <label class="field"><span>Poids de corps (kg)</span><input id="p_bw" type="number" min="25" step="0.1" placeholder="ex. 82"></label>
+        <div class="grid grid-3" style="gap:0 12px">
+          <label class="field"><span>Squat</span><input id="p_s" type="number" min="0" step="0.5"></label>
+          <label class="field"><span>Bench</span><input id="p_b" type="number" min="0" step="0.5"></label>
+          <label class="field"><span>Deadlift</span><input id="p_d" type="number" min="0" step="0.5"></label>
         </div>
-        <div class="stat">
-          <div class="k">Catégorie de poids</div>
-          <div class="v" id="statCat" style="font-size:28px">—</div>
+        <label class="field"><span>Sexe</span>
+          <div class="seg" id="p_sexe">
+            <button class="on" data-v="H" onclick="segSet(this,'p_sexe')">Homme</button>
+            <button data-v="F" onclick="segSet(this,'p_sexe')">Femme</button>
+          </div></label>
+        <button class="btn btn-primary" style="width:100%" onclick="addSession()">Ajouter la session</button>
+        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px" onclick="exportCSV()">⬇ Exporter en CSV</button>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:6px">Évolution</h3>
+        <div class="seg" id="p_metric" style="margin-bottom:12px">
+          <button class="on" data-v="total" onclick="setMetric(this,'total')">Total</button>
+          <button data-v="s" onclick="setMetric(this,'s')">Squat</button>
+          <button data-v="b" onclick="setMetric(this,'b')">Bench</button>
+          <button data-v="d" onclick="setMetric(this,'d')">Deadlift</button>
+          <button data-v="gl" onclick="setMetric(this,'gl')">GL</button>
         </div>
-        <div class="stat">
-          <div class="k">IPF GL Points
-            <span class="info">i<span class="tip">Indice officiel IPF (Goodlift, 2020) qui compare les athlètes de poids et sexes différents. Plus le score est haut, meilleure est la performance relative.</span></span>
-          </div>
-          <div class="v" id="statGL">—</div>
-        </div>
-        <div class="stat">
-          <div class="k">Wilks2
-            <span class="info">i<span class="tip">Coefficient Wilks révisé (2020) : multiplie ton total par un facteur lié à ton poids de corps pour comparer la force entre catégories.</span></span>
-          </div>
-          <div class="v" id="statWilks">—</div>
-        </div>
+        <div id="p_chart"></div>
+        <div id="p_prog" class="muted" style="margin-top:12px"></div>
       </div>
     </div>
 
-    <!-- Niveau de compétition national -->
-    <div class="lifts-block">
-      <div class="section-head">Ton niveau de compétition en France
-        <span class="info">i<span class="tip">Palier estimé d'après tes points IPF GL — l'indice qui sert à comparer et qualifier les athlètes, quel que soit le poids ou le sexe.</span></span>
+    <div class="card" style="margin-top:22px">
+      <h3>Historique des sessions</h3>
+      <div id="p_table"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================================
+     ONGLET 6 — GUIDE
+     ====================================================================== -->
+<section class="page" id="guide">
+  <div class="section">
+    <h2 class="section-title">Guide de la force athlétique</h2>
+    <p class="section-sub">Tout comprendre : points GL, Wilks2, catégories, percentiles et niveaux.</p>
+
+    <div class="guide-sec">
+      <img class="illus" loading="lazy" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1000" alt="">
+      <h3>Qu'est-ce que les IPF GL Points ?</h3>
+      <p class="muted">Les IPF GL Points (Goodlift) permettent de comparer des athlètes de poids et de sexes différents sur une même échelle. Plus le score est élevé, meilleure est la performance relative. C'est le système officiel de classement de l'IPF depuis 2020.</p>
+      <div class="formula">GL = 100 / (A − B · e^(−C · PdC)) × Total</div>
+      <p class="muted">où PdC est le poids de corps et A, B, C des coefficients propres au sexe et au type de compétition (classique/équipé).</p>
+    </div>
+
+    <div class="guide-sec">
+      <img class="illus" loading="lazy" src="https://images.unsplash.com/photo-1517963879433-6ad2a04bec8e?w=1000" alt="">
+      <h3>Qu'est-ce que le score Wilks ?</h3>
+      <p class="muted">Le Wilks est l'ancêtre du GL : un coefficient appliqué au total pour normaliser selon le poids de corps. La version révisée (Wilks2, 2020) corrige les biais des catégories légères et lourdes.</p>
+      <div class="formula">Wilks2 = 600 / (a + b·x + c·x² + d·x³ + e·x⁴ + f·x⁵) × Total</div>
+      <p class="muted">où x est le poids de corps et a…f des coefficients par sexe.</p>
+    </div>
+
+    <div class="guide-sec">
+      <img class="illus" loading="lazy" src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=1000" alt="">
+      <h3>Les catégories de poids FFForce</h3>
+      <div class="grid grid-2">
+        <div><h4 class="blue">Hommes</h4>
+          <table><tr><th>Catégorie</th><th>Limite</th></tr>
+          <tr><td>−59 kg</td><td>≤ 59.0</td></tr><tr><td>−66 kg</td><td>≤ 66.0</td></tr>
+          <tr><td>−74 kg</td><td>≤ 74.0</td></tr><tr><td>−83 kg</td><td>≤ 83.0</td></tr>
+          <tr><td>−93 kg</td><td>≤ 93.0</td></tr><tr><td>−105 kg</td><td>≤ 105.0</td></tr>
+          <tr><td>−120 kg</td><td>≤ 120.0</td></tr><tr><td>+120 kg</td><td>> 120.0</td></tr></table></div>
+        <div><h4 class="blue">Femmes</h4>
+          <table><tr><th>Catégorie</th><th>Limite</th></tr>
+          <tr><td>−47 kg</td><td>≤ 47.0</td></tr><tr><td>−52 kg</td><td>≤ 52.0</td></tr>
+          <tr><td>−57 kg</td><td>≤ 57.0</td></tr><tr><td>−63 kg</td><td>≤ 63.0</td></tr>
+          <tr><td>−72 kg</td><td>≤ 72.0</td></tr><tr><td>−84 kg</td><td>≤ 84.0</td></tr>
+          <tr><td>+84 kg</td><td>> 84.0</td></tr></table></div>
       </div>
-      <div class="ladder" id="ladder"></div>
-      <div class="next-tier" id="nextTier"></div>
     </div>
 
-    <!-- Per-lift bars -->
-    <div class="lifts-block">
-      <div class="section-head">Ton % par mouvement</div>
-      <div class="bar-row" id="row-squat"></div>
-      <div class="bar-row" id="row-bench"></div>
-      <div class="bar-row" id="row-deadlift"></div>
+    <div class="guide-sec">
+      <img class="illus" loading="lazy" src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=1000" alt="">
+      <h3>Comment lire son percentile ?</h3>
+      <p class="muted">Un percentile de 80 signifie que tu fais mieux que 80 % des compétiteurs de référence. C'est une mesure relative à une population : il situe ta performance, pas ta valeur absolue. Les percentiles de FORCE.FR sont estimés via des distributions gaussiennes calibrées par sexe et par mouvement.</p>
     </div>
 
-    <!-- GL per lift -->
-    <div class="section-head" style="margin-top:28px">IPF GL Points par mouvement</div>
-    <div class="gl-row">
-      <div class="gl-cell"><div class="lbl">Squat</div><div class="num" id="gl-squat">—</div></div>
-      <div class="gl-cell"><div class="lbl">Développé</div><div class="num" id="gl-bench">—</div></div>
-      <div class="gl-cell"><div class="lbl">Soulevé</div><div class="num" id="gl-deadlift">—</div></div>
-      <div class="gl-cell tot"><div class="lbl">Total</div><div class="num" id="gl-total">—</div></div>
+    <div class="guide-sec">
+      <h3>Les niveaux en force athlétique française</h3>
+      <table>
+        <tr><th>Niveau</th><th>Percentile total</th><th>Repère (H, ~83 kg)</th></tr>
+        <tr><td><span style="color:#9aa0aa">Débutant</span></td><td>&lt; 40</td><td>&lt; 320 kg</td></tr>
+        <tr><td><span class="blue">Départemental</span></td><td>40 – 65</td><td>320 – 400 kg</td></tr>
+        <tr><td><span style="color:var(--ok)">Régional</span></td><td>65 – 85</td><td>400 – 470 kg</td></tr>
+        <tr><td><span class="warn" style="color:var(--warn)">National</span></td><td>85 – 95</td><td>470 – 550 kg</td></tr>
+        <tr><td><span class="danger">Élite</span></td><td>&gt; 95</td><td>&gt; 550 kg</td></tr>
+      </table>
     </div>
 
-    <div class="actions">
-      <button type="button" class="btn-ghost" id="shareBtn">🔗 Partager mes résultats</button>
-      <button type="button" class="btn-ghost" id="resetBtn">↺ Nouveau calcul</button>
+    <div class="guide-sec">
+      <h3>Glossaire powerlifting</h3>
+      <table>
+        <tr><td><b>SBD</b></td><td>Squat / Bench / Deadlift, les 3 mouvements.</td></tr>
+        <tr><td><b>Opener</b></td><td>Première tentative, censée être réussie à coup sûr.</td></tr>
+        <tr><td><b>Tentative</b></td><td>Un essai sur un mouvement (3 par mouvement en compète).</td></tr>
+        <tr><td><b>Wilks / GL</b></td><td>Coefficients de normalisation selon le poids de corps.</td></tr>
+        <tr><td><b>Total</b></td><td>Somme des meilleures tentatives réussies des 3 mouvements.</td></tr>
+        <tr><td><b>Classique (raw)</b></td><td>Sans équipement de force (combinaison, briefs…), ceinture et genouillères autorisées.</td></tr>
+        <tr><td><b>Équipé</b></td><td>Avec combinaison/chemise de force homologuée.</td></tr>
+        <tr><td><b>PR</b></td><td>Personal Record — record personnel.</td></tr>
+      </table>
     </div>
-  </section>
 
-  <footer>
-    Catégories d'âge : la cohorte de comparaison est ajustée selon ton groupe (Subjunior · Junior · Senior · Master).<br />
-    Les % et les paliers (N2, N1, Élite…) sont des estimations statistiques calibrées sur les distributions et performances de qualification FFForce / IPF. Indicatif, non officiel.
-  </footer>
-</div>
+    <div class="guide-sec">
+      <h3>FAQ</h3>
+      <details><summary>FORCE.FR est-il affilié à la FFForce ?</summary><p>Non. FORCE.FR est un outil indépendant, non affilié à la Fédération Française de Force. Les percentiles sont des estimations statistiques à but pédagogique.</p></details>
+      <details><summary>Mes données sont-elles enregistrées ?</summary><p>Non, rien n'est envoyé à un serveur. La progression est stockée localement dans ton navigateur (localStorage).</p></details>
+      <details><summary>Les percentiles sont-ils officiels ?</summary><p>Non, ce sont des estimations basées sur des distributions gaussiennes calibrées. Elles donnent un ordre d'idée fiable mais ne remplacent pas un classement officiel.</p></details>
+      <details><summary>Quelle différence entre GL et Wilks ?</summary><p>Le GL Points (Goodlift) est le système officiel actuel de l'IPF. Le Wilks (et Wilks2) est plus ancien mais reste très répandu. Les deux normalisent selon le poids de corps.</p></details>
+      <details><summary>Dois-je entrer mes maxis ou mes performances en compète ?</summary><p>Entre tes meilleures performances réelles (en compète idéalement). Pour le calculateur de tentatives, entre ton max estimé du jour.</p></details>
+    </div>
+
+    <footer>FORCE.FR — Outil indépendant, non affilié à la FFForce.</footer>
+  </div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
 
 <script>
-/* =========================================================================
-   PowerRank FR — calculs de force
-   ========================================================================= */
+/* =========================================================
+   NAVIGATION PAR ONGLETS (JS pur)
+   ========================================================= */
+function go(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===tab));
+  document.querySelectorAll('.nav-tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.getElementById('navTabs').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* boutons segmentés génériques */
+function segSet(btn,group){
+  document.querySelectorAll('#'+group+' button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function getSeg(group){const b=document.querySelector('#'+group+' button.on');return b?b.dataset.v:null;}
 
-/* ---- État ---- */
-let SEX = 'M';
-
-/* ---- IPF GL Points (Goodlift, version 2020) ----
-   GL = Total * 100 / (A - B * e^(-C * bodyweight))           */
-const GL_COEFF = {
-  M: { A: 1199.72839, B: 1025.18162, C: 0.00921 },
-  F: { A: 610.32796,  B: 1045.59282, C: 0.03048 }
-};
-function ipfGL(total, bw, sex) {
-  const c = GL_COEFF[sex];
-  const denom = c.A - c.B * Math.exp(-c.C * bw);
-  if (denom <= 0) return 0;
-  return total * 100 / denom;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-/* ---- Wilks2 (coefficients révisés 2020) ----
-   coeff = 600 / (a + b*x + c*x^2 + d*x^3 + e*x^4 + f*x^5),  x = bodyweight */
-const WILKS2 = {
-  M: [47.4617885411949, 8.47206137941125, 0.073694103462609,
-      -0.00139583811051207, 7.07665973070743e-06, -1.20804336482315e-08],
-  F: [-125.425539779509, 13.7121941940668, -0.0330725063103405,
-      -0.0010504000506583, 9.38773881462799e-06, -2.3334613884954e-08]
-};
-function wilks2(total, bw, sex) {
-  const k = WILKS2[sex];
-  const denom = k[0] + k[1]*bw + k[2]*bw**2 + k[3]*bw**3 + k[4]*bw**4 + k[5]*bw**5;
-  if (denom === 0) return 0;
-  return total * 600 / denom;
-}
-
-/* ---- Catégories de poids FFForce / IPF ---- */
-const CATS = {
-  M: [53, 59, 66, 74, 83, 93, 105, 120],
-  F: [43, 47, 52, 57, 63, 72, 84]
-};
-function weightCategory(bw, sex) {
-  const list = CATS[sex];
-  for (const c of list) if (bw <= c) return c + ' kg';
-  return list[list.length - 1] + '+ kg';
-}
-
-/* ---- Catégorie d'âge IPF (ajuste la cohorte de comparaison) ---- */
-function ageGroup(age) {
-  if (age <= 18) return { name: 'Subjunior', factor: 0.84 };
-  if (age <= 23) return { name: 'Junior',    factor: 0.93 };
-  if (age <= 39) return { name: 'Senior',    factor: 1.00 };
-  if (age <= 49) return { name: 'Master 1',  factor: 0.95 };
-  if (age <= 59) return { name: 'Master 2',  factor: 0.86 };
-  if (age <= 69) return { name: 'Master 3',  factor: 0.76 };
-  return            { name: 'Master 4',  factor: 0.66 };
-}
-
-/* ---- Distributions des compétiteurs (ratio lift / poids de corps) ----
-   Moyennes et écarts-types calibrés sur des populations de compétition.
-   Le facteur d'âge module la moyenne de la cohorte de comparaison.       */
-const DIST = {
-  M: { squat:{m:2.00,s:0.42}, bench:{m:1.38,s:0.30}, deadlift:{m:2.38,s:0.42}, total:{m:5.75,s:1.05} },
-  F: { squat:{m:1.52,s:0.38}, bench:{m:0.86,s:0.22}, deadlift:{m:1.88,s:0.38}, total:{m:4.25,s:0.92} }
-};
-
-/* Fonction d'erreur (approximation Abramowitz & Stegun 7.1.26) */
-function erf(x) {
-  const sign = x < 0 ? -1 : 1;
-  x = Math.abs(x);
-  const t = 1 / (1 + 0.3275911 * x);
-  const y = 1 - (((((1.061405429*t - 1.453152027)*t) + 1.421413741)*t - 0.284496736)*t + 0.254829592)*t * Math.exp(-x*x);
-  return sign * y;
-}
-/* CDF normale -> percentile 0..100 */
-function percentile(value, mean, std) {
-  const z = (value - mean) / std;
-  const p = 0.5 * (1 + erf(z / Math.SQRT2));
-  return Math.min(99.9, Math.max(0.1, p * 100));
-}
-
-/* ---- Paliers de compétition en France (seuils en points IPF GL) ----
-   Échelle de progression type : du débutant au niveau international.
-   Calibrée sur les performances de qualification FFForce / IPF.        */
-const TIERS = [
-  { short: 'Init',  name: 'Débutant',        min: 0,   color: '#6b7280' },
-  { short: 'Dép',   name: 'Départemental',   min: 45,  color: '#7f1d1d' },
-  { short: 'Rég',   name: 'Régional',        min: 57,  color: '#b91c1c' },
-  { short: 'N2',    name: 'National 2',      min: 67,  color: '#dc2626' },
-  { short: 'N1',    name: 'National 1',      min: 76,  color: '#ef4444' },
-  { short: 'Élite', name: 'Élite Nationale', min: 85,  color: '#f97316' },
-  { short: 'EU',    name: 'Européen',        min: 93,  color: '#f59e0b' },
-  { short: 'Monde', name: 'Mondial',         min: 100, color: '#fbbf24' }
-];
-function competitionTier(gl) {
-  let t = TIERS[0];
-  for (const x of TIERS) if (gl >= x.min) t = x;
-  return t;
-}
-
-/* =========================================================================
-   UI
-   ========================================================================= */
-const $ = id => document.getElementById(id);
-
-/* Sexe toggle */
-document.querySelectorAll('#sex button').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('#sex button').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    SEX = b.dataset.sex;
+/* =========================================================
+   HERO : titre animé, compteur, photo, particules
+   ========================================================= */
+(function initHero(){
+  document.getElementById('heroBg').style.backgroundImage =
+    "url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600')";
+  // Titre lettre par lettre
+  const title="CONNAIS TON NIVEAU.";
+  const el=document.getElementById('heroTitle');
+  [...title].forEach((ch,i)=>{
+    const s=document.createElement('span');
+    s.className='reveal';s.textContent=ch===' '?' ':ch;
+    s.style.animationDelay=(0.3+i*0.04)+'s';
+    el.appendChild(s);
   });
-});
+  // Compteur animé
+  const target=4200,cEl=document.getElementById('counter');
+  const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(reduce){cEl.textContent='4 200';}
+  else{
+    let cur=0;const step=target/90;
+    const tm=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(tm);}
+      cEl.textContent=Math.floor(cur).toLocaleString('fr-FR');},16);
+  }
+  // Particules légères
+  if(!reduce) particles();
+})();
 
-/* Validation */
-function readField(id, label, min, max) {
-  const el = $(id);
-  const errEl = $('err-' + id);
-  const raw = el.value.trim();
-  el.classList.remove('invalid');
-  if (errEl) errEl.textContent = '';
-  if (raw === '') { fail(el, errEl, 'Champ requis'); return null; }
-  const v = parseFloat(raw.replace(',', '.'));
-  if (isNaN(v)) { fail(el, errEl, 'Valeur invalide'); return null; }
-  if (v < min || v > max) { fail(el, errEl, `Entre ${min} et ${max}`); return null; }
+function particles(){
+  const cv=document.getElementById('particles');if(!cv)return;
+  const ctx=cv.getContext('2d');let w,h,pts;
+  function resize(){w=cv.width=cv.offsetWidth;h=cv.height=cv.offsetHeight;
+    pts=Array.from({length:Math.min(60,Math.floor(w/22))},()=>({
+      x:Math.random()*w,y:Math.random()*h,
+      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.8+.4}));}
+  resize();window.addEventListener('resize',resize);
+  (function loop(){
+    if(!document.getElementById('accueil').classList.contains('active')){requestAnimationFrame(loop);return;}
+    ctx.clearRect(0,0,w,h);
+    pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fillStyle='rgba(59,130,246,.6)';ctx.fill();});
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* =========================================================
+   MATHS : coefficients GL, Wilks2, gaussienne
+   ========================================================= */
+// IPF GL (Goodlift 2020) — classique/raw
+const GL={H:{A:1199.72839,B:1025.18162,C:0.00921},F:{A:610.32796,B:1045.59282,C:0.03048}};
+function glCoef(bw,sx){const c=GL[sx];return 100/(c.A-c.B*Math.exp(-c.C*bw));}
+function glPoints(total,bw,sx){if(total<=0||bw<=0)return 0;return total*glCoef(bw,sx);}
+
+// Wilks2 (2020)
+const W2={
+  H:[47.46178854,8.472061379,0.07369410346,-0.001395833811,7.07665973070743e-06,-1.20804336482315e-08],
+  F:[-125.4255398,13.71219419,-0.03307250631,-0.001050400051,9.38773881462799e-06,-2.3334613884954e-08]
+};
+function wilks2(total,bw,sx){
+  if(total<=0||bw<=0)return 0;
+  const k=W2[sx];let denom=0;for(let i=0;i<6;i++)denom+=k[i]*Math.pow(bw,i);
+  return total*600/denom;
+}
+// CDF gaussienne via erf
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+  return x>=0?y:-y;}
+function percentile(val,mean,sd){return Math.max(0.1,Math.min(99.9,50*(1+erf((val-mean)/(sd*Math.SQRT2)))));}
+
+// Distributions de référence (seniors)
+const DIST={
+  H:{s:[120,35],b:[85,25],d:[150,40],total:[355,90]},
+  F:{s:[75,22],b:[50,15],d:[95,28],total:[220,55]}
+};
+// Catégories de poids FFForce
+const CATS={H:[59,66,74,83,93,105,120],F:[47,52,57,63,72,84]};
+function weightClass(bw,sx){
+  const c=CATS[sx];for(const lim of c)if(bw<=lim)return '−'+lim+' kg';
+  return '+'+c[c.length-1]+' kg';
+}
+// Niveau selon percentile total
+function levelFor(p){
+  if(p<40)return{name:'Débutant',color:'#9aa0aa'};
+  if(p<65)return{name:'Départemental',color:'#3B82F6'};
+  if(p<85)return{name:'Régional',color:'#22c55e'};
+  if(p<95)return{name:'National',color:'#f59e0b'};
+  return{name:'Élite',color:'#FF3B3B'};
+}
+
+/* =========================================================
+   ONGLET 2 — CALCULATEUR DE NIVEAU
+   ========================================================= */
+function valNum(id,errId,min,max,label){
+  const el=document.getElementById(id),er=document.getElementById(errId);
+  const v=parseFloat(el.value);el.classList.remove('invalid');if(er)er.textContent='';
+  if(el.value==='' || isNaN(v)){el.classList.add('invalid');if(er)er.textContent=label+' requis';return null;}
+  if(v<min||v>max){el.classList.add('invalid');if(er)er.textContent='Valeur entre '+min+' et '+max;return null;}
   return v;
 }
-function fail(el, errEl, msg) { el.classList.add('invalid'); if (errEl) errEl.textContent = msg; }
+function calcLevel(){
+  const sx=getSeg('c_sexe');
+  const age=valNum('c_age','e_age',12,100,'Âge');
+  const bw=valNum('c_bw','e_bw',25,250,'Poids');
+  const s=valNum('c_s','e_s',0,600,'Squat');
+  const b=valNum('c_b','e_b',0,500,'Bench');
+  const d=valNum('c_d','e_d',0,600,'Deadlift');
+  if([age,bw,s,b,d].some(v=>v===null)){toast('Corrige les champs en rouge.');return;}
+  const total=s+b+d;
+  const dist=DIST[sx];
+  const pS=percentile(s,...dist.s),pB=percentile(b,...dist.b),
+        pD=percentile(d,...dist.d),pT=percentile(total,...dist.total);
+  const gl=glPoints(total,bw,sx),wk=wilks2(total,bw,sx);
+  const lvl=levelFor(pT),cat=weightClass(bw,sx);
+  const prenom=document.getElementById('c_prenom').value.trim();
+  const topPct=Math.max(0.1,(100-pT)).toFixed(1);
+  const greet=prenom?prenom+', tu es':'Tu es';
 
-/* Soumission */
-$('form').addEventListener('submit', e => {
-  e.preventDefault();
-  const age      = readField('age', 'Âge', 8, 100);
-  const bw       = readField('bw', 'Poids', 25, 250);
-  const squat    = readField('squat', 'Squat', 1, 600);
-  const bench    = readField('bench', 'Développé', 1, 500);
-  const deadlift = readField('deadlift', 'Soulevé', 1, 600);
-
-  if ([age, bw, squat, bench, deadlift].some(v => v === null)) return;
-
-  render({ age, bw, sex: SEX, squat, bench, deadlift });
-});
-
-/* Rendu des résultats */
-function render(d) {
-  const total = d.squat + d.bench + d.deadlift;
-  const ag = ageGroup(d.age);
-  const dist = DIST[d.sex];
-
-  /* Percentiles par mouvement (ratio ajusté par l'âge) */
-  const mkPct = (kg, key) => {
-    const ratio = kg / d.bw;
-    const dd = dist[key];
-    return percentile(ratio, dd.m * ag.factor, dd.s);
-  };
-  const pSquat = mkPct(d.squat, 'squat');
-  const pBench = mkPct(d.bench, 'bench');
-  const pDead  = mkPct(d.deadlift, 'deadlift');
-  const pTotal = percentile(total / d.bw, dist.total.m * ag.factor, dist.total.s);
-
-  /* Scores */
-  const gl       = ipfGL(total, d.bw, d.sex);
-  const wlk       = wilks2(total, d.bw, d.sex);
-  const glSquat  = ipfGL(d.squat, d.bw, d.sex);
-  const glBench  = ipfGL(d.bench, d.bw, d.sex);
-  const glDead   = ipfGL(d.deadlift, d.bw, d.sex);
-
-  /* Stats */
-  $('statTotal').innerHTML = Math.round(total) + '<small> kg</small>';
-  $('statCat').textContent = weightCategory(d.bw, d.sex);
-  $('statGL').textContent = gl.toFixed(2);
-  $('statWilks').textContent = wlk.toFixed(2);
-
-  /* Palier de compétition (basé sur les points IPF GL) */
-  const tier = competitionTier(gl);
-  const badge = $('levelBadge');
-  badge.textContent = tier.name + ' · ' + ag.name;
-  badge.style.background = tier.color;
-  renderLadder(tier, gl);
-
-  /* GL par mouvement */
-  $('gl-squat').textContent = glSquat.toFixed(1);
-  $('gl-bench').textContent = glBench.toFixed(1);
-  $('gl-deadlift').textContent = glDead.toFixed(1);
-  $('gl-total').textContent = gl.toFixed(1);
-
-  /* Barres par mouvement */
-  barRow('row-squat', 'Squat', d.squat, pSquat);
-  barRow('row-bench', 'Développé couché', d.bench, pBench);
-  barRow('row-deadlift', 'Soulevé de terre', d.deadlift, pDead);
-
-  /* Affiche puis anime */
-  const res = $('results');
-  res.classList.add('show');
-  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  animateGauge(pTotal, tier.color);
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.w + '%');
-  });
-
-  /* Mémorise pour le partage */
-  window.__last = d;
-}
-
-function barRow(id, name, kg, pct) {
-  $(id).innerHTML = `
-    <div class="bar-head">
-      <div class="bar-name">${name} <span>· ${Math.round(kg)} kg</span></div>
-      <div class="bar-val">${Math.round(pct)}<small>%</small></div>
+  const box=document.getElementById('c_results');
+  box.innerHTML=`
+    <div style="text-align:center">
+      ${prenom?`<div class="stat-lbl">Profil de ${escapeHtml(prenom)}</div>`:''}
+      <div class="badge" style="background:${lvl.color}22;color:${lvl.color};border:1px solid ${lvl.color};margin:6px 0 4px">${lvl.name}</div>
+      <div class="muted" style="font-size:.85rem">Catégorie ${cat} • ${sx==='H'?'Homme':'Femme'} • ${age} ans</div>
+      <div class="gauge-wrap" style="margin:18px 0">${gaugeSVG(pT,lvl.color)}
+        <div class="stat-lbl">Percentile total</div></div>
     </div>
-    <div class="track"><div class="fill" data-w="${pct.toFixed(1)}"></div></div>`;
+    ${bar('Squat',pS,'#3B82F6')}
+    ${bar('Développé couché',pB,'#00FFD1')}
+    ${bar('Soulevé de terre',pD,'#FF3B3B')}
+    <div class="grid grid-2" style="margin-top:18px;text-align:center">
+      <div><div class="stat-big blue">${gl.toFixed(1)}</div><div class="stat-lbl">Points GL</div></div>
+      <div><div class="stat-big accent">${wk.toFixed(1)}</div><div class="stat-lbl">Wilks2</div></div>
+    </div>
+    <div class="card" style="margin-top:18px;background:${lvl.color}10;border-color:${lvl.color}">
+      <p style="text-align:center">${greet} dans le <b style="color:${lvl.color}">top ${topPct}%</b> des powerlifters français pour un total de <b>${total} kg</b>.</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:14px" onclick="shareResult(${total},${bw},'${sx}','${encodeURIComponent(prenom)}')">🔗 Partager mes résultats</button>
+  `;
+  // animer les barres
+  requestAnimationFrame(()=>box.querySelectorAll('.bar-fill').forEach(f=>f.style.width=f.dataset.w+'%'));
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
-
-/* Échelle des paliers + prochain objectif */
-function renderLadder(tier, gl) {
-  const cur = TIERS.indexOf(tier);
-  $('ladder').innerHTML = TIERS.map((t, i) => {
-    const cls = i === cur ? 'active' : (i < cur ? 'passed' : '');
-    const style = i === cur ? `style="--c:${t.color}"` : '';
-    return `<div class="tier ${cls}" ${style}>
-      <span class="tname">${t.short}</span>
-      <span class="tmin">${t.min > 0 ? t.min + ' GL' : '—'}</span>
-    </div>`;
-  }).join('');
-
-  const next = TIERS[cur + 1];
-  $('nextTier').innerHTML = next
-    ? `Prochain palier : <b>${next.name}</b> — encore <b>${(next.min - gl).toFixed(1)}</b> points GL à gagner.`
-    : `🏆 Niveau maximal atteint : <b>élite mondiale</b>. Chapeau.`;
+function bar(label,pct,color){
+  return `<div class="bar-row"><div class="top"><span>${label}</span><span style="color:${color};font-weight:700">${pct.toFixed(0)}e percentile</span></div>
+  <div class="bar-track"><div class="bar-fill" data-w="${pct.toFixed(0)}" style="background:linear-gradient(90deg,${color},${color}aa);box-shadow:0 0 12px ${color}99"></div></div></div>`;
 }
-
-/* Anime la jauge circulaire (compte-tours) */
-function animateGauge(pct, color) {
-  const arc = $('gaugeArc');
-  const num = $('gaugeNum');
-  const C = 2 * Math.PI * 104; // circonférence ≈ 653.45
-  arc.style.stroke = color;
-  arc.style.strokeDashoffset = C;            // reset
-  num.textContent = '0';
-
-  const target = Math.round(pct);
-  const dur = 1400;
-  const start = performance.now();
-
-  function step(now) {
-    const t = Math.min(1, (now - start) / dur);
-    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-    arc.style.strokeDashoffset = C - (pct / 100) * C * eased;
-    num.textContent = Math.round(target * eased);
-    if (t < 1) requestAnimationFrame(step);
-    else num.textContent = target;
+function gaugeSVG(pct,color){
+  const r=70,c=2*Math.PI*r,off=c*(1-pct/100);
+  return `<div class="gauge"><svg width="180" height="180" viewBox="0 0 180 180">
+    <circle cx="90" cy="90" r="${r}" fill="none" stroke="#1f1f1f" stroke-width="14"/>
+    <circle cx="90" cy="90" r="${r}" fill="none" stroke="${color}" stroke-width="14" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${c}" transform="rotate(-90 90 90)"
+      style="transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1)">
+      <animate attributeName="stroke-dashoffset" from="${c}" to="${off}" dur="1.3s" fill="freeze"/>
+    </circle>
+    <text x="90" y="92" text-anchor="middle" class="pct" fill="#fff">${pct.toFixed(0)}</text>
+    <text x="90" y="116" text-anchor="middle" fill="#A0A0A0" font-size="13" font-family="Inter">percentile</text>
+  </svg></div>`;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function shareResult(total,bw,sx,prenom){
+  const u=new URL(location.href);u.hash='r='+[total,bw,sx,prenom].join('|');
+  navigator.clipboard?.writeText(u.toString()).then(
+    ()=>toast('Lien copié dans le presse-papier !'),
+    ()=>toast('Lien : '+u.toString()));
+}
+// Restauration depuis l'URL partagée
+window.addEventListener('DOMContentLoaded',()=>{
+  if(location.hash.startsWith('#r=')){
+    const[total,bw,sx,prenom]=decodeURIComponent(location.hash.slice(3)).split('|');
+    go('calculateur');
+    document.getElementById('c_bw').value=bw;
+    if(prenom)document.getElementById('c_prenom').value=prenom;
+    document.querySelectorAll('#c_sexe button').forEach(b=>b.classList.toggle('on',b.dataset.v===sx));
+    toast('Résultats partagés chargés — total '+total+' kg');
   }
-  requestAnimationFrame(step);
-}
+});
 
-/* ---- Partage via URL ---- */
-$('shareBtn').addEventListener('click', () => {
-  const d = window.__last;
-  if (!d) return;
-  const params = new URLSearchParams({
-    age: d.age, bw: d.bw, sex: d.sex,
-    sq: d.squat, bp: d.bench, dl: d.deadlift
+/* =========================================================
+   ONGLET 3 — CONVERTISSEUR DE CHARGES
+   ========================================================= */
+let cv_unit='kg',cv_bar=20;
+const PLATES=[ // poids kg, couleur, hauteur px, largeur px
+  {w:25,c:'#FF3B3B',h:150,wd:20},{w:20,c:'#3B82F6',h:140,wd:18},
+  {w:15,c:'#FFD400',h:125,wd:16},{w:10,c:'#22c55e',h:110,wd:14},
+  {w:5,c:'#f5f5f5',h:90,wd:13},{w:2.5,c:'#FF3B3B',h:70,wd:10},
+  {w:1.25,c:'#cfd3d8',h:55,wd:8}
+];
+const LB=2.2046226218;
+function cvUnit(u){cv_unit=u;document.querySelectorAll('#cv_unit button').forEach(b=>b.classList.toggle('on',b.dataset.v===u));
+  document.getElementById('cv_ulbl').textContent=u;renderBar();}
+function cvBar(w){cv_bar=w;document.querySelectorAll('#cv_bar button').forEach(b=>b.classList.toggle('on',+b.dataset.v===w));renderBar();}
+function cvAdd(kg){const i=document.getElementById('cv_total');
+  const add=cv_unit==='kg'?kg:kg*LB;i.value=(Math.max(0,(parseFloat(i.value)||0)+add)).toFixed(2).replace(/\.00$/,'');renderBar();}
+function cvReset(){document.getElementById('cv_total').value=cv_bar;renderBar();}
+function renderBar(){
+  let totalInput=parseFloat(document.getElementById('cv_total').value)||0;
+  const totalKg=cv_unit==='kg'?totalInput:totalInput/LB;
+  const conv=cv_unit==='kg'?(totalInput*LB).toFixed(1)+' lbs':(totalInput/LB).toFixed(1)+' kg';
+  document.getElementById('cv_conv').textContent='≈ '+conv+' • Barre : '+cv_bar+' kg';
+  const perSide=(totalKg-cv_bar)/2;
+  const bb=document.getElementById('cv_barbell');
+  if(perSide<0){bb.innerHTML='<p class="muted">Charge inférieure au poids de la barre.</p>';document.getElementById('cv_table').innerHTML='';return;}
+  // décomposition gloutonne par côté
+  let rem=perSide;const used={};
+  PLATES.forEach(p=>{const n=Math.floor(rem/p.w+1e-6);if(n>0){used[p.w]={n,p};rem-=n*p.w;}});
+  // rendu visuel : plaques gauche + barre + plaques droite (miroir)
+  let left='',right='';
+  PLATES.forEach(p=>{const u=used[p.w];if(!u)return;
+    for(let i=0;i<u.n;i++){
+      const txt=cv_unit==='kg'?p.w:(p.w*LB).toFixed(p.w<5?2:0);
+      const plate=`<div class="plate" style="height:${p.h}px;width:${p.wd}px;background:${p.c};margin:0 1px;color:${p.c==='#f5f5f5'||p.c==='#FFD400'||p.c==='#cfd3d8'?'#000':'#fff'}">${p.w>=5?p.w:''}</div>`;
+      right+=plate;left=plate+left;
+    }});
+  bb.innerHTML=`${left}<div class="sleeve" style="width:30px"></div><div class="bar-center"></div><div class="sleeve" style="width:30px"></div>${right}`;
+  // tableau
+  let rows='';PLATES.forEach(p=>{const u=used[p.w];if(!u)return;
+    rows+=`<tr><td><span style="display:inline-block;width:14px;height:14px;background:${p.c};border-radius:3px;margin-right:8px;vertical-align:middle;border:1px solid #0006"></span>${p.w} kg</td><td>${u.n} × 2</td><td>${u.n*2}</td></tr>`;});
+  document.getElementById('cv_table').innerHTML=rem>0.01
+    ? `<table><tr><th>Plaque</th><th>Par côté</th><th>Total</th></tr>${rows}</table><p class="muted" style="margin-top:8px">Reste non chargeable : ${rem.toFixed(2)} kg/côté (charge non standard).</p>`
+    : (rows?`<table><tr><th>Plaque</th><th>Par côté</th><th>Total</th></tr>${rows}</table>`:'<p class="muted">Barre à vide.</p>');
+}
+renderBar();
+
+/* =========================================================
+   ONGLET 4 — CALCULATEUR DE TENTATIVES
+   ========================================================= */
+// pourcentages [opener,2e,3e] selon objectif
+const ATT={safe:[0.88,0.94,0.99],pr:[0.91,0.985,1.04],aggro:[0.93,1.01,1.07]};
+function calcAttempts(){
+  const s=parseFloat(document.getElementById('t_s').value)||0;
+  const b=parseFloat(document.getElementById('t_b').value)||0;
+  const d=parseFloat(document.getElementById('t_d').value)||0;
+  if(s<=0&&b<=0&&d<=0){toast('Entre au moins un max.');return;}
+  const goal=document.getElementById('t_goal').value;
+  const sx=getSeg('t_sexe');const bw=parseFloat(document.getElementById('t_bw').value)||0;
+  const pcts=ATT[goal];
+  const lifts=[['Squat',s,'#3B82F6'],['Développé couché',b,'#00FFD1'],['Soulevé de terre',d,'#FF3B3B']];
+  const round=x=>Math.round(x/2.5)*2.5; // arrondi compète 2.5 kg
+  let third=0,second=0; // total tout réussi / total 3e ratée
+  let html='<div class="card"><table><tr><th>Mouvement</th><th>Opener</th><th>2ᵉ tentative</th><th>3ᵉ tentative</th></tr>';
+  const just=['Sécurité — à valider sans forcer','Confirmer le niveau','PR / record visé'];
+  lifts.forEach(([name,max,col])=>{
+    if(max<=0){html+=`<tr><td>${name}</td><td colspan="3" class="muted">—</td></tr>`;return;}
+    const a=pcts.map(p=>round(max*p));
+    third+=a[2];second+=a[1];
+    const risk=p=>p>1.06?'att-risk':p>1.0?'att-mid':'att-safe';
+    html+=`<tr><td><b>${name}</b></td>
+      <td class="${risk(pcts[0])}">${a[0]} kg<br><span class="muted" style="font-size:.75rem">${(pcts[0]*100).toFixed(0)}%</span></td>
+      <td class="${risk(pcts[1])}">${a[1]} kg<br><span class="muted" style="font-size:.75rem">${(pcts[1]*100).toFixed(0)}%</span></td>
+      <td class="${risk(pcts[2])}">${a[2]} kg<br><span class="muted" style="font-size:.75rem">${(pcts[2]*100).toFixed(0)}%</span></td></tr>`;
   });
-  const url = location.origin + location.pathname + '?' + params.toString();
-  const btn = $('shareBtn');
-  const done = () => { btn.textContent = '✓ Lien copié !'; btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '🔗 Partager mes résultats'; btn.classList.remove('copied'); }, 2200); };
+  html+='</table>';
+  html+=`<p class="muted" style="margin-top:10px"><span class="att-safe">■</span> Sûr &nbsp; <span class="att-mid">■</span> À confirmer &nbsp; <span class="att-risk">■</span> Risqué (&gt;106%)</p>`;
+  // scénarios
+  const glThird=bw>0?glPoints(third,bw,sx):0, glSecond=bw>0?glPoints(second,bw,sx):0;
+  html+=`<div class="grid grid-2" style="margin-top:16px;text-align:center">
+    <div class="card" style="background:rgba(34,197,94,.08);border-color:#22c55e"><div class="stat-big" style="color:#22c55e">${third} kg</div><div class="stat-lbl">Total si tout réussi</div>${glThird?`<div class="muted" style="margin-top:6px">${glThird.toFixed(1)} pts GL</div>`:''}</div>
+    <div class="card" style="background:rgba(245,158,11,.08);border-color:#f59e0b"><div class="stat-big" style="color:#f59e0b">${second} kg</div><div class="stat-lbl">Total si 3ᵉ ratées</div>${glSecond?`<div class="muted" style="margin-top:6px">${glSecond.toFixed(1)} pts GL</div>`:''}</div>
+  </div>`;
+  if(pcts[2]>1.06)html+=`<p class="danger" style="margin-top:12px">⚠ La 3ᵉ tentative dépasse 106 % du max : très risquée, à n'engager qu'en pleine confiance.</p>`;
+  html+='</div>';
+  document.getElementById('t_results').innerHTML=html;
+}
 
-  if (navigator.clipboard) navigator.clipboard.writeText(url).then(done).catch(() => prompt('Copie ce lien :', url));
-  else prompt('Copie ce lien :', url);
-});
-
-/* ---- Reset ---- */
-$('resetBtn').addEventListener('click', () => {
-  $('results').classList.remove('show');
-  $('form').reset();
-  window.history.replaceState({}, '', location.pathname);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-/* ---- Pré-remplissage depuis l'URL ---- */
-(function loadFromURL() {
-  const p = new URLSearchParams(location.search);
-  if (!p.has('sq')) return;
-  const set = (id, key) => { if (p.has(key)) $(id).value = p.get(key); };
-  set('age','age'); set('bw','bw'); set('squat','sq'); set('bench','bp'); set('deadlift','dl');
-  if (p.get('sex') === 'F') {
-    SEX = 'F';
-    document.querySelectorAll('#sex button').forEach(x => x.classList.toggle('active', x.dataset.sex === 'F'));
+/* =========================================================
+   ONGLET 5 — PROGRESSION (localStorage)
+   ========================================================= */
+const KEY='forcefr_sessions';let metric='total';
+function loadSessions(){try{return JSON.parse(localStorage.getItem(KEY))||[];}catch(e){return[];}}
+function saveSessions(a){localStorage.setItem(KEY,JSON.stringify(a));}
+function setMetric(btn,m){metric=m;segSet(btn,'p_metric');renderProgress();}
+function sessTotal(s){return (s.s||0)+(s.b||0)+(s.d||0);}
+function addSession(){
+  const date=document.getElementById('p_date').value;
+  const bw=parseFloat(document.getElementById('p_bw').value)||0;
+  const s=parseFloat(document.getElementById('p_s').value)||0;
+  const b=parseFloat(document.getElementById('p_b').value)||0;
+  const d=parseFloat(document.getElementById('p_d').value)||0;
+  const sx=getSeg('p_sexe');
+  if(!date){toast('Choisis une date.');return;}
+  if(s<=0&&b<=0&&d<=0){toast('Entre au moins une performance.');return;}
+  const arr=loadSessions();
+  const prevBest=Math.max(0,...arr.map(sessTotal));
+  arr.push({date,bw,s,b,d,sx});
+  arr.sort((x,y)=>x.date.localeCompare(y.date));
+  saveSessions(arr);
+  const newTotal=s+b+d;
+  if(newTotal>prevBest&&prevBest>0)toast('🎉 Nouveau PR ! +'+(newTotal-prevBest)+' kg sur ton total !');
+  else toast('Session ajoutée.');
+  ['p_s','p_b','p_d'].forEach(id=>document.getElementById(id).value='');
+  renderProgress();
+}
+function deleteSession(i){const arr=loadSessions();arr.splice(i,1);saveSessions(arr);renderProgress();}
+function metricVal(s){
+  if(metric==='total')return sessTotal(s);
+  if(metric==='gl')return glPoints(sessTotal(s),s.bw||80,s.sx||'H');
+  return s[metric]||0;
+}
+function renderProgress(){
+  const arr=loadSessions();
+  // tableau
+  let t='';
+  if(arr.length===0)t='<p class="muted">Aucune session enregistrée pour l\'instant.</p>';
+  else{
+    t='<table><tr><th>Date</th><th>PdC</th><th>S</th><th>B</th><th>D</th><th>Total</th><th>GL</th><th></th></tr>';
+    const best=Math.max(...arr.map(sessTotal));
+    arr.forEach((s,i)=>{
+      const tot=sessTotal(s),isPR=tot===best&&tot>0;
+      t+=`<tr class="${isPR?'pr-row':''}"><td>${s.date}${isPR?' 🏆':''}</td><td>${s.bw||'—'}</td><td>${s.s||'—'}</td><td>${s.b||'—'}</td><td>${s.d||'—'}</td><td><b>${tot}</b></td><td>${glPoints(tot,s.bw||80,s.sx||'H').toFixed(0)}</td>
+      <td><button class="btn btn-ghost btn-sm" style="padding:4px 10px;border-color:#FF3B3B;color:#FF3B3B" onclick="deleteSession(${i})">✕</button></td></tr>`;
+    });
+    t+='</table>';
   }
-  setTimeout(() => $('form').requestSubmit(), 150);
-})();
+  document.getElementById('p_table').innerHTML=t;
+  // graphique
+  document.getElementById('p_chart').innerHTML=lineChart(arr);
+  // meilleure progression sur fenêtres
+  document.getElementById('p_prog').innerHTML=progStats(arr);
+}
+function lineChart(arr){
+  if(arr.length<2)return '<p class="muted" style="padding:30px 0;text-align:center">Ajoute au moins 2 sessions pour voir la courbe.</p>';
+  const W=420,H=200,pad=34;
+  const vals=arr.map(metricVal);
+  const min=Math.min(...vals),max=Math.max(...vals),span=(max-min)||1;
+  const x=i=>pad+i*(W-2*pad)/(arr.length-1);
+  const y=v=>H-pad-(v-min)/span*(H-2*pad);
+  let pts=arr.map((s,i)=>[x(i),y(metricVal(s))]);
+  const path=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const area=path+` L${x(arr.length-1)} ${H-pad} L${pad} ${H-pad} Z`;
+  const dots=pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#00FFD1" stroke="#0A0A0A" stroke-width="2"><title>${arr[i].date} : ${metricVal(arr[i]).toFixed(metric==='gl'?1:0)}</title></circle>`).join('');
+  const len=1400;
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+    <line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="#2a2a2a"/>
+    <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="#2a2a2a"/>
+    <text x="${pad-6}" y="${pad+4}" text-anchor="end" fill="#A0A0A0" font-size="10">${max.toFixed(0)}</text>
+    <text x="${pad-6}" y="${H-pad}" text-anchor="end" fill="#A0A0A0" font-size="10">${min.toFixed(0)}</text>
+    <path d="${area}" fill="rgba(0,255,209,.10)"/>
+    <path d="${path}" fill="none" stroke="#00FFD1" stroke-width="2.5" stroke-dasharray="${len}" stroke-dashoffset="${len}">
+      <animate attributeName="stroke-dashoffset" from="${len}" to="0" dur="1.2s" fill="freeze"/></path>
+    ${dots}
+  </svg>`;
+}
+function progStats(arr){
+  if(arr.length<2)return '';
+  const now=arr[arr.length-1];
+  const wins=[30,60,90].map(days=>{
+    const cutoff=new Date(now.date);cutoff.setDate(cutoff.getDate()-days);
+    const past=arr.filter(s=>new Date(s.date)>=cutoff);
+    if(past.length<2)return `<li>${days} j : données insuffisantes</li>`;
+    const diff=sessTotal(past[past.length-1])-sessTotal(past[0]);
+    const sign=diff>0?'+':'';const col=diff>0?'#22c55e':diff<0?'#FF3B3B':'#A0A0A0';
+    return `<li>${days} derniers jours : <b style="color:${col}">${sign}${diff} kg</b> sur le total</li>`;
+  }).join('');
+  return '<b>Progression du total</b><ul style="margin:8px 0 0 18px">'+wins+'</ul>';
+}
+function exportCSV(){
+  const arr=loadSessions();if(!arr.length){toast('Rien à exporter.');return;}
+  let csv='date,poids_corps,squat,bench,deadlift,total,gl_points\n';
+  arr.forEach(s=>{const tot=sessTotal(s);csv+=[s.date,s.bw||'',s.s||0,s.b||0,s.d||0,tot,glPoints(tot,s.bw||80,s.sx||'H').toFixed(1)].join(',')+'\n';});
+  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='forcefr_progression.csv';a.click();URL.revokeObjectURL(a.href);
+  toast('CSV exporté.');
+}
+// init progression : date du jour + premier rendu
+document.getElementById('p_date').value=new Date().toISOString().slice(0,10);
+renderProgress();
 </script>
 </body>
 </html>
