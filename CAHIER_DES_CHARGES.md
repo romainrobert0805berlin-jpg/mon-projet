@@ -135,10 +135,12 @@ Le site est web (Astro). Pour être présent sur **App Store** et **Play Store**
 
 > ⚠️ **Risque App Store (règle 4.2)** : Apple refuse les apps « simple site emballé ». L'app doit apporter une vraie valeur (commande click & collect via Innovorder, fidélité Heypongo, push). À anticiper : on publie sur les stores **une fois ces intégrations branchées** (après tranche 6).
 
+**Objectif confirmé : publication sur App Store ET Play Store (les deux).**
+
 **Prérequis stores (à la charge du client) :**
-- [ ] Compte **Apple Developer** — 99 $/an
-- [ ] Compte **Google Play Console** — 25 $ (une fois)
-- [ ] Accès à un **Mac** (ou service de build cloud) pour compiler l'app iOS
+- [ ] Compte **Apple Developer** — 99 $/an — ✅ *client peut le créer*
+- [ ] Compte **Google Play Console** — 25 $ (une fois) — ✅ *client peut le créer*
+- [x] Accès à un **Mac** pour compiler l'app iOS — ✅ *client en dispose*
 - [ ] Assets app : icône haute résolution, splash screen, captures d'écran pour les fiches store
 - [ ] Textes fiches store (description, mots-clés) FR + EN
 
