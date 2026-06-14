@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import { localePath, type Lang } from '../../i18n/utils'
 import { ui } from '../../i18n/ui'
 import { products } from '../../data/menu'
-import { business } from '../../data/business'
 
 interface Props { lang: Lang }
 const { lang } = Astro.props
@@ -34,113 +33,128 @@ const menuLd = {
 }
 
 const t = (k: keyof typeof ui) => ui[k][lang]
+const atouts = [
+  { n: '01', t: lang === 'fr' ? 'Prêt en 5 minutes' : 'Ready in 5 minutes', d: lang === 'fr' ? 'Commande à l’avance, retrait sans file.' : 'Order ahead, collect with no queue.' },
+  { n: '02', t: lang === 'fr' ? 'Frais & sourcé' : 'Fresh & sourced', d: lang === 'fr' ? 'Producteurs choisis, pain maison quotidien.' : 'Selected producers, daily house bread.' },
+  { n: '03', t: lang === 'fr' ? 'Fidélité' : 'Loyalty', d: lang === 'fr' ? '1 € dépensé = 1 point.' : '1 € spent = 1 point.' },
+  { n: '04', t: lang === 'fr' ? 'Plateaux repas' : 'Catering', d: lang === 'fr' ? 'Livrés à vos étages à La Défense.' : 'Delivered to your floors at La Défense.' },
+]
 ---
 
 <BaseLayout title={title} description={description} lang={lang} jsonld={[menuLd]}>
-  <!-- Hero -->
-  <section class="mx-auto max-w-6xl px-4 pt-10 pb-12">
-    <div class="grid items-center gap-8 md:grid-cols-2">
-      <div>
-        <span class="inline-flex items-center gap-2 rounded-full bg-green/10 px-3 py-1 text-sm font-semibold text-green">
-          <span class="size-2 rounded-full bg-green"></span> {t('openNow')}
-        </span>
-        <h1 class="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
-          {lang === 'fr' ? 'Le sandwich d’auteur,' : 'Signature sandwiches,'}<br />
-          <span class="text-accent">{lang === 'fr' ? 'au cœur de La Défense.' : 'in the heart of La Défense.'}</span>
+  <!-- HERO editorial -->
+  <section class="mx-auto max-w-6xl px-5 pt-14 pb-10">
+    <div class="grid items-end gap-10 md:grid-cols-12">
+      <div class="md:col-span-7">
+        <p class="eyebrow">{lang === 'fr' ? 'Sandwicherie d’auteur — CNIT, La Défense' : 'Signature sandwich shop — CNIT, La Défense'}</p>
+        <h1 class="mt-5 text-5xl leading-[0.98] sm:text-6xl md:text-7xl">
+          {lang === 'fr' ? 'Le sandwich' : 'The sandwich,'}
+          <span class="italic font-[400]">{lang === 'fr' ? 'd’auteur.' : 'reimagined.'}</span>
         </h1>
-        <p class="mt-4 max-w-prose text-lg text-ink-soft">
+        <p class="mt-6 max-w-md text-lg text-ink-soft">
           {lang === 'fr'
-            ? "Produits frais, pain travaillé chaque matin, recettes signées d’un chef passé par Ferrandi. À emporter en quelques minutes, au CNIT."
-            : 'Fresh produce, bread baked every morning, recipes by a Ferrandi-trained chef. Ready to go in minutes, at CNIT.'}
+            ? 'Pain travaillé chaque matin, produits frais, recettes signées d’un chef passé par Ferrandi. À emporter, au cœur de La Défense.'
+            : 'Bread baked every morning, fresh produce, recipes by a Ferrandi-trained chef. To go, in the heart of La Défense.'}
         </p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href={localePath('/commander', lang)} class="rounded-full bg-accent px-6 py-3 font-semibold text-white hover:bg-accent-dark">🥪 {t('order')}</a>
-          <a href={localePath('/menu', lang)} class="rounded-full border border-line px-6 py-3 font-semibold hover:border-ink">{t('seeMenu')}</a>
+        <div class="mt-8 flex flex-wrap items-center gap-6">
+          <a href={localePath('/commander', lang)} class="rounded-[var(--radius)] bg-accent px-7 py-3.5 font-semibold text-white hover:bg-accent-dark">{t('order')}</a>
+          <a href={localePath('/menu', lang)} class="border-b-2 border-ink pb-0.5 font-semibold hover:border-accent hover:text-accent">{t('seeMenu')} →</a>
         </div>
+        <p class="mt-8 text-sm text-ink-soft"><span class="font-semibold text-green">●</span> {t('openNow')}</p>
       </div>
-      <div class="flex aspect-[4/3] items-center justify-center rounded-3xl bg-gradient-to-br from-[#d9542b] via-[#b8390f] to-[#7a2408] text-[120px] text-white shadow-xl">
-        🥖
-      </div>
+
+      <!-- Cadre photo legende, facon magazine -->
+      <figure class="md:col-span-5">
+        <div class="flex aspect-[4/5] items-center justify-center border border-line bg-surface text-8xl shadow-[0_20px_60px_-30px_rgba(26,21,18,0.5)]">🥖</div>
+        <figcaption class="mt-2 flex items-center justify-between text-xs text-ink-soft">
+          <span class="eyebrow">{lang === 'fr' ? 'La maison' : 'The house'}</span>
+          <span>{lang === 'fr' ? 'Photo à venir' : 'Photo coming soon'}</span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- Atouts -->
-  <section class="mx-auto max-w-6xl px-4 py-8">
-    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-      {[
-        { i: '⚡', t: lang==='fr'?'Prêt en 5 min':'Ready in 5 min', d: lang==='fr'?'Sans file d’attente':'No waiting line' },
-        { i: '🌿', t: lang==='fr'?'Frais & sourcé':'Fresh & sourced', d: lang==='fr'?'Pain maison quotidien':'Daily house bread' },
-        { i: '🎁', t: lang==='fr'?'Fidélité':'Loyalty', d: lang==='fr'?'1€ = 1 point':'1€ = 1 point' },
-        { i: '🍱', t: lang==='fr'?'Plateaux repas':'Catering', d: lang==='fr'?'Livrés à l’étage':'Delivered to your floor' },
-      ].map((f) => (
-        <div class="rounded-2xl border border-line bg-surface p-5">
-          <div class="text-3xl">{f.i}</div>
-          <p class="mt-2 font-semibold">{f.t}</p>
-          <p class="text-sm text-ink-soft">{f.d}</p>
+  <!-- Atouts en bandeau a filets -->
+  <section class="mx-auto max-w-6xl px-5 py-6">
+    <div class="rule"></div>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4">
+      {atouts.map((a, i) => (
+        <div class={`py-7 sm:px-6 ${i > 0 ? 'md:border-l border-line' : ''}`}>
+          <span class="font-serif text-sm text-accent">{a.n}</span>
+          <p class="mt-2 font-serif text-xl">{a.t}</p>
+          <p class="mt-1 text-sm text-ink-soft">{a.d}</p>
         </div>
       ))}
     </div>
+    <div class="rule"></div>
   </section>
 
   <!-- Signatures -->
-  <section class="mx-auto max-w-6xl px-4 py-10">
-    <div class="mb-6 flex items-end justify-between">
-      <h2 class="text-3xl font-semibold">{lang === 'fr' ? 'Nos signatures' : 'Our signatures'}</h2>
-      <a href={localePath('/menu', lang)} class="text-sm font-semibold text-accent">{lang === 'fr' ? 'Tout le menu →' : 'Full menu →'}</a>
+  <section class="mx-auto max-w-6xl px-5 py-14">
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="eyebrow">{lang === 'fr' ? 'La carte' : 'The menu'}</p>
+        <h2 class="mt-2 text-4xl md:text-5xl">{lang === 'fr' ? 'Nos signatures' : 'Our signatures'}</h2>
+      </div>
+      <a href={localePath('/menu', lang)} class="hidden border-b-2 border-ink pb-0.5 font-semibold hover:border-accent hover:text-accent sm:block">{lang === 'fr' ? 'Tout le menu →' : 'Full menu →'}</a>
     </div>
-    <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+    <div class="mt-8 grid gap-8 md:grid-cols-3">
       {signatures.map((p) => (
-        <article class="overflow-hidden rounded-2xl border border-line bg-surface">
-          <div class="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-orange-400 to-red-600 text-6xl">{p.emoji}</div>
-          <div class="p-5">
-            <h3 class="text-xl font-semibold">{p.name}</h3>
-            <p class="mt-1 text-sm text-ink-soft">{p.description[lang]}</p>
-            <p class="mt-3 text-sm font-semibold">
-              {t('classic')} {p.priceClassic.toFixed(2)} € · <span class="text-accent">{t('signature')} {p.priceSignature.toFixed(2)} €</span>
-            </p>
-          </div>
+        <article>
+          <div class="flex aspect-[5/4] items-center justify-center border border-line bg-surface text-6xl">{p.emoji}</div>
+          <h3 class="mt-4 font-serif text-2xl">{p.name}</h3>
+          <p class="mt-1 text-sm text-ink-soft">{p.description[lang]}</p>
+          <p class="mt-3 text-sm font-semibold">
+            {t('classic')} {p.priceClassic.toFixed(2)} € <span class="text-ink-soft">·</span> <span class="text-accent">{t('signature')} {p.priceSignature.toFixed(2)} €</span>
+          </p>
         </article>
       ))}
     </div>
   </section>
 
-  <!-- Histoire -->
-  <section class="mx-auto max-w-6xl px-4 py-10">
-    <div class="grid items-center gap-8 rounded-3xl border border-line bg-surface p-8 md:grid-cols-2">
-      <div class="flex aspect-[5/4] items-center justify-center rounded-2xl bg-gradient-to-br from-[#2b2320] to-[#4a3a30] text-7xl">👨‍🍳</div>
+  <!-- Histoire : pleine largeur sombre, editorial -->
+  <section class="bg-ink text-[#efe7d8]">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-2">
+      <div class="flex aspect-[5/4] items-center justify-center border border-white/15 text-7xl">👨‍🍳</div>
       <div>
-        <p class="text-xs font-bold uppercase tracking-[2px] text-accent">{lang === 'fr' ? 'Notre histoire' : 'Our story'}</p>
-        <h2 class="mt-1 text-3xl font-semibold">{lang === 'fr' ? 'Un savoir-faire de chef, dans un sandwich.' : "A chef's craft, in a sandwich."}</h2>
-        <p class="mt-3 text-ink-soft">
+        <p class="eyebrow" style="color:#e0a04a">{lang === 'fr' ? 'Notre histoire' : 'Our story'}</p>
+        <h2 class="mt-3 text-4xl text-white md:text-5xl">
+          {lang === 'fr' ? 'Un savoir-faire de chef,' : "A chef's craft,"} <span class="italic font-[400]">{lang === 'fr' ? 'dans un sandwich.' : 'in a sandwich.'}</span>
+        </h2>
+        <p class="mt-5 max-w-md text-[#cbbfaf]">
           {lang === 'fr'
-            ? "Claubert est né d’une idée simple : et si le déjeuner rapide de La Défense avait le goût d’une vraie cuisine ?"
-            : 'Claubert was born from a simple idea: what if the quick lunch of La Défense tasted like real cuisine?'}
+            ? 'Et si le déjeuner rapide de La Défense avait le goût d’une vraie cuisine ? Sourcing exigeant, pain maison, recettes d’un chef formé à Ferrandi.'
+            : 'What if the quick lunch of La Défense tasted like real cuisine? Demanding sourcing, house bread, recipes by a Ferrandi-trained chef.'}
         </p>
-        <a href={localePath('/notre-histoire', lang)} class="mt-4 inline-block rounded-full border border-line px-5 py-2.5 font-semibold hover:border-ink">
-          {lang === 'fr' ? 'Lire notre histoire' : 'Read our story'}
-        </a>
+        <a href={localePath('/notre-histoire', lang)} class="mt-6 inline-block border-b-2 border-[#e0a04a] pb-0.5 font-semibold text-white">{lang === 'fr' ? 'Lire notre histoire' : 'Read our story'}</a>
       </div>
     </div>
   </section>
 
-  <!-- Bandeaux B2B + Fidélité -->
-  <section class="mx-auto max-w-6xl px-4 py-10">
-    <div class="grid gap-5 md:grid-cols-2">
-      <a href={localePath('/entreprises', lang)} class="rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 p-8 text-white">
-        <h3 class="text-2xl font-semibold">{lang === 'fr' ? 'Entreprises & plateaux repas' : 'Companies & catering'}</h3>
-        <p class="mt-2 text-white/85">{lang === 'fr' ? 'Livrés à vos étages à La Défense. Devis sous 24h.' : 'Delivered to your floors at La Défense. Quote within 24h.'}</p>
+  <!-- B2B + Fidelite : deux colonnes sobres -->
+  <section class="mx-auto max-w-6xl px-5 py-14">
+    <div class="grid gap-px overflow-hidden rounded-[var(--radius)] border border-line bg-line md:grid-cols-2">
+      <a href={localePath('/entreprises', lang)} class="group bg-surface p-8 transition-colors hover:bg-bg">
+        <p class="eyebrow">{lang === 'fr' ? 'Entreprises' : 'Companies'}</p>
+        <h3 class="mt-2 font-serif text-2xl">{lang === 'fr' ? 'Plateaux repas, livrés à l’étage.' : 'Catering, delivered to your floor.'}</h3>
+        <p class="mt-2 text-sm text-ink-soft">{lang === 'fr' ? 'Formules sur mesure pour vos équipes. Devis sous 24h.' : 'Tailored offers for your teams. Quote within 24h.'}</p>
+        <span class="mt-4 inline-block font-semibold text-accent group-hover:underline">{lang === 'fr' ? 'Demander un devis →' : 'Request a quote →'}</span>
       </a>
-      <a href={localePath('/fidelite', lang)} class="rounded-3xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-8 text-white">
-        <h3 class="text-2xl font-semibold">{lang === 'fr' ? 'Programme fidélité' : 'Loyalty program'}</h3>
-        <p class="mt-2 text-white/85">{lang === 'fr' ? '1€ dépensé = 1 point. Des récompenses à la clé.' : '1€ spent = 1 point. Rewards await.'}</p>
+      <a href={localePath('/fidelite', lang)} class="group bg-surface p-8 transition-colors hover:bg-bg">
+        <p class="eyebrow">{lang === 'fr' ? 'Fidélité' : 'Loyalty'}</p>
+        <h3 class="mt-2 font-serif text-2xl">{lang === 'fr' ? '1 € dépensé, 1 point gagné.' : '1 € spent, 1 point earned.'}</h3>
+        <p class="mt-2 text-sm text-ink-soft">{lang === 'fr' ? 'Café, dessert, sandwich offert. Inscription en 30 secondes.' : 'Free coffee, dessert, sandwich. Sign up in 30 seconds.'}</p>
+        <span class="mt-4 inline-block font-semibold text-accent group-hover:underline">{lang === 'fr' ? 'Rejoindre →' : 'Join →'}</span>
       </a>
     </div>
   </section>
 
-  <!-- Avis Google (emplacement) -->
-  <section class="mx-auto max-w-6xl px-4 pb-12">
-    <div class="rounded-2xl border border-dashed border-line bg-surface/60 p-6 text-center text-sm text-ink-soft">
-      🔌 {lang === 'fr' ? 'Emplacement avis Google (widget 4,5+/5) — à brancher.' : 'Google reviews placeholder (4.5+/5 widget) — to connect.'}
-    </div>
+  <!-- Avis (emplacement) -->
+  <section class="mx-auto max-w-6xl px-5 pb-16">
+    <div class="rule"></div>
+    <p class="py-8 text-center font-serif text-xl italic text-ink-soft">
+      “{lang === 'fr' ? 'Emplacement avis Google (4,5+/5) — à brancher.' : 'Google reviews placeholder (4.5+/5) — to connect.'}”
+    </p>
+    <div class="rule"></div>
   </section>
 </BaseLayout>

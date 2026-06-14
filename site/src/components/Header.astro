@@ -14,9 +14,9 @@ const otherLang: Lang = lang === 'fr' ? 'en' : 'fr'
       Clau<span class="text-accent">bert</span>
     </a>
 
-    <nav class="hidden items-center gap-6 text-sm font-medium md:flex">
+    <nav class="hidden items-center gap-7 text-[0.78rem] font-semibold uppercase tracking-[0.12em] md:flex">
       {nav.map((item) => (
-        <a href={localePath(item.path, lang)} class="hover:text-accent">{item.label[lang]}</a>
+        <a href={localePath(item.path, lang)} class="text-ink-soft hover:text-accent">{item.label[lang]}</a>
       ))}
     </nav>
 
@@ -30,7 +30,7 @@ const otherLang: Lang = lang === 'fr' ? 'en' : 'fr'
       </a>
       <a
         href={localePath('/commander', lang)}
-        class="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark sm:inline-block"
+        class="hidden rounded-[var(--radius)] bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent-dark sm:inline-block"
       >
         {ui.order[lang]}
       </a>

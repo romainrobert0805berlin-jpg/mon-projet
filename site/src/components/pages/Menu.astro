@@ -16,7 +16,7 @@ const description = lang === 'fr'
 const proteins = [...new Set(products.map((p) => p.protein))] as ProteinKey[]
 const allergens = [...new Set(products.flatMap((p) => p.allergens))] as AllergenKey[]
 
-const chip = 'shrink-0 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium transition-colors aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-white'
+const chip = 'shrink-0 rounded-[var(--radius)] border border-line bg-surface px-3.5 py-1.5 text-sm font-medium transition-colors aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-white'
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
@@ -65,17 +65,17 @@ const chip = 'shrink-0 rounded-full border border-line bg-surface px-3.5 py-1.5 
     <div id="grid" class="mt-4 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
       {products.map((p) => (
         <article
-          class="product overflow-hidden rounded-2xl border border-line bg-surface"
+          class="product"
           data-name={`${p.name} ${p.description[lang]}`.toLowerCase()}
           data-diet={p.diet}
           data-protein={p.protein}
           data-allergens={p.allergens.join(',')}
         >
-          <div class={`relative flex aspect-[16/10] items-center justify-center text-6xl ${p.diet === 'vege' ? 'bg-gradient-to-br from-lime-400 to-green-600' : 'bg-gradient-to-br from-orange-400 to-red-600'}`}>
+          <div class="relative flex aspect-[5/4] items-center justify-center border border-line bg-surface text-6xl">
             {p.emoji}
-            {!p.inStock && (<span class="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white">{t('soldOut')}</span>)}
+            {!p.inStock && (<span class="absolute left-3 top-3 rounded-[var(--radius)] bg-black/70 px-2.5 py-1 text-xs font-medium text-white">{t('soldOut')}</span>)}
           </div>
-          <div class="p-5">
+          <div class="pt-4">
             <div class="mb-2 flex flex-wrap gap-1.5 text-[11px] font-bold uppercase tracking-wide">
               {p.badges.includes('signature') && <span class="rounded-full bg-gold/15 px-2 py-0.5 text-gold">{t('signature')}</span>}
               {p.badges.includes('new') && <span class="rounded-full bg-accent/15 px-2 py-0.5 text-accent">{lang === 'fr' ? 'Nouveau' : 'New'}</span>}
