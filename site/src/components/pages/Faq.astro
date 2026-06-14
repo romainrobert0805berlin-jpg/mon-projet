@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+import { faqs } from '../../data/menu'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const title = lang === 'fr' ? 'FAQ — Claubert' : 'FAQ — Claubert'
+const description = lang === 'fr'
+  ? 'Questions fréquentes Claubert : commande, retrait, allergènes, fidélité, B2B, recrutement.'
+  : 'Claubert FAQ: ordering, pickup, allergens, loyalty, B2B, recruitment.'
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q[lang],
+    acceptedAnswer: { '@type': 'Answer', text: f.a[lang] },
+  })),
+}
+---
+<BaseLayout title={title} description={description} lang={lang} jsonld={[faqLd]}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-4xl font-semibold">{lang === 'fr' ? 'Questions fréquentes' : 'Frequently asked questions'}</h1>
+    <div class="mt-8 divide-y divide-line rounded-2xl border border-line bg-surface px-5">
+      {faqs.map((f) => (
+        <details class="group py-4">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+            {f.q[lang]}
+            <span class="text-ink-soft transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <p class="mt-2 text-ink-soft">{f.a[lang]}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

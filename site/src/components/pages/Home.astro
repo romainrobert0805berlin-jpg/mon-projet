@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { localePath, type Lang } from '../../i18n/utils'
+import { ui } from '../../i18n/ui'
+import { products } from '../../data/menu'
+import { business } from '../../data/business'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+
+const title = lang === 'fr'
+  ? 'Claubert — Sandwicherie au CNIT, La Défense | Click & collect'
+  : 'Claubert — Sandwich shop at CNIT, La Défense | Click & collect'
+const description = lang === 'fr'
+  ? "Sandwicherie d'auteur au CNIT, La Défense. Déjeuner rapide, click & collect, plateaux repas entreprise. Recettes d'un chef Ferrandi."
+  : 'Signature sandwich shop at CNIT, La Défense. Quick lunch, click & collect, corporate catering. Recipes by a Ferrandi-trained chef.'
+
+const signatures = products.filter((p) => p.badges.includes('signature')).slice(0, 3)
+
+const menuLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: 'Menu Claubert',
+  hasMenuSection: {
+    '@type': 'MenuSection',
+    name: lang === 'fr' ? 'Sandwichs' : 'Sandwiches',
+    hasMenuItem: products.map((p) => ({
+      '@type': 'MenuItem',
+      name: p.name,
+      description: p.description[lang],
+      offers: { '@type': 'Offer', price: p.priceClassic, priceCurrency: 'EUR' },
+    })),
+  },
+}
+
+const t = (k: keyof typeof ui) => ui[k][lang]
+---
+
+<BaseLayout title={title} description={description} lang={lang} jsonld={[menuLd]}>
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-4 pt-10 pb-12">
+    <div class="grid items-center gap-8 md:grid-cols-2">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-green/10 px-3 py-1 text-sm font-semibold text-green">
+          <span class="size-2 rounded-full bg-green"></span> {t('openNow')}
+        </span>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
+          {lang === 'fr' ? 'Le sandwich d’auteur,' : 'Signature sandwiches,'}<br />
+          <span class="text-accent">{lang === 'fr' ? 'au cœur de La Défense.' : 'in the heart of La Défense.'}</span>
+        </h1>
+        <p class="mt-4 max-w-prose text-lg text-ink-soft">
+          {lang === 'fr'
+            ? "Produits frais, pain travaillé chaque matin, recettes signées d’un chef passé par Ferrandi. À emporter en quelques minutes, au CNIT."
+            : 'Fresh produce, bread baked every morning, recipes by a Ferrandi-trained chef. Ready to go in minutes, at CNIT.'}
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href={localePath('/commander', lang)} class="rounded-full bg-accent px-6 py-3 font-semibold text-white hover:bg-accent-dark">🥪 {t('order')}</a>
+          <a href={localePath('/menu', lang)} class="rounded-full border border-line px-6 py-3 font-semibold hover:border-ink">{t('seeMenu')}</a>
+        </div>
+      </div>
+      <div class="flex aspect-[4/3] items-center justify-center rounded-3xl bg-gradient-to-br from-[#d9542b] via-[#b8390f] to-[#7a2408] text-[120px] text-white shadow-xl">
+        🥖
+      </div>
+    </div>
+  </section>
+
+  <!-- Atouts -->
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+      {[
+        { i: '⚡', t: lang==='fr'?'Prêt en 5 min':'Ready in 5 min', d: lang==='fr'?'Sans file d’attente':'No waiting line' },
+        { i: '🌿', t: lang==='fr'?'Frais & sourcé':'Fresh & sourced', d: lang==='fr'?'Pain maison quotidien':'Daily house bread' },
+        { i: '🎁', t: lang==='fr'?'Fidélité':'Loyalty', d: lang==='fr'?'1€ = 1 point':'1€ = 1 point' },
+        { i: '🍱', t: lang==='fr'?'Plateaux repas':'Catering', d: lang==='fr'?'Livrés à l’étage':'Delivered to your floor' },
+      ].map((f) => (
+        <div class="rounded-2xl border border-line bg-surface p-5">
+          <div class="text-3xl">{f.i}</div>
+          <p class="mt-2 font-semibold">{f.t}</p>
+          <p class="text-sm text-ink-soft">{f.d}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Signatures -->
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="mb-6 flex items-end justify-between">
+      <h2 class="text-3xl font-semibold">{lang === 'fr' ? 'Nos signatures' : 'Our signatures'}</h2>
+      <a href={localePath('/menu', lang)} class="text-sm font-semibold text-accent">{lang === 'fr' ? 'Tout le menu →' : 'Full menu →'}</a>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+      {signatures.map((p) => (
+        <article class="overflow-hidden rounded-2xl border border-line bg-surface">
+          <div class="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-orange-400 to-red-600 text-6xl">{p.emoji}</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold">{p.name}</h3>
+            <p class="mt-1 text-sm text-ink-soft">{p.description[lang]}</p>
+            <p class="mt-3 text-sm font-semibold">
+              {t('classic')} {p.priceClassic.toFixed(2)} € · <span class="text-accent">{t('signature')} {p.priceSignature.toFixed(2)} €</span>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Histoire -->
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid items-center gap-8 rounded-3xl border border-line bg-surface p-8 md:grid-cols-2">
+      <div class="flex aspect-[5/4] items-center justify-center rounded-2xl bg-gradient-to-br from-[#2b2320] to-[#4a3a30] text-7xl">👨‍🍳</div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[2px] text-accent">{lang === 'fr' ? 'Notre histoire' : 'Our story'}</p>
+        <h2 class="mt-1 text-3xl font-semibold">{lang === 'fr' ? 'Un savoir-faire de chef, dans un sandwich.' : "A chef's craft, in a sandwich."}</h2>
+        <p class="mt-3 text-ink-soft">
+          {lang === 'fr'
+            ? "Claubert est né d’une idée simple : et si le déjeuner rapide de La Défense avait le goût d’une vraie cuisine ?"
+            : 'Claubert was born from a simple idea: what if the quick lunch of La Défense tasted like real cuisine?'}
+        </p>
+        <a href={localePath('/notre-histoire', lang)} class="mt-4 inline-block rounded-full border border-line px-5 py-2.5 font-semibold hover:border-ink">
+          {lang === 'fr' ? 'Lire notre histoire' : 'Read our story'}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bandeaux B2B + Fidélité -->
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-5 md:grid-cols-2">
+      <a href={localePath('/entreprises', lang)} class="rounded-3xl bg-gradient-to-br from-slate-700 to-slate-900 p-8 text-white">
+        <h3 class="text-2xl font-semibold">{lang === 'fr' ? 'Entreprises & plateaux repas' : 'Companies & catering'}</h3>
+        <p class="mt-2 text-white/85">{lang === 'fr' ? 'Livrés à vos étages à La Défense. Devis sous 24h.' : 'Delivered to your floors at La Défense. Quote within 24h.'}</p>
+      </a>
+      <a href={localePath('/fidelite', lang)} class="rounded-3xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-8 text-white">
+        <h3 class="text-2xl font-semibold">{lang === 'fr' ? 'Programme fidélité' : 'Loyalty program'}</h3>
+        <p class="mt-2 text-white/85">{lang === 'fr' ? '1€ dépensé = 1 point. Des récompenses à la clé.' : '1€ spent = 1 point. Rewards await.'}</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Avis Google (emplacement) -->
+  <section class="mx-auto max-w-6xl px-4 pb-12">
+    <div class="rounded-2xl border border-dashed border-line bg-surface/60 p-6 text-center text-sm text-ink-soft">
+      🔌 {lang === 'fr' ? 'Emplacement avis Google (widget 4,5+/5) — à brancher.' : 'Google reviews placeholder (4.5+/5 widget) — to connect.'}
+    </div>
+  </section>
+</BaseLayout>

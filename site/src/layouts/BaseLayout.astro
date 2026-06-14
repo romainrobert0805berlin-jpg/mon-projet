@@ -1,0 +1,102 @@
+---
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { business } from '../data/business'
+import { localePath, logicalPath, type Lang } from '../i18n/utils'
+
+interface Props {
+  title: string
+  description: string
+  lang: Lang
+  jsonld?: object[]
+}
+
+const { title, description, lang, jsonld = [] } = Astro.props
+const site = Astro.site ?? new URL('https://romainrobert0805berlin-jpg.github.io')
+const logical = logicalPath(Astro.url)
+const canonical = new URL(localePath(logical, lang), site).href
+const altFr = new URL(localePath(logical, 'fr'), site).href
+const altEn = new URL(localePath(logical, 'en'), site).href
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: business.name,
+  description: business.tagline[lang],
+  servesCuisine: 'Sandwichs',
+  priceRange: business.priceRange,
+  telephone: business.phone,
+  email: business.email,
+  url: canonical,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.street,
+    postalCode: business.postalCode,
+    addressLocality: business.city,
+    addressRegion: business.region,
+    addressCountry: business.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+  openingHours: business.openingHoursSchema,
+  sameAs: Object.values(business.social),
+}
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={business.keywords.join(', ')} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="fr" href={altFr} />
+    <link rel="alternate" hreflang="en" href={altEn} />
+    <link rel="alternate" hreflang="x-default" href={altFr} />
+    <meta name="theme-color" content="#c8431f" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Claubert" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+    {jsonld.map((obj) => (
+      <script type="application/ld+json" set:html={JSON.stringify(obj)} />
+    ))}
+  </head>
+  <body class="min-h-svh">
+    <div class="bg-ink py-1 text-center text-[11px] font-semibold tracking-wide text-amber-300">
+      {lang === 'fr' ? 'Maquette de travail (démo)' : 'Work in progress (demo)'}
+    </div>
+    <Header lang={lang} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <!-- Barre Commander sticky (mobile) -->
+    <div class="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface/95 p-3 backdrop-blur md:hidden">
+      <a
+        href={localePath('/commander', lang)}
+        class="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 font-semibold text-white"
+      >
+        🥪 {lang === 'fr' ? 'Commander en click & collect' : 'Order click & collect'}
+      </a>
+    </div>
+    <div class="h-20 md:hidden"></div>
+  </body>
+</html>

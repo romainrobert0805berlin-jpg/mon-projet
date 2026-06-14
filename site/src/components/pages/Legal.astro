@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+
+type Doc = 'mentions' | 'cgv' | 'confidentialite' | 'cookies'
+interface Props { lang: Lang; doc: Doc }
+const { lang, doc } = Astro.props
+
+const titles: Record<Doc, { fr: string; en: string }> = {
+  mentions: { fr: 'Mentions légales', en: 'Legal notice' },
+  cgv: { fr: 'Conditions générales de vente', en: 'Terms and conditions of sale' },
+  confidentialite: { fr: 'Politique de confidentialité', en: 'Privacy policy' },
+  cookies: { fr: 'Politique cookies', en: 'Cookie policy' },
+}
+
+const intros: Record<Doc, { fr: string; en: string }> = {
+  mentions: {
+    fr: "Éditeur du site : Claubert. Adresse : CNIT, Place de la Défense, 92090 Puteaux. Contact : contact@claubert.fr. Directeur de la publication, hébergeur, SIRET et capital social à compléter.",
+    en: 'Site publisher: Claubert. Address: CNIT, Place de la Défense, 92090 Puteaux. Contact: contact@claubert.fr. Publication director, host, company registration to complete.',
+  },
+  cgv: {
+    fr: "Les présentes conditions régissent les ventes en click & collect. Prix en euros TTC. Commande, paiement, retrait, droit de rétractation (denrées alimentaires), réclamations : contenu à finaliser avec un juriste.",
+    en: 'These terms govern click & collect sales. Prices in euros incl. tax. Ordering, payment, pickup, withdrawal rights (food products), complaints: content to be finalized with a lawyer.',
+  },
+  confidentialite: {
+    fr: "Claubert collecte des données (email, téléphone, historique de commande) pour gérer les commandes et la fidélité. Base légale, durées de conservation, droits RGPD (accès, rectification, suppression) et contact DPO : à compléter.",
+    en: 'Claubert collects data (email, phone, order history) to manage orders and loyalty. Legal basis, retention periods, GDPR rights (access, rectification, erasure) and DPO contact: to complete.',
+  },
+  cookies: {
+    fr: "Ce site utilise des cookies (mesure d’audience, fonctionnement). Vous pouvez accepter, refuser ou paramétrer. Détail des cookies et durée de vie : à compléter à la mise en place de la bannière de consentement.",
+    en: 'This site uses cookies (analytics, functionality). You can accept, refuse or configure. Cookie details and lifetime: to complete when setting up the consent banner.',
+  },
+}
+
+const title = `${titles[doc][lang]} — Claubert`
+---
+<BaseLayout title={title} description={intros[doc][lang]} lang={lang}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-3xl font-semibold">{titles[doc][lang]}</h1>
+    <p class="mt-4 text-ink-soft">{intros[doc][lang]}</p>
+    <p class="mt-6 rounded-xl border border-dashed border-line bg-surface/60 p-4 text-sm text-ink-soft">
+      ⚠️ {lang === 'fr'
+        ? 'Texte juridique à finaliser avec un professionnel avant mise en production.'
+        : 'Legal text to be finalized with a professional before going live.'}
+    </p>
+  </section>
+</BaseLayout>

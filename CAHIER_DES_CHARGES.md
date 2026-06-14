@@ -1,7 +1,20 @@
 # Cahier des charges — Site Claubert
 
 > Document de référence du projet. Sert de fil rouge entre les sessions de travail.
-> Dernière mise à jour : 2026-06-14 (ajout stratégie app mobile & stores)
+> Dernière mise à jour : 2026-06-14 (ajout du site web SEO Astro)
+
+---
+
+## 0. Deux livrables
+
+Le projet comporte deux applications complémentaires, déployées ensemble sur GitHub Pages :
+
+| Livrable | Dossier | Techno | URL (démo) | Rôle |
+|---|---|---|---|---|
+| **Site web SEO** | `site/` | Astro (SSG) | https://romainrobert0805berlin-jpg.github.io/mon-projet/ | Acquisition organique, pages indexables, JSON-LD, bilingue FR/EN. Cœur du brief. |
+| **App** | `app/` | React + Vite + shadcn | https://romainrobert0805berlin-jpg.github.io/mon-projet/app/ | Expérience "application", PWA, futur emballage Capacitor pour les stores. |
+
+Le site couvre la priorité SEO du brief (que l'app ne peut pas assurer). L'app couvre l'expérience de commande type application et la cible stores.
 
 ---
 

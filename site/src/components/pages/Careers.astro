@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const title = lang === 'fr' ? 'Carrières — Rejoindre Claubert, La Défense' : 'Careers — Join Claubert, La Défense'
+const description = lang === 'fr'
+  ? 'Rejoignez l’équipe Claubert au CNIT, La Défense : équipier, manager adjoint, chef de site. Postulez en quelques secondes.'
+  : 'Join the Claubert team at CNIT, La Défense: team member, assistant manager, site manager. Apply in seconds.'
+const jobs = [
+  { fr: 'Équipier polyvalent', en: 'Team member', dfr: 'Accueil, préparation, service. Temps plein ou partiel.', den: 'Welcome, prep, service. Full or part time.' },
+  { fr: 'Manager adjoint', en: 'Assistant manager', dfr: 'Encadrement d’équipe, ouverture/fermeture, qualité.', den: 'Team leadership, opening/closing, quality.' },
+  { fr: 'Chef de site', en: 'Site manager', dfr: 'Pilotage complet du point de vente et des résultats.', den: 'Full ownership of the location and results.' },
+]
+---
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <p class="text-xs font-bold uppercase tracking-[2px] text-accent">{lang === 'fr' ? 'Carrières' : 'Careers'}</p>
+    <h1 class="mt-1 text-4xl font-semibold">{lang === 'fr' ? 'Rejoignez Claubert' : 'Join Claubert'}</h1>
+    <p class="mt-2 text-ink-soft">{lang === 'fr'
+      ? 'Une marque ambitieuse, une équipe soudée, des perspectives d’évolution.'
+      : 'An ambitious brand, a close-knit team, room to grow.'}</p>
+
+    <h2 class="mt-8 text-xl font-semibold">{lang === 'fr' ? 'Postes ouverts' : 'Open positions'}</h2>
+    <ul class="mt-3 space-y-2">
+      {jobs.map((j) => (
+        <li class="rounded-xl border border-line bg-surface p-4">
+          <p class="font-semibold">{lang === 'fr' ? j.fr : j.en}</p>
+          <p class="text-sm text-ink-soft">{lang === 'fr' ? j.dfr : j.den}</p>
+        </li>
+      ))}
+    </ul>
+
+    <form class="mt-8 grid gap-4" onsubmit="this.querySelector('[data-ok]').hidden=false;return false;">
+      <h2 class="text-xl font-semibold">{lang === 'fr' ? 'Candidature' : 'Application'}</h2>
+      <input required placeholder={lang === 'fr' ? 'Nom' : 'Name'} class="h-11 rounded-lg border border-line bg-surface px-3" />
+      <input type="email" required placeholder="Email" class="h-11 rounded-lg border border-line bg-surface px-3" />
+      <input type="tel" placeholder={lang === 'fr' ? 'Téléphone' : 'Phone'} class="h-11 rounded-lg border border-line bg-surface px-3" />
+      <input type="file" accept="application/pdf" class="rounded-lg border border-line bg-surface p-2 text-sm" />
+      <textarea placeholder="Message" class="min-h-24 rounded-lg border border-line bg-surface px-3 py-2"></textarea>
+      <button class="rounded-full bg-accent px-6 py-3 font-semibold text-white">{lang === 'fr' ? 'Postuler' : 'Apply'}</button>
+      <p data-ok hidden class="rounded-lg bg-green/10 px-4 py-3 text-sm font-medium text-green">{lang === 'fr' ? 'Merci ! Candidature bien reçue.' : 'Thanks! Application received.'}</p>
+    </form>
+  </section>
+</BaseLayout>

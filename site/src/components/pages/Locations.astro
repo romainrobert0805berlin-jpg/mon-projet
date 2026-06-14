@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+import { business } from '../../data/business'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const title = lang === 'fr' ? 'Nos adresses — Claubert au CNIT, La Défense' : 'Locations — Claubert at CNIT, La Défense'
+const description = lang === 'fr'
+  ? 'Claubert au CNIT, La Défense (Puteaux). Accès RER A, métro 1, Transilien. Horaires et plan d’accès.'
+  : 'Claubert at CNIT, La Défense (Puteaux). Access via RER A, metro 1, Transilien. Opening hours and directions.'
+const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('CNIT La Défense ' + business.city)}`
+---
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="mx-auto max-w-4xl px-4 py-12">
+    <p class="text-xs font-bold uppercase tracking-[2px] text-accent">{lang === 'fr' ? 'Nous trouver' : 'Find us'}</p>
+    <h1 class="mt-1 text-4xl font-semibold">{lang === 'fr' ? 'Au CNIT, La Défense' : 'At CNIT, La Défense'}</h1>
+    <div class="mt-6 flex aspect-[21/9] items-center justify-center rounded-2xl border border-line bg-[repeating-linear-gradient(45deg,#ece3d4,#ece3d4_18px,#e4d8c4_18px,#e4d8c4_36px)] text-sm font-semibold text-ink-soft">
+      🗺️ {lang === 'fr' ? 'Emplacement carte Google Maps' : 'Google Maps placeholder'}
+    </div>
+    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+      <div>
+        <h2 class="font-semibold">{lang === 'fr' ? 'Adresse' : 'Address'}</h2>
+        <p class="mt-1 text-ink-soft">{business.street}<br />{business.postalCode} {business.city}</p>
+        <div class="mt-2 flex gap-3 text-sm font-semibold text-accent">
+          <a href={maps}>Google Maps</a>
+          <a href="https://waze.com/ul">Waze</a>
+          <a href="https://citymapper.com/">Citymapper</a>
+        </div>
+      </div>
+      <div>
+        <h2 class="font-semibold">{lang === 'fr' ? 'Accès' : 'Access'}</h2>
+        <p class="mt-1 text-ink-soft">RER A · {lang === 'fr' ? 'Métro' : 'Metro'} 1 · Transilien</p>
+        <h2 class="mt-4 font-semibold">{lang === 'fr' ? 'Horaires' : 'Opening hours'}</h2>
+        <p class="mt-1 text-ink-soft">{lang === 'fr' ? 'Lundi – Vendredi' : 'Monday – Friday'} : 11:00 – 16:00<br />{lang === 'fr' ? 'Samedi – Dimanche : Fermé' : 'Saturday – Sunday: Closed'}</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
