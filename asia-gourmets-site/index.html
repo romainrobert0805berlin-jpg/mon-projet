@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Asia Gourmets — Restaurant asiatique · 91 rue Cambronne, Paris 15e</title>
+<meta name="description" content="Asia Gourmets, restaurant chinois et asiatique au 91 rue Cambronne (Paris 15e). Nems, phở, riz cantonais, porc au caramel. Sur place et à emporter." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f6f1e7;            /* crème */
+    --ink:#16201d;          /* vert très sombre */
+    --jade:#1b5e57;         /* jade profond */
+    --jade-dark:#143f3a;
+    --terra:#e2725b;        /* terracotta (accent) */
+    --muted:#6a716c;
+    --card:#ffffff;
+    --border:#e4ddcd;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  h1,h2,h3,h4{font-family:"Playfair Display",Georgia,serif;font-weight:600;letter-spacing:.2px}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .container{width:min(1150px,92%);margin-inline:auto}
+  .eyebrow{color:var(--terra);text-transform:uppercase;letter-spacing:.25em;font-size:.78rem;font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 26px;font-weight:600;font-size:.92rem;cursor:pointer;border:none;transition:transform .15s,background .2s,color .2s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-jade{background:var(--jade);color:#fff}
+  .btn-jade:hover{background:var(--jade-dark)}
+  .btn-terra{background:var(--terra);color:#fff}
+  .btn-terra:hover{background:#cc5d47}
+  .btn-outline{background:transparent;border:1px solid rgba(255,255,255,.6);color:#fff}
+  .btn-outline:hover{background:#fff;color:var(--jade)}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:50;background:rgba(27,94,87,.96);backdrop-filter:blur(8px);color:#fff}
+  nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:"Playfair Display",serif;font-size:1.3rem;display:flex;align-items:center;gap:8px}
+  .brand .d{color:var(--terra)}
+  .nav-links{display:flex;gap:30px;font-size:.94rem}
+  .nav-links a{opacity:.9}
+  .nav-links a:hover{opacity:1;color:var(--terra)}
+  .nav-phone{background:var(--terra);color:#fff;padding:8px 18px;border-radius:999px;font-weight:600;font-size:.88rem}
+  .burger{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
+
+  /* Hero */
+  .hero{position:relative;min-height:86vh;display:flex;align-items:center;color:#fff}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(16,40,36,.82),rgba(16,40,36,.45)),url("https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=1600&q=80") center/cover}
+  .hero .container{position:relative}
+  .hero-box{max-width:620px}
+  .hero h1{font-size:clamp(2.4rem,6vw,4rem);line-height:1.1;margin:14px 0 18px}
+  .hero p{font-size:1.12rem;opacity:.92;margin-bottom:30px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+
+  /* Sections */
+  section{padding:88px 0}
+  .center{text-align:center}
+  .section-head h2{font-size:clamp(1.9rem,4vw,2.6rem);margin:8px 0}
+  .lead{color:var(--muted);max-width:600px;margin:14px auto 0}
+
+  /* Menu */
+  .tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:34px 0 40px}
+  .tab{border:1px solid var(--border);background:transparent;border-radius:999px;padding:9px 20px;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--ink)}
+  .tab.active{background:var(--jade);color:#fff;border-color:var(--jade)}
+  .menu-grid{max-width:880px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:2px 48px}
+  .dish{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px dashed var(--border)}
+  .dish h4{font-size:1.06rem}
+  .dish small{color:var(--muted)}
+  .dish .price{color:var(--jade);font-weight:700;white-space:nowrap}
+  .pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .pill.sig{background:rgba(226,114,91,.15);color:var(--terra)}
+  .pill.epi{background:#fde2e0;color:#b8323a}
+  .pill.veg{background:rgba(27,94,87,.12);color:var(--jade)}
+  .note{text-align:center;color:var(--muted);font-size:.8rem;margin-top:26px}
+
+  /* Gallery */
+  .gallery{background:#efe8d8}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+  .grid3 .ph{overflow:hidden;border-radius:14px}
+  .grid3 img{height:240px;width:100%;object-fit:cover;transition:transform .5s}
+  .grid3 .ph:hover img{transform:scale(1.06)}
+
+  /* Reservation */
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 14px 30px rgba(0,0,0,.06)}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.86rem;font-weight:600;margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px 12px;font:inherit;font-size:.92rem;background:#fff}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid rgba(27,94,87,.35);border-color:var(--jade)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ok{display:none;text-align:center;padding:30px 6px}
+  .ok .check{width:56px;height:56px;border-radius:50%;background:var(--jade);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 14px}
+
+  /* Infos + map */
+  .infos{background:var(--jade);color:#fff;padding:0}
+  .infos .wrap{display:grid;grid-template-columns:1fr 1fr}
+  .infos .pad{padding:80px 48px 80px 0}
+  .info-row{display:flex;gap:14px;margin-top:22px}
+  .info-row .ic{color:var(--terra);font-size:1.2rem;line-height:1.4}
+  .info-row b{display:block}
+  .info-row a:hover{color:var(--terra)}
+  .hours{margin-top:6px}
+  .hours div{display:flex;justify-content:space-between;gap:20px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:.92rem}
+  .map{min-height:380px}
+  .map iframe{width:100%;height:100%;min-height:380px;border:0}
+
+  footer{background:var(--ink);color:rgba(255,255,255,.72);text-align:center;padding:34px 0}
+  footer .b{font-family:"Playfair Display",serif;font-size:1.2rem;color:#fff}
+  footer .b .d{color:var(--terra)}
+  footer small{display:block;margin-top:8px;color:rgba(255,255,255,.5);font-size:.78rem}
+
+  @media(max-width:820px){
+    .nav-links,.nav-phone{display:none}
+    .burger{display:block}
+    .nav-links.open{display:flex;position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;background:var(--jade-dark);padding:8px 6%}
+    .nav-links.open a{padding:12px 0}
+    .menu-grid,.res-grid,.grid3,.infos .wrap{grid-template-columns:1fr}
+    .infos .pad{padding:60px 6% }
+    section{padding:60px 0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="#top" class="brand"><span class="d">◆</span> Asia Gourmets</a>
+      <div class="nav-links" id="navlinks">
+        <a href="#menu">La carte</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#reserver">Réserver</a>
+        <a href="#infos">Infos &amp; accès</a>
+      </div>
+      <a class="nav-phone" href="tel:+33142730207">☎ 01 42 73 02 07</a>
+      <button class="burger" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top" style="padding:0">
+  <div class="container">
+    <div class="hero-box">
+      <p class="eyebrow" style="color:var(--terra)">◆ Paris 15ᵉ · Rue Cambronne</p>
+      <h1>La cuisine d'Asie,<br/>fraîche et généreuse</h1>
+      <p>Spécialités chinoises et asiatiques préparées maison depuis 2002. Nems, phở, riz cantonais, porc au caramel — à savourer sur place ou à emporter.</p>
+      <div class="hero-cta">
+        <a class="btn btn-jade" href="#menu">🥢 Voir la carte</a>
+        <a class="btn btn-outline" href="#reserver">Réserver une table</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">À la carte</span>
+      <h2>Nos spécialités</h2>
+      <p class="lead">Une sélection de plats faits maison. Carte complète disponible sur place et à emporter.</p>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="menu-grid" id="dishes"></div>
+    <p class="note">Prix indicatifs susceptibles d'évoluer — merci de confirmer au restaurant.</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="galerie">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">En images</span>
+      <h2>Quelques plats</h2>
+      <p class="lead">Photos d'illustration — venez découvrir les vraies assiettes sur place&nbsp;!</p>
+    </div>
+    <div class="grid3">
+      <div class="ph"><img loading="lazy" alt="Nems croustillants" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=700&q=80"></div>
+      <div class="ph"><img loading="lazy" alt="Bol de phở" src="https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=700&q=80"></div>
+      <div class="ph"><img loading="lazy" alt="Wok de légumes" src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=700&q=80"></div>
+      <div class="ph"><img loading="lazy" alt="Raviolis vapeur" src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=700&q=80"></div>
+      <div class="ph"><img loading="lazy" alt="Canard laqué" src="https://images.unsplash.com/photo-1518983546435-91f8b87fe561?auto=format&fit=crop&w=700&q=80"></div>
+      <div class="ph"><img loading="lazy" alt="Plat épicé" src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=700&q=80"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reserver">
+  <div class="container res-grid">
+    <div>
+      <span class="eyebrow">Votre table</span>
+      <h2 style="font-size:clamp(1.9rem,4vw,2.6rem);margin:8px 0 16px">Réserver en ligne</h2>
+      <p style="color:var(--muted)">Réservez en quelques secondes. Pour les groupes ou une demande urgente, appelez-nous au <a href="tel:+33142730207" style="color:var(--jade);font-weight:600">01 42 73 02 07</a>.</p>
+      <ul style="margin-top:18px;color:var(--muted);list-style:none;line-height:2">
+        <li>• Sur place &amp; à emporter</li>
+        <li>• Accès PMR (de plain-pied)</li>
+        <li>• Idéal déjeuner rapide ou dîner en famille</li>
+      </ul>
+    </div>
+    <div class="card">
+      <form id="resform" onsubmit="return submitRes(event)">
+        <div class="field"><label>Nom</label><input name="name" required placeholder="Votre nom"></div>
+        <div class="field"><label>Téléphone</label><input name="phone" type="tel" required placeholder="06 12 34 56 78"></div>
+        <div class="two">
+          <div class="field"><label>Date</label><input name="date" type="date" required></div>
+          <div class="field"><label>Heure</label><input name="time" type="time" required></div>
+        </div>
+        <div class="field"><label>Nombre de personnes</label>
+          <select name="guests">
+            <option>1 personne</option><option selected>2 personnes</option><option>3 personnes</option>
+            <option>4 personnes</option><option>5 personnes</option><option>6 personnes</option>
+            <option>7 personnes</option><option>8 personnes</option><option>9 et plus (nous appeler)</option>
+          </select>
+        </div>
+        <div class="field"><label>Remarque (optionnel)</label><textarea name="notes" rows="2" placeholder="Allergies, occasion spéciale…"></textarea></div>
+        <button class="btn btn-jade" type="submit" style="width:100%;justify-content:center">Demander la réservation</button>
+        <p class="note" style="margin-top:12px">Démo : ce formulaire n'envoie pas encore d'e-mail (pas de serveur connecté).</p>
+      </form>
+      <div class="ok" id="okmsg">
+        <div class="check">✓</div>
+        <h3>Demande envoyée&nbsp;!</h3>
+        <p style="color:var(--muted);margin-top:8px" id="okdetail"></p>
+        <button class="btn btn-outline" style="border-color:var(--jade);color:var(--jade);margin-top:18px" onclick="resetRes()">Nouvelle réservation</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFOS + MAP -->
+<section class="infos" id="infos">
+  <div class="wrap">
+    <div class="pad container" style="width:auto;margin:0">
+      <span class="eyebrow">Nous trouver</span>
+      <h2 style="font-size:clamp(1.9rem,4vw,2.6rem);margin:8px 0">Infos &amp; accès</h2>
+      <div class="info-row"><span class="ic">📍</span><span><b>Adresse</b>91 rue Cambronne, 75015 Paris</span></div>
+      <div class="info-row"><span class="ic">☎</span><span><b>Téléphone</b><a href="tel:+33142730207">01 42 73 02 07</a></span></div>
+      <div class="info-row"><span class="ic">🚇</span><span><b>Métro</b>Cambronne (L6) · Sèvres-Lecourbe (L6) · Vaugirard (L12)</span></div>
+      <div class="info-row"><span class="ic">🕒</span><span style="width:100%"><b>Horaires <small style="opacity:.6;font-weight:400">(à confirmer)</small></b>
+        <div class="hours">
+          <div><span>Lundi – Vendredi</span><span>11h30–15h00 · 18h30–22h30</span></div>
+          <div><span>Samedi</span><span>18h30–22h30</span></div>
+          <div><span>Dimanche</span><span>Fermé</span></div>
+        </div>
+      </span></div>
+    </div>
+    <div class="map">
+      <iframe title="Carte Asia Gourmets" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=91+rue+Cambronne+75015+Paris&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="b"><span class="d">◆</span> Asia Gourmets</div>
+    <p>91 rue Cambronne, 75015 Paris · 01 42 73 02 07</p>
+    <small>© <span id="yr"></span> Asia Gourmets — Site vitrine d'exemple. Photos d'illustration (Unsplash), horaires et prix à confirmer.</small>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ---- Menu data + tabs ----
+  const menu = {
+    "Entrées":[
+      ["Nems au poulet (×4)","Rouleaux croustillants, salade & nuoc-mâm","5,90 €","sig"],
+      ["Raviolis vapeur (×6)","Porc & crevette, sauce soja sucrée","6,50 €",""],
+      ["Beignets de crevette","Pâte légère, sauce aigre-douce","6,90 €",""],
+      ["Samoussas légumes (×4)","Légumes épicés, croustillants","5,50 €","veg"],
+    ],
+    "Soupes":[
+      ["Phở bœuf","Bouillon parfumé, nouilles de riz, herbes","11,50 €","sig"],
+      ["Soupe wonton","Raviolis maison, bouillon clair","8,90 €",""],
+      ["Soupe pékinoise","Aigre & piquante, tofu, champignons noirs","7,50 €","epi"],
+    ],
+    "Plats":[
+      ["Poulet sauté basilic thaï","Wok de poulet, basilic, piment doux","12,90 €","epi"],
+      ["Bœuf épicé","Émincé de bœuf, sauce relevée, légumes","13,90 €","epi"],
+      ["Porc au caramel","Mijoté à la vietnamienne, riz parfumé","12,90 €","sig"],
+      ["Canard laqué","Sauce hoisin, oignons nouveaux","14,50 €",""],
+      ["Crevettes sel & poivre","Sautées, ail, poivre du Sichuan","14,90 €",""],
+      ["Wok de légumes & tofu","Légumes de saison, tofu doré","10,90 €","veg"],
+    ],
+    "Riz & Nouilles":[
+      ["Riz cantonais","Œuf, jambon, petits pois","5,90 €","sig"],
+      ["Nouilles sautées","Légumes croquants, sauce soja","6,50 €",""],
+      ["Riz nature parfumé","Riz jasmin","3,00 €",""],
+    ],
+    "Desserts":[
+      ["Perles de coco","Boules de riz gluant, noix de coco","4,50 €",""],
+      ["Beignets de banane","Tièdes, miel & sésame","4,90 €",""],
+      ["Litchis au sirop","Frais et désaltérant","3,90 €",""],
+    ],
+  };
+  const pillName = {sig:"signature",epi:"épicé",veg:"végé"};
+  const tabsEl = document.getElementById('tabs');
+  const dishesEl = document.getElementById('dishes');
+  function renderDishes(cat){
+    dishesEl.innerHTML = menu[cat].map(d=>{
+      const pill = d[3] ? `<span class="pill ${d[3]}">${pillName[d[3]]}</span>` : "";
+      return `<div class="dish"><div><h4>${d[0]}${pill}</h4><small>${d[1]}</small></div><span class="price">${d[2]}</span></div>`;
+    }).join("");
+  }
+  Object.keys(menu).forEach((cat,i)=>{
+    const b=document.createElement('button');
+    b.className='tab'+(i===0?' active':''); b.textContent=cat;
+    b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');renderDishes(cat);};
+    tabsEl.appendChild(b);
+  });
+  renderDishes(Object.keys(menu)[0]);
+
+  // ---- Reservation ----
+  function submitRes(e){
+    e.preventDefault();
+    const f=e.target;
+    document.getElementById('okdetail').textContent =
+      `Merci ${f.name.value}. Demande pour ${f.guests.value} le ${f.date.value} à ${f.time.value} bien reçue (démo). Nous vous confirmons par téléphone.`;
+    f.style.display='none';
+    document.getElementById('okmsg').style.display='block';
+    return false;
+  }
+  function resetRes(){
+    document.getElementById('resform').reset();
+    document.getElementById('resform').style.display='block';
+    document.getElementById('okmsg').style.display='none';
+  }
+</script>
+</body>
+</html>
