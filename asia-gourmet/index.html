@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asia Gourmet — Restaurant asiatique · Rue Cambronne, Paris 15e</title>
+  <meta name="description" content="Asia Gourmet, restaurant asiatique rue Cambronne dans le 15e arrondissement de Paris. Cuisine vietnamienne, thaïe et chinoise faite maison." />
+  <style>
+    :root {
+      --ink: #1a1410;
+      --paper: #fbf7f0;
+      --gold: #c8a45c;
+      --red: #b8323a;
+      --muted: #6b6258;
+      --card: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 700; letter-spacing: .3px; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(26,20,16,.92); backdrop-filter: blur(8px);
+      color: var(--paper);
+    }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: Georgia, serif; font-size: 1.25rem; }
+    .brand .dot { color: var(--gold); }
+    .nav-links { display: flex; gap: 26px; font-size: .95rem; }
+    .nav-links a { opacity: .85; transition: opacity .2s; }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .btn {
+      display: inline-block; background: var(--red); color: #fff;
+      padding: 11px 22px; border-radius: 999px; font-weight: 600; font-size: .9rem;
+      transition: transform .15s, background .2s;
+    }
+    .btn:hover { background: #9c272e; transform: translateY(-1px); }
+    .btn.gold { background: var(--gold); color: #2a2008; }
+    .btn.gold:hover { background: #b8923f; }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 78vh; display: flex; align-items: center;
+      color: #fff; text-align: center;
+      background:
+        linear-gradient(rgba(20,14,10,.62), rgba(20,14,10,.72)),
+        url("https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1600&q=80") center/cover;
+    }
+    .hero-inner { width: min(820px, 92%); margin-inline: auto; }
+    .eyebrow { color: var(--gold); letter-spacing: 4px; text-transform: uppercase; font-size: .8rem; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.1; margin-bottom: 18px; }
+    .hero p { font-size: 1.15rem; opacity: .92; margin-bottom: 32px; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* Sections */
+    section { padding: 88px 0; }
+    .section-title { text-align: center; margin-bottom: 14px; }
+    .section-title .eyebrow { letter-spacing: 4px; }
+    .section-title h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    .lead { text-align: center; color: var(--muted); max-width: 640px; margin: 0 auto 48px; }
+
+    /* About */
+    .about { background: #fff; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .about img { width: 100%; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.12); }
+    .about h2 { font-size: 2.2rem; margin-bottom: 18px; }
+    .about p { color: var(--muted); margin-bottom: 16px; }
+
+    /* Menu */
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 48px; }
+    .dish { display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px dashed #e3d9c8; }
+    .dish h4 { font-family: Georgia, serif; font-size: 1.05rem; }
+    .dish small { color: var(--muted); }
+    .price { color: var(--red); font-weight: 700; white-space: nowrap; }
+    .menu-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .tab { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--gold); color: var(--ink); cursor: pointer; background: transparent; font-size: .9rem; }
+    .tab.active { background: var(--gold); color: #2a2008; }
+
+    /* Gallery */
+    .gallery { background: #fff; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .gallery-grid img { width: 100%; height: 240px; object-fit: cover; border-radius: 12px; }
+
+    /* Info / hours / contact */
+    .info { background: var(--ink); color: var(--paper); }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+    .info h3 { color: var(--gold); margin-bottom: 16px; font-size: 1.2rem; }
+    .hours-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: .95rem; }
+    .info a:hover { color: var(--gold); }
+
+    footer { background: #120d09; color: #8a7f70; text-align: center; padding: 28px 0; font-size: .85rem; }
+
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .about-grid, .menu-grid, .info-grid, .gallery-grid { grid-template-columns: 1fr; }
+      section { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a class="brand" href="#"><span class="dot">●</span> Asia Gourmet</a>
+        <div class="nav-links">
+          <a href="#about">Le restaurant</a>
+          <a href="#menu">Carte</a>
+          <a href="#gallery">Galerie</a>
+          <a href="#info">Infos &amp; horaires</a>
+        </div>
+        <a class="btn" href="tel:+33100000000">Réserver</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero-inner">
+      <p class="eyebrow">Restaurant asiatique · Paris 15ᵉ</p>
+      <h1>Saveurs d'Asie,<br/>au cœur de la rue Cambronne</h1>
+      <p>Une cuisine vietnamienne, thaïe et chinoise faite maison, avec des produits frais et des recettes traditionnelles.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#menu">Découvrir la carte</a>
+        <a class="btn gold" href="tel:+33100000000">Réserver une table</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80" alt="Salle du restaurant" />
+      <div>
+        <p class="eyebrow" style="color:var(--red)">Notre histoire</p>
+        <h2>Une table familiale depuis 2008</h2>
+        <p>Niché rue Cambronne dans le 15ᵉ arrondissement, Asia Gourmet vous accueille dans une ambiance chaleureuse et authentique. Nos plats sont préparés chaque jour à partir d'ingrédients frais et d'épices soigneusement sélectionnées.</p>
+        <p>Bo bun, raviolis vapeur, currys parfumés ou canard laqué : retrouvez le meilleur de l'Asie dans votre assiette, à déguster sur place ou à emporter.</p>
+        <a class="btn" href="#menu">Voir nos spécialités</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <div class="section-title">
+        <p class="eyebrow" style="color:var(--red)">À la carte</p>
+        <h2>Nos spécialités</h2>
+      </div>
+      <p class="lead">Une sélection de nos plats signature. Carte complète disponible sur place.</p>
+      <div class="menu-grid">
+        <div class="dish"><div><h4>Nems poulet (×4)</h4><small>Rouleaux frits, sauce nuoc-mâm</small></div><span class="price">6,50 €</span></div>
+        <div class="dish"><div><h4>Raviolis vapeur (×6)</h4><small>Porc &amp; crevette, ciboulette</small></div><span class="price">7,00 €</span></div>
+        <div class="dish"><div><h4>Bo bun bœuf</h4><small>Vermicelles, bœuf sauté, herbes fraîches</small></div><span class="price">13,50 €</span></div>
+        <div class="dish"><div><h4>Pad thaï crevettes</h4><small>Nouilles de riz sautées, cacahuètes</small></div><span class="price">14,00 €</span></div>
+        <div class="dish"><div><h4>Curry rouge thaï</h4><small>Lait de coco, poulet, légumes</small></div><span class="price">13,00 €</span></div>
+        <div class="dish"><div><h4>Canard laqué</h4><small>Sauce hoisin, riz cantonais</small></div><span class="price">15,50 €</span></div>
+        <div class="dish"><div><h4>Riz sauté Asia Gourmet</h4><small>Œuf, crevettes, légumes croquants</small></div><span class="price">11,50 €</span></div>
+        <div class="dish"><div><h4>Perles de coco</h4><small>Dessert maison, sésame</small></div><span class="price">5,00 €</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="section-title">
+        <p class="eyebrow" style="color:var(--red)">En images</p>
+        <h2>Galerie</h2>
+      </div>
+      <div class="gallery-grid">
+        <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80" alt="Plat asiatique" />
+        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=600&q=80" alt="Nouilles" />
+        <img src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80" alt="Ambiance restaurant" />
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section class="info" id="info">
+    <div class="container info-grid">
+      <div>
+        <h3>Horaires</h3>
+        <div class="hours-row"><span>Lun – Ven</span><span>12h00 – 14h30 · 19h00 – 22h30</span></div>
+        <div class="hours-row"><span>Samedi</span><span>19h00 – 23h00</span></div>
+        <div class="hours-row"><span>Dimanche</span><span>Fermé</span></div>
+      </div>
+      <div>
+        <h3>Nous trouver</h3>
+        <p>00 Rue Cambronne<br/>75015 Paris</p>
+        <p style="margin-top:10px;">Métro Cambronne (ligne 6)<br/>Métro Sèvres-Lecourbe (ligne 6)</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <p><a href="tel:+33100000000">01 00 00 00 00</a></p>
+        <p><a href="mailto:contact@asia-gourmet.fr">contact@asia-gourmet.fr</a></p>
+        <p style="margin-top:14px;"><a class="btn gold" href="tel:+33100000000">Réserver</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Asia Gourmet · Rue Cambronne, Paris 15ᵉ — Site d'exemple (informations fictives)
+    </div>
+  </footer>
+</body>
+</html>
