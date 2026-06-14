@@ -65,11 +65,14 @@
   .tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:34px 0 40px}
   .tab{border:1px solid var(--border);background:transparent;border-radius:999px;padding:9px 20px;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--ink)}
   .tab.active{background:var(--jade);color:#fff;border-color:var(--jade)}
-  .menu-grid{max-width:880px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:2px 48px}
-  .dish{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px dashed var(--border)}
-  .dish h4{font-size:1.06rem}
-  .dish small{color:var(--muted)}
+  .menu-grid{max-width:1040px;margin-inline:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+  .dish{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.05)}
+  .dish-body{padding:15px 16px 12px}
+  .dish-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .dish h4{font-size:1.02rem}
+  .dish small{color:var(--muted);display:block;margin-top:4px}
   .dish .price{color:var(--jade);font-weight:700;white-space:nowrap}
+  .dish-photo{width:100%;height:180px;object-fit:contain;background:#fff;border-top:1px solid var(--border)}
   .pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
   .pill.sig{background:rgba(226,114,91,.15);color:var(--terra)}
   .pill.epi{background:#fde2e0;color:#b8323a}
@@ -302,10 +305,24 @@
   const pillName = {sig:"signature",epi:"épicé",veg:"végé"};
   const tabsEl = document.getElementById('tabs');
   const dishesEl = document.getElementById('dishes');
+  function dishPhoto(d){
+    // Image générée par IA (Pollinations) avec fond blanc, une par plat.
+    const clean = d[0].replace(/^A\d+\s*·\s*/, "");
+    const prompt = `${clean}, ${d[1]}, cuisine vietnamienne asiatique, photographie culinaire professionnelle, plat centré, fond blanc uni, lumière studio, haute qualité`;
+    const seed = Math.abs([...d[0]].reduce((a,c)=>a+c.charCodeAt(0),0));
+    return "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt) +
+           "?width=440&height=320&nologo=true&seed=" + seed;
+  }
   function renderDishes(cat){
     dishesEl.innerHTML = menu[cat].map(d=>{
       const pill = d[3] ? `<span class="pill ${d[3]}">${pillName[d[3]]}</span>` : "";
-      return `<div class="dish"><div><h4>${d[0]}${pill}</h4><small>${d[1]}</small></div><span class="price">${d[2]}</span></div>`;
+      return `<div class="dish">
+        <div class="dish-body">
+          <div class="dish-head"><h4>${d[0]}${pill}</h4><span class="price">${d[2]}</span></div>
+          <small>${d[1]}</small>
+        </div>
+        <img class="dish-photo" loading="lazy" alt="${d[0]}" src="${dishPhoto(d)}">
+      </div>`;
     }).join("");
   }
   Object.keys(menu).forEach((cat,i)=>{
