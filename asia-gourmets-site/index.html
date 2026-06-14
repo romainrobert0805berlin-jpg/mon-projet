@@ -73,6 +73,7 @@
   .dish small{color:var(--muted);display:block;margin-top:4px}
   .dish .price{color:var(--jade);font-weight:700;white-space:nowrap}
   .dish-photo{width:100%;height:180px;object-fit:contain;background:#fff;border-top:1px solid var(--border)}
+  .dish-photo.cover{object-fit:cover}
   .pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
   .pill.sig{background:rgba(226,114,91,.15);color:var(--terra)}
   .pill.epi{background:#fde2e0;color:#b8323a}
@@ -305,13 +306,25 @@
   const pillName = {sig:"signature",epi:"épicé",veg:"végé"};
   const tabsEl = document.getElementById('tabs');
   const dishesEl = document.getElementById('dishes');
-  function dishPhoto(d){
-    // Image générée par IA (Pollinations) avec fond blanc, une par plat.
+  // URL de l'image générée par IA (Pollinations) — fond blanc.
+  function dishAI(d){
     const clean = d[0].replace(/^A\d+\s*·\s*/, "");
-    const prompt = `${clean}, ${d[1]}, cuisine vietnamienne asiatique, photographie culinaire professionnelle, plat centré, fond blanc uni, lumière studio, haute qualité`;
+    const prompt = clean + ", " + d[1] + ", cuisine vietnamienne asiatique, photographie culinaire professionnelle, plat centré, fond blanc uni, lumière studio, haute qualité";
     const seed = Math.abs([...d[0]].reduce((a,c)=>a+c.charCodeAt(0),0));
     return "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt) +
-           "?width=440&height=320&nologo=true&seed=" + seed;
+           "?width=440&height=320&nologo=true&model=flux&seed=" + seed;
+  }
+  // Vraie photo de secours (fiable) affichée immédiatement.
+  function dishFallback(d){
+    const n = (d[0] + " " + d[1]).toLowerCase();
+    let id = "photo-1603133872878-684f208fb84b"; // wok par défaut
+    if (n.includes("raviolis")) id = "photo-1455619452474-d2be8b1e70cd";
+    else if (n.includes("canard")) id = "photo-1518983546435-91f8b87fe561";
+    else if (n.includes("bo bun") || n.includes("vermicelle")) id = "photo-1512058564366-18510be2db19";
+    else if (n.includes("nem")) id = "photo-1569718212165-3a8278d5f624";
+    else if (n.includes("ph") || n.includes("soupe") || n.includes("tonkinoise")) id = "photo-1582878826629-29b7ad1cdc43";
+    else if (n.includes("formule")) id = "photo-1496116218417-1a781b1c416c";
+    return "https://images.unsplash.com/" + id + "?auto=format&fit=crop&w=440&q=80";
   }
   function renderDishes(cat){
     dishesEl.innerHTML = menu[cat].map(d=>{
@@ -321,9 +334,17 @@
           <div class="dish-head"><h4>${d[0]}${pill}</h4><span class="price">${d[2]}</span></div>
           <small>${d[1]}</small>
         </div>
-        <img class="dish-photo" loading="lazy" alt="${d[0]}" src="${dishPhoto(d)}">
+        <img class="dish-photo cover" loading="lazy" alt="${d[0]}" src="${dishFallback(d)}" data-ai="${dishAI(d)}">
       </div>`;
     }).join("");
+    // Tente la version IA en arrière-plan ; remplace la photo quand prête.
+    dishesEl.querySelectorAll('.dish-photo').forEach(img => {
+      const ai = img.dataset.ai;
+      if (!ai) return;
+      const pre = new Image();
+      pre.onload = () => { img.src = ai; img.classList.remove('cover'); };
+      pre.src = ai;
+    });
   }
   Object.keys(menu).forEach((cat,i)=>{
     const b=document.createElement('button');
