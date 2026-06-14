@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# Claubert — App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application mobile Claubert (sandwicherie, CNIT La Défense).
+Stack : React + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui. PWA installable. Emballage Capacitor pour App Store / Play Store.
 
-Currently, two official plugins are available:
+## Développement
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # build production (dist/)
+npm run preview    # sert le build (http://localhost:4173)
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Astuce : pour le rendu "app", réduisez la fenêtre du navigateur en format mobile (l'app est centrée, largeur max ~448px).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `src/App.tsx` — routeur (react-router) + providers (i18n, panier).
+- `src/components/Layout.tsx` — coquille : header (bascule FR/EN, retour) + barre d'onglets bas.
+- `src/screens/` — écrans : Accueil, Menu, Détail produit, Panier, Compte, Histoire, Adresses, Carrières, Contact, FAQ, B2B, Fidélité.
+- `src/components/ui/` — composants shadcn (câblés manuellement, registre bloqué en environnement web).
+- `src/i18n/` — bilingue FR/EN (`dict.ts` + `I18nProvider`).
+- `src/data/menu.ts` — données menu (provisoires).
+- `src/store/cart.tsx` — panier.
+
+## Stores (Capacitor)
+
+Comptes requis : Apple Developer (99 $/an), Google Play (25 $). iOS nécessite un Mac.
+
+```bash
+# Sur le Mac, une fois :
+npm run cap:add:ios
+npm run cap:add:android
+
+# À chaque mise à jour :
+npm run cap:ios       # build + sync + ouvre Xcode
+npm run cap:android   # build + sync + ouvre Android Studio
 ```
+
+`appId` : `fr.claubert.app` (voir `capacitor.config.ts`).
+
+## À brancher (services tiers)
+
+- **Innovorder** : commande, paiement (CB, Apple Pay, titres-resto), stock temps réel.
+- **Heypongo** : programme fidélité (points, paliers, parrainage).
+- Avis Google, feed Instagram, liens Uber Eats / Deliveroo.
+
+Les emplacements sont marqués avec une icône prise (🔌) dans l'interface.

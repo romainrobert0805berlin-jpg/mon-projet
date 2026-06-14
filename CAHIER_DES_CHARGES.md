@@ -119,12 +119,12 @@ Stack retenue : **React + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui**, emb
 |---|---|---|---|
 | 1 | **Fondations app** | Projet React+Vite+Tailwind+shadcn, thème Claubert, shell mobile (onglets bas), header | ✅ Fait |
 | 2 | **Écrans de base** | Accueil (hero + blocs), Menu (filtres/badges/allergènes), Panier (créneau retrait), Compte (fidélité) | ✅ Fait (v1) |
-| 3 | **Contenu & écrans secondaires** | Notre histoire, Nos adresses (carte), Carrières, Contact, FAQ, détail produit | ⬜ À faire |
-| 4 | **Multilingue FR/EN** | i18n, bascule de langue fonctionnelle | ⬜ À faire |
-| 5 | **B2B + Fidélité** | Écrans + formulaires qualifiés | ⬜ À faire |
-| 6 | **Branchements tiers** | Innovorder (commande/paiement), Heypongo (points), avis Google, Instagram — à réception des clés | ⬜ À faire |
-| 7 | **Finitions** | Perfs, accessibilité, mentions légales, recette | ⬜ À faire |
-| 8 | **Capacitor / Stores** | Emballage iOS+Android, icônes/splash, build, publication App Store + Play Store | ⬜ À faire |
+| 3 | **Contenu & écrans secondaires** | Notre histoire, Nos adresses (carte), Carrières, Contact, FAQ, détail produit | ✅ Fait |
+| 4 | **Multilingue FR/EN** | i18n (dict + provider), bascule de langue persistante et fonctionnelle | ✅ Fait |
+| 5 | **B2B + Fidélité** | Écrans + formulaires qualifiés (B2B, candidature, contact segmenté, inscription fidélité) | ✅ Fait (v1) |
+| 6 | **Branchements tiers** | Innovorder (commande/paiement), Heypongo (points), avis Google, Instagram — à réception des clés | ⬜ À faire (emplacements posés) |
+| 7 | **Finitions** | Perfs, accessibilité, mentions légales, recette | 🟡 En cours |
+| 8 | **Capacitor / Stores** | PWA ✅ (manifest + SW + icônes) · Capacitor configuré (appId fr.claubert.app, deps iOS/Android) · reste : `cap add` sur Mac, splash, publication | 🟡 Préparé |
 
 Règle de travail : on valide une tranche avant la suivante · commit + push à chaque tranche terminée.
 

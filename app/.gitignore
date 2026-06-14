@@ -1,3 +1,9 @@
 node_modules
 dist
+dist-ssr
 *.local
+
+# Capacitor (plateformes natives generees sur la machine de build)
+/ios
+/android
+.DS_Store
