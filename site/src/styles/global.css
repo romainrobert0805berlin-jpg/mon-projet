@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fbf7f0;
-  --color-surface: #ffffff;
-  --color-ink: #1c1714;
-  --color-ink-soft: #5b524a;
-  --color-line: #e8ddcd;
-  --color-accent: #c8431f;
-  --color-accent-dark: #a8360f;
-  --color-gold: #c79a3a;
-  --color-green: #2f7d4f;
+  --color-bg: #f6f1e7;
+  --color-surface: #fffdf8;
+  --color-ink: #1a1512;
+  --color-ink-soft: #5c5249;
+  --color-line: #ddd2bf;
+  --color-accent: #b23a1e;
+  --color-accent-dark: #8f2c12;
+  --color-gold: #b1872f;
+  --color-green: #356b46;
 
-  --font-serif: "Fraunces", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  /* Typo editoriale : serif expressive + grotesque chaleureux */
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Hanken Grotesk", system-ui, sans-serif;
+
+  --radius: 4px;
 }
 
 html {
@@ -20,13 +23,39 @@ html {
 }
 
 body {
-  background: var(--color-bg);
+  background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.02rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: var(--font-serif);
-  line-height: 1.1;
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+/* Intertitre "magazine" : petites capitales espacees */
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* Filet fin de separation */
+.rule {
+  height: 1px;
+  background: var(--color-line);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
 }
