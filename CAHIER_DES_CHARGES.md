@@ -1,7 +1,7 @@
 # Cahier des charges — Site Claubert
 
 > Document de référence du projet. Sert de fil rouge entre les sessions de travail.
-> Dernière mise à jour : 2026-06-14
+> Dernière mise à jour : 2026-06-14 (ajout stratégie app mobile & stores)
 
 ---
 
@@ -120,8 +120,27 @@ formulaires, structure du menu (filtres/allergènes/badges), emplacements prêts
 | 5 | **B2B + Fidélité** | Pages + formulaires qualifiés | ⬜ À faire |
 | 6 | **Branchements tiers** | Emplacements Innovorder / Heypongo / avis Google / Instagram (activés à réception des clés) | ⬜ À faire |
 | 7 | **Finitions** | Perfs, accessibilité, pages légales, recette | ⬜ À faire |
+| 8 | **App mobile / Stores** | PWA (installable) puis emballage **Capacitor** → App Store + Play Store | ⬜ À faire |
 
 Règle de travail : on valide une tranche avant la suivante · commit + push à chaque tranche terminée.
+
+---
+
+## 8 bis. Stratégie App mobile & Stores
+
+Le site est web (Astro). Pour être présent sur **App Store** et **Play Store**, on procède en 2 temps :
+
+1. **PWA** (Progressive Web App) : intégrée dès le site (manifest + service worker). App installable depuis le navigateur, icône écran d'accueil, mode plein écran, offline partiel. **Gratuit, aucun store requis.**
+2. **Capacitor** : on emballe le site dans une coquille native pour produire une vraie app iOS + Android publiable. Réutilise 100 % du site, ouvre les notifications push.
+
+> ⚠️ **Risque App Store (règle 4.2)** : Apple refuse les apps « simple site emballé ». L'app doit apporter une vraie valeur (commande click & collect via Innovorder, fidélité Heypongo, push). À anticiper : on publie sur les stores **une fois ces intégrations branchées** (après tranche 6).
+
+**Prérequis stores (à la charge du client) :**
+- [ ] Compte **Apple Developer** — 99 $/an
+- [ ] Compte **Google Play Console** — 25 $ (une fois)
+- [ ] Accès à un **Mac** (ou service de build cloud) pour compiler l'app iOS
+- [ ] Assets app : icône haute résolution, splash screen, captures d'écran pour les fiches store
+- [ ] Textes fiches store (description, mots-clés) FR + EN
 
 ---
 
