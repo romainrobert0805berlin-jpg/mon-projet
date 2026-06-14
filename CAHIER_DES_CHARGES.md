@@ -100,12 +100,16 @@ formulaires, structure du menu (filtres/allergènes/badges), emplacements prêts
 
 ## 7. Choix technique
 
-**Astro** retenu :
-- SEO et performance mobile au top (priorité n°1 du brief).
-- Multilingue FR/EN natif.
-- Images optimisées (WebP/AVIF) natives.
-- Site contenu + widgets tiers : excellent rapport résultat/effort.
-- Évolutif (futurs sites via templating).
+**Décision (2026-06-14) : app-first.** Objectif prioritaire = présence App Store + Play Store, rendu type application.
+
+Stack retenue : **React + Vite + TypeScript + Tailwind CSS v4 + shadcn/ui**, emballage **Capacitor** pour iOS/Android. Code dans le dossier `app/`.
+- Rendu app (navigation par onglets en bas, écrans), pas un long site qui scrolle.
+- shadcn/ui pour des composants soignés et cohérents.
+- Capacitor réutilise 100 % du code web pour produire les apps natives.
+
+> Le SEO web (priorité du brief original) reste un livrable distinct (site Astro) à traiter **après** l'app, en réutilisant contenu et données. Une app ne s'indexe pas sur Google.
+
+**Contrainte environnement** : le registre `ui.shadcn.com` et le CDN navigateur sont bloqués par la politique réseau (npm reste accessible). Conséquence : composants shadcn câblés **manuellement** (même résultat) ; pas de capture d'écran générable ici (à voir en local via `npm run dev`).
 
 ---
 
@@ -113,14 +117,14 @@ formulaires, structure du menu (filtres/allergènes/badges), emplacements prêts
 
 | # | Tranche | Contenu | Statut |
 |---|---|---|---|
-| 1 | **Fondations** | Projet Astro, design system (couleurs/typo marque), layout mobile-first + sticky bar, header/footer, i18n FR/EN | ⬜ À faire |
-| 2 | **Pages contenu** | Accueil (hero + blocs), Notre histoire, Nos adresses, Carrières, Contact, FAQ | ⬜ À faire |
-| 3 | **Menu** | Données produits, filtres, allergènes, badges, fiches | ⬜ À faire |
-| 4 | **SEO** | JSON-LD (Restaurant/Menu/FAQ/LocalBusiness), métas, sitemap, hreflang | ⬜ À faire |
-| 5 | **B2B + Fidélité** | Pages + formulaires qualifiés | ⬜ À faire |
-| 6 | **Branchements tiers** | Emplacements Innovorder / Heypongo / avis Google / Instagram (activés à réception des clés) | ⬜ À faire |
-| 7 | **Finitions** | Perfs, accessibilité, pages légales, recette | ⬜ À faire |
-| 8 | **App mobile / Stores** | PWA (installable) puis emballage **Capacitor** → App Store + Play Store | ⬜ À faire |
+| 1 | **Fondations app** | Projet React+Vite+Tailwind+shadcn, thème Claubert, shell mobile (onglets bas), header | ✅ Fait |
+| 2 | **Écrans de base** | Accueil (hero + blocs), Menu (filtres/badges/allergènes), Panier (créneau retrait), Compte (fidélité) | ✅ Fait (v1) |
+| 3 | **Contenu & écrans secondaires** | Notre histoire, Nos adresses (carte), Carrières, Contact, FAQ, détail produit | ⬜ À faire |
+| 4 | **Multilingue FR/EN** | i18n, bascule de langue fonctionnelle | ⬜ À faire |
+| 5 | **B2B + Fidélité** | Écrans + formulaires qualifiés | ⬜ À faire |
+| 6 | **Branchements tiers** | Innovorder (commande/paiement), Heypongo (points), avis Google, Instagram — à réception des clés | ⬜ À faire |
+| 7 | **Finitions** | Perfs, accessibilité, mentions légales, recette | ⬜ À faire |
+| 8 | **Capacitor / Stores** | Emballage iOS+Android, icônes/splash, build, publication App Store + Play Store | ⬜ À faire |
 
 Règle de travail : on valide une tranche avant la suivante · commit + push à chaque tranche terminée.
 
