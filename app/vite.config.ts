@@ -6,6 +6,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Servi sous https://<user>.github.io/mon-projet/ sur GitHub Pages.
+  base: '/mon-projet/',
   plugins: [
     react(),
     tailwindcss(),
@@ -21,7 +23,8 @@ export default defineConfig({
         background_color: '#fbf7f0',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        scope: '/mon-projet/',
+        start_url: '/mon-projet/',
         icons: [
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
