@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claubert — Sandwicherie d'auteur · CNIT, La Défense</title>
+<meta name="description" content="Claubert, la sandwicherie signature au CNIT (La Défense). Commande en click & collect, déjeuner rapide, plateaux repas entreprise. Savoir-faire chef Ferrandi." />
+
+<!-- ⚠️ DRAFT / MAQUETTE — fichier unique non destiné à la publication. La version finale sera en Astro. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #fbf7f0;
+    --surface: #ffffff;
+    --ink: #1c1714;
+    --ink-soft: #5b524a;
+    --line: #e8ddcd;
+    --accent: #c8431f;        /* rouge tomate / brique */
+    --accent-dark: #a8360f;
+    --gold: #c79a3a;
+    --green: #2f7d4f;
+    --radius: 16px;
+    --shadow: 0 12px 40px rgba(28,23,20,0.10);
+    --maxw: 1120px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 76px; /* place pour la sticky bar mobile */
+  }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; line-height: 1.1; font-weight: 600; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  .accent { color: var(--accent); }
+
+  /* Boutons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: 15px;
+    border: 1.5px solid transparent; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(200,67,31,.35); }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink); }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251,247,240,.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; letter-spacing: -.5px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 26px; font-size: 15px; font-weight: 500; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .lang { font-size: 13px; font-weight: 600; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; }
+  .burger { display: none; font-size: 26px; background: none; border: none; cursor: pointer; }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding: 72px 0 80px; }
+  .badge-status {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+    background: rgba(47,125,79,.12); color: var(--green); padding: 6px 12px; border-radius: 999px; margin-bottom: 20px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(47,125,79,.18); }
+  .hero h1 { font-size: clamp(38px, 6vw, 60px); letter-spacing: -1px; margin-bottom: 18px; }
+  .hero p.lead { font-size: 19px; color: var(--ink-soft); max-width: 30em; margin-bottom: 28px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-art {
+    aspect-ratio: 4/5; border-radius: 24px; box-shadow: var(--shadow); position: relative;
+    background:
+      radial-gradient(120% 120% at 20% 10%, #f6c560 0%, transparent 45%),
+      radial-gradient(120% 120% at 90% 80%, #e87a4a 0%, transparent 50%),
+      linear-gradient(160deg, #d9542b, #8c2f12);
+    display: flex; align-items: flex-end; padding: 24px; color: #fff;
+  }
+  .hero-art .ph { font-size: 13px; opacity: .85; font-weight: 500; }
+  .hero-art .emoji { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 120px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.3)); }
+
+  /* Sections */
+  section.block { padding: 72px 0; }
+  .eyebrow { text-transform: uppercase; letter-spacing: 2px; font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+  .sec-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 14px; letter-spacing: -.5px; }
+  .sec-intro { color: var(--ink-soft); max-width: 40em; margin-bottom: 40px; font-size: 17px; }
+
+  /* Cartes signatures */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .18s, box-shadow .18s; }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .card-img { aspect-ratio: 16/11; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+  .card-img.a { background: linear-gradient(140deg,#f3b54f,#d9542b); }
+  .card-img.b { background: linear-gradient(140deg,#8fbf6b,#2f7d4f); }
+  .card-img.c { background: linear-gradient(140deg,#e8a06a,#a8360f); }
+  .card-body { padding: 18px 20px 22px; }
+  .card-body h3 { font-size: 21px; margin-bottom: 6px; }
+  .tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 9px; border-radius: 999px; }
+  .tag.signature { background: rgba(199,154,58,.18); color: var(--gold); }
+  .tag.new { background: rgba(200,67,31,.14); color: var(--accent); }
+  .tag.veg { background: rgba(47,125,79,.15); color: var(--green); }
+  .card-body p { color: var(--ink-soft); font-size: 14px; margin-bottom: 14px; }
+  .price { display: flex; gap: 14px; align-items: baseline; font-weight: 600; }
+  .price .now { color: var(--accent); font-size: 18px; }
+  .price .lbl { font-size: 12px; color: var(--ink-soft); font-weight: 500; }
+
+  /* Story */
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .story-art { aspect-ratio: 5/4; border-radius: 20px; background: linear-gradient(160deg,#2b2320,#4a3a30); display:flex;align-items:center;justify-content:center;font-size:90px; box-shadow: var(--shadow); }
+
+  /* Bandeau features */
+  .features { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+  .feat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 20px; }
+  .feat .ic { font-size: 30px; margin-bottom: 10px; }
+  .feat h3 { font-size: 17px; margin-bottom: 6px; }
+  .feat p { font-size: 14px; color: var(--ink-soft); }
+
+  /* B2B / fidélité bande */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .panel { border-radius: var(--radius); padding: 38px 34px; color: #fff; position: relative; overflow: hidden; }
+  .panel.b2b { background: linear-gradient(150deg,#2f3b4a,#16202b); }
+  .panel.loyal { background: linear-gradient(150deg,#a8360f,#6e2208); }
+  .panel h3 { font-size: 26px; margin-bottom: 10px; }
+  .panel p { opacity: .9; margin-bottom: 22px; font-size: 15px; }
+
+  /* Footer */
+  footer { background: #1c1714; color: #d8cfc4; padding: 56px 0 90px; margin-top: 40px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  footer h4 { color: #fff; font-family: 'Inter',sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  footer a, footer p { color: #b6a9a0; font-size: 14px; display: block; margin-bottom: 8px; }
+  footer a:hover { color: #fff; }
+  .foot-logo { font-family:'Fraunces',serif; font-size: 26px; color:#fff; margin-bottom: 12px; }
+  .foot-logo span { color: var(--accent); }
+  .socials { display: flex; gap: 12px; margin-top: 10px; }
+  .socials span { width: 38px; height: 38px; border: 1px solid #3a322c; border-radius: 50%; display:flex;align-items:center;justify-content:center; font-size: 16px; }
+  .copyright { border-top: 1px solid #2e2620; margin-top: 36px; padding-top: 20px; font-size: 13px; color: #8c8178; }
+
+  /* Sticky bar mobile */
+  .sticky-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 60; display: none;
+    background: #fff; border-top: 1px solid var(--line); padding: 12px 16px;
+    box-shadow: 0 -6px 20px rgba(28,23,20,.08);
+  }
+  .sticky-bar .btn { width: 100%; justify-content: center; }
+
+  /* Draft banner */
+  .draftbar { background: #1c1714; color: #f3c560; text-align: center; font-size: 12.5px; padding: 7px 12px; font-weight: 600; letter-spacing: .3px; }
+
+  /* Responsive */
+  @media (max-width: 860px) {
+    .nav-links, .hero-cta .btn-ghost { display: none; }
+    .burger { display: block; }
+    .hero-inner, .story { grid-template-columns: 1fr; }
+    .hero-art { order: -1; aspect-ratio: 16/12; }
+    .cards { grid-template-columns: 1fr; }
+    .features { grid-template-columns: 1fr 1fr; }
+    .duo { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .sticky-bar { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<div class="draftbar">⚙️ MAQUETTE / DRAFT — version de travail, non publiée. Direction visuelle à valider.</div>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">Clau<span>bert</span></div>
+    <nav class="nav-links">
+      <a href="#menu">Menu</a>
+      <a href="#histoire">Notre histoire</a>
+      <a href="#adresses">Nos adresses</a>
+      <a href="#b2b">Entreprises</a>
+      <a href="#fidelite">Fidélité</a>
+    </nav>
+    <div class="nav-actions">
+      <span class="lang">FR / EN</span>
+      <a href="#commander" class="btn btn-primary">Commander</a>
+      <button class="burger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="badge-status"><span class="dot"></span> Ouvert · ferme à 16h00</span>
+      <h1>Le sandwich d'auteur,<br><span class="accent">au cœur de La Défense.</span></h1>
+      <p class="lead">Produits frais, pain travaillé chaque matin, recettes signées par un chef passé par Ferrandi. À emporter en quelques minutes, au CNIT.</p>
+      <div class="hero-cta">
+        <a href="#commander" class="btn btn-primary">🥪 Commander en click & collect</a>
+        <a href="#menu" class="btn btn-ghost">Voir le menu</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <span class="emoji">🥖</span>
+      <span class="ph">📷 Emplacement photo réelle du produit signature</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="block" style="padding-top:0;">
+  <div class="wrap">
+    <div class="features">
+      <div class="feat"><div class="ic">⚡</div><h3>Prêt en 5 min</h3><p>Commande à l'avance, retrait sans file d'attente.</p></div>
+      <div class="feat"><div class="ic">🌿</div><h3>Frais & sourcé</h3><p>Producteurs sélectionnés, pain maison quotidien.</p></div>
+      <div class="feat"><div class="ic">🎁</div><h3>Fidélité</h3><p>Des points à chaque commande, des récompenses.</p></div>
+      <div class="feat"><div class="ic">🍱</div><h3>Plateaux repas</h3><p>Pour vos réunions, livrés à l'étage.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU / SIGNATURES -->
+<section class="block" id="menu">
+  <div class="wrap">
+    <p class="eyebrow">Nos best-sellers</p>
+    <h2 class="sec-title">Les signatures Claubert</h2>
+    <p class="sec-intro">Chaque recette existe en version <strong>Classique</strong> et <strong>Signature</strong>. Allergènes et calories affichés sur chaque fiche produit.</p>
+    <div class="cards">
+      <article class="card">
+        <div class="card-img a">🥪</div>
+        <div class="card-body">
+          <div class="tags"><span class="tag signature">Signature</span><span class="tag new">Nouveau</span></div>
+          <h3>Le Défense</h3>
+          <p>Poulet rôti maison, tomates confites, pesto de roquette, pain focaccia.</p>
+          <div class="price"><span class="lbl">Classique</span> 7,90 € · <span class="now">Signature 9,90 €</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img b">🥗</div>
+        <div class="card-body">
+          <div class="tags"><span class="tag veg">Végé</span></div>
+          <h3>Le Jardin du CNIT</h3>
+          <p>Falafel croustillant, houmous, légumes grillés, sauce yaourt-menthe.</p>
+          <div class="price"><span class="lbl">Classique</span> 7,50 € · <span class="now">Signature 9,50 €</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-img c">🥓</div>
+        <div class="card-body">
+          <div class="tags"><span class="tag signature">Signature</span></div>
+          <h3>Le Parvis</h3>
+          <p>Bœuf braisé 12h, cheddar affiné, oignons caramélisés, pain brioché.</p>
+          <div class="price"><span class="lbl">Classique</span> 8,90 € · <span class="now">Signature 11,90 €</span></div>
+        </div>
+      </article>
+    </div>
+    <div style="text-align:center; margin-top:34px;">
+      <a href="#menu" class="btn btn-ghost">Découvrir tout le menu →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="block" id="histoire" style="background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap story">
+    <div class="story-art">👨‍🍳</div>
+    <div>
+      <p class="eyebrow">Notre histoire</p>
+      <h2 class="sec-title">Un savoir-faire de chef,<br>dans un sandwich.</h2>
+      <p class="sec-intro" style="margin-bottom:20px;">Claubert est né d'une idée simple : et si le déjeuner rapide de La Défense avait le goût d'une vraie cuisine ? Nos recettes sont pensées par un chef formé à Ferrandi, avec un sourcing exigeant et un pain travaillé chaque matin sur place.</p>
+      <a href="#histoire" class="btn btn-ghost">Lire notre histoire</a>
+    </div>
+  </div>
+</section>
+
+<!-- B2B + FIDELITE -->
+<section class="block">
+  <div class="wrap duo">
+    <div class="panel b2b" id="b2b">
+      <h3>Entreprises & plateaux repas</h3>
+      <p>Réunions, événements, déjeuners d'équipe : des formules sur mesure, livrées dans vos étages à La Défense. Réponse sous 24h.</p>
+      <a href="#b2b" class="btn btn-primary" style="background:#fff;color:#16202b;box-shadow:none;">Demander un devis</a>
+    </div>
+    <div class="panel loyal" id="fidelite">
+      <h3>Le programme fidélité</h3>
+      <p>Inscrivez-vous en 30 secondes, cumulez des points à chaque commande et débloquez des récompenses. Parrainez vos collègues.</p>
+      <a href="#fidelite" class="btn btn-primary" style="background:#fff;color:#6e2208;box-shadow:none;">Rejoindre</a>
+    </div>
+  </div>
+</section>
+
+<!-- ADRESSES -->
+<section class="block" id="adresses">
+  <div class="wrap">
+    <p class="eyebrow">Nous trouver</p>
+    <h2 class="sec-title">Au CNIT, La Défense</h2>
+    <p class="sec-intro">📍 <em>Adresse exacte à confirmer</em> — CNIT, Place de la Défense, 92090 Puteaux. Accès RER A · Métro 1 · Transiliens.</p>
+    <div style="aspect-ratio:21/7; border-radius:var(--radius); background:repeating-linear-gradient(45deg,#ece3d4,#ece3d4 18px,#e4d8c4 18px,#e4d8c4 36px); display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-weight:600;border:1px solid var(--line);">
+      🗺️ Emplacement carte Google Maps
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">Clau<span>bert</span></div>
+        <p>Sandwicherie d'auteur au CNIT,<br>La Défense.</p>
+        <p style="color:#fff;font-weight:600;">Ouvert lun–ven · 11h–16h</p>
+        <div class="socials"><span>🎵</span><span>📷</span><span>in</span><span>f</span></div>
+      </div>
+      <div>
+        <h4>Marque</h4>
+        <a href="#histoire">Notre histoire</a>
+        <a href="#menu">Menu</a>
+        <a href="#adresses">Nos adresses</a>
+        <a href="#">Carrières</a>
+      </div>
+      <div>
+        <h4>Commander</h4>
+        <a href="#commander">Click & collect</a>
+        <a href="#fidelite">Fidélité</a>
+        <a href="#">Uber Eats</a>
+        <a href="#">Deliveroo</a>
+      </div>
+      <div>
+        <h4>Légal</h4>
+        <a href="#">Mentions légales</a>
+        <a href="#">CGV</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 Claubert — Maquette de travail. Tous droits réservés.</div>
+  </div>
+</footer>
+
+<!-- STICKY BAR MOBILE -->
+<div class="sticky-bar">
+  <a href="#commander" class="btn btn-primary">🥪 Commander en click & collect</a>
+</div>
+
+</body>
+</html>
