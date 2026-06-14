@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { HashRouter, Routes, Route } from "react-router-dom"
 import { I18nProvider } from "@/i18n/I18nProvider"
 import { CartProvider } from "@/store/cart"
 import { Layout } from "@/components/Layout"
@@ -19,7 +19,7 @@ export default function App() {
   return (
     <I18nProvider>
       <CartProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<HomeScreen />} />
@@ -37,7 +37,7 @@ export default function App() {
               <Route path="*" element={<HomeScreen />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </CartProvider>
     </I18nProvider>
   )
