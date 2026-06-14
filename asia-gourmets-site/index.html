@@ -166,7 +166,7 @@
     </div>
     <div class="tabs" id="tabs"></div>
     <div class="menu-grid" id="dishes"></div>
-    <p class="note">Prix indicatifs susceptibles d'évoluer — merci de confirmer au restaurant.</p>
+    <p class="note">Sélection relevée sur la carte du restaurant (≈ 85 plats au total sur place). Envoie d'autres photos de la carte pour tout ajouter.</p>
   </div>
 </section>
 
@@ -248,8 +248,8 @@
       <div class="info-row"><span class="ic">🚇</span><span><b>Métro</b>Cambronne (L6) · Sèvres-Lecourbe (L6) · Vaugirard (L12)</span></div>
       <div class="info-row"><span class="ic">🕒</span><span style="width:100%"><b>Horaires <small style="opacity:.6;font-weight:400">(à confirmer)</small></b>
         <div class="hours">
-          <div><span>Lundi – Dimanche</span><span>09h00 – 21h30</span></div>
-          <div style="border:none;opacity:.7;font-size:.82rem"><span>Service continu · sur place &amp; à emporter</span><span></span></div>
+          <div><span>Ouvert 7j/7</span><span>09h00 – 22h30</span></div>
+          <div style="border:none;opacity:.7;font-size:.82rem"><span>Service continu, sans interruption · sur place &amp; à emporter</span><span></span></div>
         </div>
       </span></div>
     </div>
@@ -269,38 +269,34 @@
 </footer>
 
 <script>
+  /* ============================================================
+     PHOTOS GOOGLE — colle ta clé Google Maps Platform ci-dessous.
+     1. Crée une clé sur https://console.cloud.google.com/google/maps-apis
+     2. Active "Maps JavaScript API" + "Places API"
+     3. Restreins la clé à ton domaine (referrer HTTP) — important !
+     Sans clé, le site garde les photos d'illustration actuelles.
+     ============================================================ */
+  const GOOGLE_API_KEY = ""; // ← colle ta clé ici, ex : "AIza...."
+
   document.getElementById('yr').textContent = new Date().getFullYear();
 
   // ---- Menu data + tabs ----
+  // Prix relevés sur la carte du restaurant (photo Google, série « A »).
   const menu = {
-    "Entrées":[
-      ["Nems au poulet (×4)","Rouleaux croustillants, salade & nuoc-mâm","5,90 €","sig"],
-      ["Raviolis vapeur (×6)","Porc & crevette, sauce soja sucrée","6,50 €",""],
-      ["Beignets de crevette","Pâte légère, sauce aigre-douce","6,90 €",""],
-      ["Samoussas légumes (×4)","Légumes épicés, croustillants","5,50 €","veg"],
+    "Soupes (Phở)":[
+      ["A1 · Phở spécial","Soupe spéciale aux boulettes de bœuf","10,00 €","sig"],
+      ["A2 · Phở tonkinois","Soupe tonkinoise au bœuf cru et cuit","10,00 €","sig"],
+      ["A3 · Soupe de raviolis","Raviolis aux crevettes (petit / grand)","7–8 €",""],
+      ["A4 · Raviolis & nouilles","Raviolis aux crevettes avec nouilles (petit / grand)","7–8 €",""],
+      ["A5 · Soupe au canard","Tonkinoise au canard cru et cuit (petit / grand)","7–8 €",""],
     ],
-    "Soupes":[
-      ["Phở bœuf","Bouillon parfumé, nouilles de riz, herbes","11,50 €","sig"],
-      ["Soupe wonton","Raviolis maison, bouillon clair","8,90 €",""],
-      ["Soupe pékinoise","Aigre & piquante, tofu, champignons noirs","7,50 €","epi"],
+    "Bo Bun":[
+      ["A6 · Bo Bun poulet","Vermicelles, poulet & deux nems au poulet","8,00 €","sig"],
+      ["A7 · Bo Bun bœuf","Vermicelles, bœuf & deux nems au poulet","8,00 €",""],
+      ["A8 · Bo Bun crevettes","Vermicelles, crevettes & deux nems au poulet","9,20 €",""],
     ],
-    "Plats":[
-      ["Poulet sauté basilic thaï","Wok de poulet, basilic, piment doux","12,90 €","epi"],
-      ["Bœuf épicé","Émincé de bœuf, sauce relevée, légumes","13,90 €","epi"],
-      ["Porc au caramel","Mijoté à la vietnamienne, riz parfumé","12,90 €","sig"],
-      ["Canard laqué","Sauce hoisin, oignons nouveaux","14,50 €",""],
-      ["Crevettes sel & poivre","Sautées, ail, poivre du Sichuan","14,90 €",""],
-      ["Wok de légumes & tofu","Légumes de saison, tofu doré","10,90 €","veg"],
-    ],
-    "Riz & Nouilles":[
-      ["Riz cantonais","Œuf, jambon, petits pois","5,90 €","sig"],
-      ["Nouilles sautées","Légumes croquants, sauce soja","6,50 €",""],
-      ["Riz nature parfumé","Riz jasmin","3,00 €",""],
-    ],
-    "Desserts":[
-      ["Perles de coco","Boules de riz gluant, noix de coco","4,50 €",""],
-      ["Beignets de banane","Tièdes, miel & sésame","4,90 €",""],
-      ["Litchis au sirop","Frais et désaltérant","3,90 €",""],
+    "Formules":[
+      ["Formule A","Entrée au choix + plat + accompagnement","11,00 €","sig"],
     ],
   };
   const pillName = {sig:"signature",epi:"épicé",veg:"végé"};
@@ -334,6 +330,37 @@
     document.getElementById('resform').reset();
     document.getElementById('resform').style.display='block';
     document.getElementById('okmsg').style.display='none';
+  }
+
+  // ---- Vraies photos depuis Google (si une clé API est fournie) ----
+  function initGooglePhotos(){
+    try{
+      const svc = new google.maps.places.PlacesService(document.createElement('div'));
+      svc.findPlaceFromQuery(
+        { query: "Asia Gourmets 91 rue Cambronne 75015 Paris", fields: ["place_id"] },
+        (res, status) => {
+          if (status !== "OK" || !res || !res[0]) return;
+          svc.getDetails(
+            { placeId: res[0].place_id, fields: ["photos"] },
+            (place, st) => {
+              if (st !== "OK" || !place || !place.photos) return;
+              const cells = document.querySelectorAll('#galerie .grid3 .ph img');
+              place.photos.slice(0, cells.length).forEach((ph, i) => {
+                cells[i].src = ph.getUrl({ maxWidth: 700, maxHeight: 480 });
+                cells[i].alt = "Photo Google — Asia Gourmets";
+              });
+            }
+          );
+        }
+      );
+    } catch (e) { console.warn("Google photos:", e); }
+  }
+  if (GOOGLE_API_KEY) {
+    const s = document.createElement('script');
+    s.src = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_API_KEY +
+            "&libraries=places&callback=initGooglePhotos&loading=async";
+    s.async = true;
+    document.head.appendChild(s);
   }
 </script>
 </body>
