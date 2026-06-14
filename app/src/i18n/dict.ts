@@ -22,8 +22,8 @@ export const dict: Dict = {
   "common.allergens": { fr: "Allergènes", en: "Allergens" },
   "common.send": { fr: "Envoyer", en: "Send" },
   "common.draft": {
-    fr: "Maquette de travail — non publiée",
-    en: "Work in progress — not published",
+    fr: "Maquette de travail (démo)",
+    en: "Work in progress (demo)",
   },
 
   // Statut / hero
@@ -85,10 +85,6 @@ export const dict: Dict = {
   "account.title": { fr: "Mon compte", en: "My account" },
   "account.loyaltyCard": { fr: "Carte fidélité", en: "Loyalty card" },
   "account.points": { fr: "points", en: "points" },
-  "account.toReward": {
-    fr: "Plus que 80 points avant votre prochaine récompense 🎁",
-    en: "Only 80 points until your next reward 🎁",
-  },
   "account.heypongoNote": {
     fr: "Programme géré par Heypongo — à brancher.",
     en: "Program powered by Heypongo — to connect.",
@@ -189,8 +185,8 @@ export const dict: Dict = {
   "loyalty.rate": { fr: "1 € dépensé = 1 point", en: "1 € spent = 1 point" },
   "loyalty.rewards": { fr: "Vos récompenses", en: "Your rewards" },
   "loyalty.referral": {
-    fr: "Parrainage : +50 points pour vous et votre filleul.",
-    en: "Referral: +50 points for you and your friend.",
+    fr: "Parrainage : +50 points pour vous.",
+    en: "Referral: +50 points for you.",
   },
   "loyalty.unlocked": { fr: "Débloqué", en: "Unlocked" },
   "loyalty.pointsShort": { fr: "pts", en: "pts" },

@@ -27,7 +27,14 @@ export function ProductScreen() {
 
   const product = id ? getProduct(id) : undefined
   if (!product) {
-    return <p className="py-10 text-center text-muted-foreground">404</p>
+    return (
+      <div className="flex flex-col items-center gap-4 py-20 text-center">
+        <p className="text-muted-foreground">
+          {lang === "fr" ? "Produit introuvable." : "Product not found."}
+        </p>
+        <Button onClick={() => navigate("/menu")}>{t("common.seeMenu")}</Button>
+      </div>
+    )
   }
 
   const price = variant === "signature" ? product.priceSignature : product.priceClassic
