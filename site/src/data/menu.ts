@@ -1,5 +1,7 @@
 // Donnees menu (provisoires). Photos reelles a integrer (brief : pas de banque d'images).
 export interface Localized { fr: string; en: string }
+export type AllergenKey = 'gluten' | 'nuts' | 'milk' | 'sesame' | 'fish' | 'mustard'
+export type ProteinKey = 'chicken' | 'beef' | 'fish' | 'cheese' | 'vegetal'
 
 export interface Product {
   id: string
@@ -7,15 +9,16 @@ export interface Product {
   emoji: string
   description: Localized
   diet: 'viande' | 'vege'
+  protein: ProteinKey
   priceClassic: number
   priceSignature: number
-  allergens: Localized[]
+  allergens: AllergenKey[]
   kcal?: number
   badges: ('signature' | 'new' | 'veg')[]
   inStock: boolean
 }
 
-const A = {
+export const allergenLabels: Record<AllergenKey, Localized> = {
   gluten: { fr: 'Gluten', en: 'Gluten' },
   nuts: { fr: 'Fruits à coque', en: 'Tree nuts' },
   milk: { fr: 'Lait', en: 'Milk' },
@@ -24,35 +27,43 @@ const A = {
   mustard: { fr: 'Moutarde', en: 'Mustard' },
 }
 
+export const proteinLabels: Record<ProteinKey, Localized> = {
+  chicken: { fr: 'Poulet', en: 'Chicken' },
+  beef: { fr: 'Bœuf', en: 'Beef' },
+  fish: { fr: 'Poisson', en: 'Fish' },
+  cheese: { fr: 'Fromage', en: 'Cheese' },
+  vegetal: { fr: 'Végétal', en: 'Plant-based' },
+}
+
 export const products: Product[] = [
   {
     id: 'le-defense', name: 'Le Défense', emoji: '🥪',
     description: { fr: 'Poulet rôti maison, tomates confites, pesto de roquette, pain focaccia.', en: 'House-roasted chicken, confit tomatoes, rocket pesto, focaccia bread.' },
-    diet: 'viande', priceClassic: 7.9, priceSignature: 9.9, allergens: [A.gluten, A.nuts], kcal: 540,
+    diet: 'viande', protein: 'chicken', priceClassic: 7.9, priceSignature: 9.9, allergens: ['gluten', 'nuts'], kcal: 540,
     badges: ['signature', 'new'], inStock: true,
   },
   {
     id: 'jardin-cnit', name: 'Le Jardin du CNIT', emoji: '🥗',
     description: { fr: 'Falafel croustillant, houmous, légumes grillés, sauce yaourt-menthe.', en: 'Crispy falafel, hummus, grilled vegetables, mint-yogurt sauce.' },
-    diet: 'vege', priceClassic: 7.5, priceSignature: 9.5, allergens: [A.gluten, A.sesame, A.milk], kcal: 480,
+    diet: 'vege', protein: 'vegetal', priceClassic: 7.5, priceSignature: 9.5, allergens: ['gluten', 'sesame', 'milk'], kcal: 480,
     badges: ['veg'], inStock: true,
   },
   {
     id: 'le-parvis', name: 'Le Parvis', emoji: '🥓',
     description: { fr: 'Bœuf braisé 12h, cheddar affiné, oignons caramélisés, pain brioché.', en: '12h braised beef, aged cheddar, caramelized onions, brioche bun.' },
-    diet: 'viande', priceClassic: 8.9, priceSignature: 11.9, allergens: [A.gluten, A.milk, A.mustard], kcal: 690,
+    diet: 'viande', protein: 'beef', priceClassic: 8.9, priceSignature: 11.9, allergens: ['gluten', 'milk', 'mustard'], kcal: 690,
     badges: ['signature'], inStock: true,
   },
   {
     id: 'la-coupole', name: 'La Coupole', emoji: '🧀',
     description: { fr: 'Chèvre frais, miel, noix, roquette, pain aux céréales.', en: 'Fresh goat cheese, honey, walnuts, rocket, multigrain bread.' },
-    diet: 'vege', priceClassic: 7.2, priceSignature: 9.2, allergens: [A.gluten, A.milk, A.nuts], kcal: 510,
+    diet: 'vege', protein: 'cheese', priceClassic: 7.2, priceSignature: 9.2, allergens: ['gluten', 'milk', 'nuts'], kcal: 510,
     badges: ['veg'], inStock: false,
   },
   {
     id: 'esplanade', name: "L'Esplanade", emoji: '🐟',
     description: { fr: 'Saumon fumé, fromage frais aux herbes, concombre, aneth, pain seigle.', en: 'Smoked salmon, herb cream cheese, cucumber, dill, rye bread.' },
-    diet: 'viande', priceClassic: 8.5, priceSignature: 10.9, allergens: [A.gluten, A.fish, A.milk], kcal: 460,
+    diet: 'viande', protein: 'fish', priceClassic: 8.5, priceSignature: 10.9, allergens: ['gluten', 'fish', 'milk'], kcal: 460,
     badges: ['new'], inStock: true,
   },
 ]

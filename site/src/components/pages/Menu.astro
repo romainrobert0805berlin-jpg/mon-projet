@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { ui } from '../../i18n/ui'
 import type { Lang } from '../../i18n/utils'
-import { products } from '../../data/menu'
+import { products, allergenLabels, proteinLabels, type ProteinKey, type AllergenKey } from '../../data/menu'
 
 interface Props { lang: Lang }
 const { lang } = Astro.props
@@ -10,8 +10,13 @@ const t = (k: keyof typeof ui) => ui[k][lang]
 
 const title = lang === 'fr' ? 'Menu — Claubert | Sandwichs au CNIT, La Défense' : 'Menu — Claubert | Sandwiches at CNIT, La Défense'
 const description = lang === 'fr'
-  ? 'Le menu Claubert : sandwichs Classique et Signature, allergènes (INCO), calories et badges. Click & collect au CNIT, La Défense.'
-  : 'The Claubert menu: Classic and Signature sandwiches, allergens (INCO), calories and badges. Click & collect at CNIT, La Défense.'
+  ? 'Le menu Claubert : sandwichs Classique et Signature, recherche, filtres par protéine et allergènes (INCO), calories et badges. Click & collect au CNIT, La Défense.'
+  : 'The Claubert menu: Classic and Signature sandwiches, search, filters by protein and allergens (INCO), calories and badges. Click & collect at CNIT, La Défense.'
+
+const proteins = [...new Set(products.map((p) => p.protein))] as ProteinKey[]
+const allergens = [...new Set(products.flatMap((p) => p.allergens))] as AllergenKey[]
+
+const chip = 'shrink-0 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium transition-colors aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-white'
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
@@ -19,18 +24,56 @@ const description = lang === 'fr'
     <h1 class="text-4xl font-semibold">{lang === 'fr' ? 'Le menu' : 'The menu'}</h1>
     <p class="mt-2 max-w-prose text-ink-soft">
       {lang === 'fr'
-        ? 'Chaque recette existe en version Classique et Signature. Allergènes (INCO 1169/2011) et calories affichés.'
+        ? 'Chaque recette existe en Classique et Signature. Allergènes (INCO 1169/2011) et calories affichés.'
         : 'Each recipe comes in Classic and Signature. Allergens (INCO 1169/2011) and calories shown.'}
     </p>
 
-    <div class="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+    <!-- Recherche + filtres -->
+    <div class="mt-6 space-y-3" id="filters">
+      <input
+        id="q"
+        type="search"
+        placeholder={lang === 'fr' ? 'Rechercher un sandwich, un ingrédient…' : 'Search a sandwich, an ingredient…'}
+        class="h-11 w-full rounded-lg border border-line bg-surface px-4"
+      />
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold uppercase tracking-wide text-ink-soft">{lang === 'fr' ? 'Régime' : 'Diet'}</span>
+        <button class={chip} data-group="diet" data-value="all" aria-pressed="true">{lang === 'fr' ? 'Tout' : 'All'}</button>
+        <button class={chip} data-group="diet" data-value="viande" aria-pressed="false">{lang === 'fr' ? 'Viande / poisson' : 'Meat / fish'}</button>
+        <button class={chip} data-group="diet" data-value="vege" aria-pressed="false">{lang === 'fr' ? 'Végé' : 'Veggie'}</button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold uppercase tracking-wide text-ink-soft">{lang === 'fr' ? 'Protéine' : 'Protein'}</span>
+        <button class={chip} data-group="protein" data-value="all" aria-pressed="true">{lang === 'fr' ? 'Toutes' : 'All'}</button>
+        {proteins.map((p) => (
+          <button class={chip} data-group="protein" data-value={p} aria-pressed="false">{proteinLabels[p][lang]}</button>
+        ))}
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold uppercase tracking-wide text-ink-soft">{lang === 'fr' ? 'Sans allergène' : 'Without allergen'}</span>
+        {allergens.map((a) => (
+          <button class={chip} data-group="exclude" data-value={a} aria-pressed="false">{allergenLabels[a][lang]}</button>
+        ))}
+      </div>
+    </div>
+
+    <p id="count" class="mt-4 text-sm text-ink-soft"></p>
+
+    <div id="grid" class="mt-4 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
       {products.map((p) => (
-        <article class="overflow-hidden rounded-2xl border border-line bg-surface">
+        <article
+          class="product overflow-hidden rounded-2xl border border-line bg-surface"
+          data-name={`${p.name} ${p.description[lang]}`.toLowerCase()}
+          data-diet={p.diet}
+          data-protein={p.protein}
+          data-allergens={p.allergens.join(',')}
+        >
           <div class={`relative flex aspect-[16/10] items-center justify-center text-6xl ${p.diet === 'vege' ? 'bg-gradient-to-br from-lime-400 to-green-600' : 'bg-gradient-to-br from-orange-400 to-red-600'}`}>
             {p.emoji}
-            {!p.inStock && (
-              <span class="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white">{t('soldOut')}</span>
-            )}
+            {!p.inStock && (<span class="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white">{t('soldOut')}</span>)}
           </div>
           <div class="p-5">
             <div class="mb-2 flex flex-wrap gap-1.5 text-[11px] font-bold uppercase tracking-wide">
@@ -41,7 +84,7 @@ const description = lang === 'fr'
             <h2 class="text-xl font-semibold">{p.name}</h2>
             <p class="mt-1 text-sm text-ink-soft">{p.description[lang]}</p>
             <p class="mt-2 text-[11px] text-ink-soft">
-              {t('allergens')} : {p.allergens.map((a) => a[lang]).join(', ')}{p.kcal ? ` · ${p.kcal} kcal` : ''}
+              {t('allergens')} : {p.allergens.map((a) => allergenLabels[a][lang]).join(', ')}{p.kcal ? ` · ${p.kcal} kcal` : ''}
             </p>
             <p class="mt-3 text-sm font-semibold">
               {t('classic')} {p.priceClassic.toFixed(2)} € · <span class="text-accent">{t('signature')} {p.priceSignature.toFixed(2)} €</span>
@@ -50,5 +93,65 @@ const description = lang === 'fr'
         </article>
       ))}
     </div>
+
+    <p id="empty" hidden class="mt-8 text-center text-ink-soft">
+      {lang === 'fr' ? 'Aucun sandwich ne correspond à votre recherche.' : 'No sandwich matches your search.'}
+    </p>
   </section>
+
+  <script is:inline define:vars={{ lang }}>
+    const state = { q: '', diet: 'all', protein: 'all', exclude: new Set() }
+    const grid = document.getElementById('grid')
+    const items = Array.from(grid.querySelectorAll('.product'))
+    const countEl = document.getElementById('count')
+    const emptyEl = document.getElementById('empty')
+
+    function setPressed(group, value, on) {
+      document
+        .querySelectorAll(`[data-group="${group}"][data-value="${value}"]`)
+        .forEach((b) => b.setAttribute('aria-pressed', String(on)))
+    }
+
+    function apply() {
+      let visible = 0
+      for (const el of items) {
+        const name = el.dataset.name
+        const allergens = el.dataset.allergens ? el.dataset.allergens.split(',') : []
+        const okSearch = !state.q || name.includes(state.q)
+        const okDiet = state.diet === 'all' || el.dataset.diet === state.diet
+        const okProtein = state.protein === 'all' || el.dataset.protein === state.protein
+        const okAllergen = ![...state.exclude].some((a) => allergens.includes(a))
+        const show = okSearch && okDiet && okProtein && okAllergen
+        el.hidden = !show
+        if (show) visible++
+      }
+      emptyEl.hidden = visible !== 0
+      countEl.textContent =
+        lang === 'fr' ? `${visible} sandwich(s)` : `${visible} sandwich(es)`
+    }
+
+    document.getElementById('q').addEventListener('input', (e) => {
+      state.q = e.target.value.trim().toLowerCase()
+      apply()
+    })
+
+    document.querySelectorAll('[data-group]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const { group, value } = btn.dataset
+        if (group === 'exclude') {
+          if (state.exclude.has(value)) state.exclude.delete(value)
+          else state.exclude.add(value)
+          btn.setAttribute('aria-pressed', String(state.exclude.has(value)))
+        } else {
+          state[group] = value
+          document.querySelectorAll(`[data-group="${group}"]`).forEach((b) =>
+            b.setAttribute('aria-pressed', String(b.dataset.value === value))
+          )
+        }
+        apply()
+      })
+    })
+
+    apply()
+  </script>
 </BaseLayout>
