@@ -17,22 +17,39 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: app
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      # Site SEO (Astro) -> racine
       - run: npm ci
+        working-directory: site
       - run: npm run build
+        working-directory: site
+
+      # App (Vite + shadcn) -> /app/
+      - run: npm ci
+        working-directory: app
+      - run: npm run build
+        working-directory: app
+
+      # Combinaison : site a la racine, app sous /app/
+      - name: Combine outputs
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp -r site/dist/. _site/
+          mkdir -p _site/app
+          cp -r app/dist/. _site/app/
+
       - uses: actions/configure-pages@v5
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: app/dist
+          path: _site
 
   deploy:
     needs: build

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://romainrobert0805berlin-jpg.github.io/mon-projet/sitemap-index.xml

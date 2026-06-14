@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+import { business } from '../../data/business'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const title = lang === 'fr' ? 'Contact — Claubert, CNIT La Défense' : 'Contact — Claubert, CNIT La Défense'
+const description = lang === 'fr'
+  ? 'Contactez Claubert : client, entreprise, presse, recrutement. Email, téléphone et formulaire.'
+  : 'Contact Claubert: customer, company, press, recruitment. Email, phone and form.'
+const intents = [
+  { fr: 'Client', en: 'Customer' }, { fr: 'Entreprise / B2B', en: 'Company / B2B' },
+  { fr: 'Presse', en: 'Press' }, { fr: 'Recrutement', en: 'Recruitment' },
+]
+---
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="mx-auto max-w-2xl px-4 py-12">
+    <h1 class="text-4xl font-semibold">Contact</h1>
+    <div class="mt-4 flex flex-col gap-1 text-sm">
+      <a href={`mailto:${business.email}`} class="font-semibold text-accent">{business.email}</a>
+      <a href={`tel:${business.phone}`} class="font-semibold text-accent">{business.phoneDisplay}</a>
+    </div>
+    <form class="mt-8 grid gap-4" onsubmit="this.querySelector('[data-ok]').hidden=false;return false;">
+      <label class="flex flex-col gap-1.5 text-sm font-medium">{lang === 'fr' ? 'Votre demande concerne' : 'Your request is about'}
+        <select class="h-11 rounded-lg border border-line bg-surface px-3">
+          {intents.map((i) => (<option>{lang === 'fr' ? i.fr : i.en}</option>))}
+        </select>
+      </label>
+      <input required placeholder={lang === 'fr' ? 'Nom' : 'Name'} class="h-11 rounded-lg border border-line bg-surface px-3" />
+      <input type="email" required placeholder="Email" class="h-11 rounded-lg border border-line bg-surface px-3" />
+      <textarea required placeholder="Message" class="min-h-28 rounded-lg border border-line bg-surface px-3 py-2"></textarea>
+      <button class="rounded-full bg-accent px-6 py-3 font-semibold text-white">{lang === 'fr' ? 'Envoyer' : 'Send'}</button>
+      <p data-ok hidden class="rounded-lg bg-green/10 px-4 py-3 text-sm font-medium text-green">{lang === 'fr' ? 'Merci ! Message bien reçu.' : 'Thanks! Message received.'}</p>
+    </form>
+  </section>
+</BaseLayout>

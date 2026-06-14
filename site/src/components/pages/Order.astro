@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const appUrl = `${import.meta.env.BASE_URL}app/`
+const title = lang === 'fr' ? 'Commander en click & collect — Claubert, La Défense' : 'Order click & collect — Claubert, La Défense'
+const description = lang === 'fr'
+  ? 'Commandez en ligne chez Claubert : click & collect au CNIT, créneau de retrait, paiement CB, Apple Pay et titres-restaurant.'
+  : 'Order online at Claubert: click & collect at CNIT, pickup slot, payment by card, Apple Pay and meal vouchers.'
+const steps = [
+  { fr: 'Choisissez le point de vente', en: 'Choose the location' },
+  { fr: 'Composez votre commande', en: 'Build your order' },
+  { fr: 'Sélectionnez un créneau de retrait', en: 'Pick a pickup slot' },
+  { fr: 'Payez (CB, Apple Pay, titres-resto)', en: 'Pay (card, Apple Pay, meal vouchers)' },
+  { fr: 'Récupérez sans attendre', en: 'Collect with no wait' },
+]
+---
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-4xl font-semibold">{lang === 'fr' ? 'Commander en click & collect' : 'Order click & collect'}</h1>
+    <p class="mt-2 text-ink-soft">{lang === 'fr'
+      ? 'Commandez à l’avance, récupérez au CNIT sans file d’attente. Paiement sécurisé, points de fidélité automatiques.'
+      : 'Order ahead, collect at CNIT with no queue. Secure payment, automatic loyalty points.'}</p>
+
+    <ol class="mt-8 space-y-3">
+      {steps.map((s, i) => (
+        <li class="flex items-start gap-3 rounded-xl border border-line bg-surface p-4">
+          <span class="grid size-7 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-white">{i + 1}</span>
+          <span class="font-medium">{lang === 'fr' ? s.fr : s.en}</span>
+        </li>
+      ))}
+    </ol>
+
+    <a href={appUrl} class="mt-8 inline-block rounded-full bg-accent px-7 py-3.5 text-lg font-semibold text-white hover:bg-accent-dark">
+      🥪 {lang === 'fr' ? 'Ouvrir la commande' : 'Open ordering'}
+    </a>
+
+    <div class="mt-8 rounded-2xl border border-line bg-surface p-5">
+      <h2 class="font-semibold">{lang === 'fr' ? 'Préférez la livraison ?' : 'Prefer delivery?'}</h2>
+      <div class="mt-2 flex gap-3 text-sm font-semibold text-accent">
+        <a href="https://www.ubereats.com/">Uber Eats</a>
+        <a href="https://deliveroo.fr/">Deliveroo</a>
+      </div>
+    </div>
+    <p class="mt-4 text-sm text-ink-soft">🔌 {lang === 'fr' ? 'Commande et paiement gérés par Innovorder, fidélité par Heypongo — à brancher.' : 'Ordering and payment by Innovorder, loyalty by Heypongo — to connect.'}</p>
+  </section>
+</BaseLayout>

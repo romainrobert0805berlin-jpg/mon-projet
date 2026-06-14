@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { Lang } from '../../i18n/utils'
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const title = lang === 'fr' ? 'Notre histoire — Claubert' : 'Our story — Claubert'
+const description = lang === 'fr'
+  ? "L'histoire de Claubert : un chef formé à Ferrandi, un sourcing exigeant et un pain travaillé chaque matin au CNIT, La Défense."
+  : 'The Claubert story: a Ferrandi-trained chef, demanding sourcing and bread baked fresh every morning at CNIT, La Défense.'
+---
+<BaseLayout title={title} description={description} lang={lang}>
+  <section class="mx-auto max-w-3xl px-4 py-12">
+    <p class="text-xs font-bold uppercase tracking-[2px] text-accent">{lang === 'fr' ? 'Notre histoire' : 'Our story'}</p>
+    <h1 class="mt-1 text-4xl font-semibold">{lang === 'fr' ? 'Un savoir-faire de chef, dans un sandwich.' : "A chef's craft, in a sandwich."}</h1>
+    <div class="mt-6 flex aspect-[16/9] items-center justify-center rounded-2xl bg-gradient-to-br from-[#2b2320] to-[#4a3a30] text-7xl">👨‍🍳</div>
+    <div class="mt-6 space-y-4 text-lg text-ink-soft">
+      <p>{lang === 'fr'
+        ? "Claubert est né d’une idée simple : et si le déjeuner rapide de La Défense avait le goût d’une vraie cuisine ? Nos recettes sont pensées par un chef formé à Ferrandi."
+        : 'Claubert was born from a simple idea: what if the quick lunch of La Défense tasted like real cuisine? Our recipes are crafted by a Ferrandi-trained chef.'}</p>
+      <p>{lang === 'fr'
+        ? "Sourcing exigeant, producteurs sélectionnés, ingrédients de saison et pain maison travaillé chaque matin sur place. Le goût du fait-maison, à la vitesse du midi."
+        : 'Demanding sourcing, selected producers, seasonal ingredients and house bread baked fresh every morning. The taste of homemade, at lunchtime speed.'}</p>
+    </div>
+  </section>
+</BaseLayout>
