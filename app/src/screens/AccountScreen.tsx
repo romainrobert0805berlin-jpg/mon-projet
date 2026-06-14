@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useI18n } from "@/i18n/I18nProvider"
 import { Gift, Star, Briefcase, Mail, FileText, HelpCircle, ChevronRight } from "lucide-react"
+import { DEMO_POINTS, nextReward, rewardLabel } from "@/data/loyalty"
 
 export function AccountScreen() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const points = DEMO_POINTS
+  const next = nextReward(points)
+  const progress = next ? Math.min(100, Math.round((points / next.points) * 100)) : 100
 
   const links = [
     { to: "/fidelite", icon: Gift, label: t("home.loyaltyTitle"), sub: t("home.loyaltySub") },
@@ -26,13 +30,18 @@ export function AccountScreen() {
           <p className="font-semibold">{t("account.loyaltyCard")}</p>
         </div>
         <div className="mt-3 flex items-end gap-2">
-          <span className="text-4xl font-semibold">120</span>
+          <span className="text-4xl font-semibold">{points}</span>
           <span className="mb-1 text-sm text-white/80">{t("account.points")}</span>
         </div>
         <div className="mt-2 h-2 rounded-full bg-white/20">
-          <div className="h-2 w-3/5 rounded-full bg-white" />
+          <div className="h-2 rounded-full bg-white" style={{ width: `${progress}%` }} />
         </div>
-        <p className="mt-2 text-xs text-white/80">{t("account.toReward")}</p>
+        {next && (
+          <p className="mt-2 text-xs text-white/80">
+            {t("loyalty.toReward").replace("{n}", String(next.points - points))}{" "}
+            {rewardLabel(next, lang)} {next.emoji}
+          </p>
+        )}
         <p className="mt-3 text-[11px] text-white/60">🔌 {t("account.heypongoNote")}</p>
       </div>
 

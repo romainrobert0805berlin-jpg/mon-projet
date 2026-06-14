@@ -186,6 +186,15 @@ export const dict: Dict = {
   "loyalty.step1": { fr: "Inscrivez-vous en 30 secondes (email ou téléphone).", en: "Sign up in 30 seconds (email or phone)." },
   "loyalty.step2": { fr: "Cumulez des points à chaque commande.", en: "Earn points with every order." },
   "loyalty.step3": { fr: "Débloquez des récompenses et parrainez vos collègues.", en: "Unlock rewards and refer your colleagues." },
+  "loyalty.rate": { fr: "1 € dépensé = 1 point", en: "1 € spent = 1 point" },
+  "loyalty.rewards": { fr: "Vos récompenses", en: "Your rewards" },
+  "loyalty.referral": {
+    fr: "Parrainage : +50 points pour vous et votre filleul.",
+    en: "Referral: +50 points for you and your friend.",
+  },
+  "loyalty.unlocked": { fr: "Débloqué", en: "Unlocked" },
+  "loyalty.pointsShort": { fr: "pts", en: "pts" },
+  "loyalty.toReward": { fr: "Plus que {n} points avant :", en: "Only {n} points until:" },
 
   // FAQ
   "faq.title": { fr: "Questions fréquentes", en: "Frequently asked questions" },

@@ -39,7 +39,7 @@ export function ProductScreen() {
       >
         <span aria-hidden>{product.emoji}</span>
         {!product.inStock && (
-          <span className="absolute inset-0 grid place-items-center bg-black/55 font-semibold text-white">
+          <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white">
             {t("common.soldOut")}
           </span>
         )}
