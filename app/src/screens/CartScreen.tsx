@@ -1,0 +1,114 @@
+import * as React from "react"
+import { useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { useCart } from "@/store/cart"
+import { useI18n } from "@/i18n/I18nProvider"
+import { Minus, Plus, ShoppingBag, Clock } from "lucide-react"
+
+const slots = ["11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30"]
+
+export function CartScreen() {
+  const navigate = useNavigate()
+  const { t } = useI18n()
+  const { detailed, add, remove, total, count, clear } = useCart()
+  const [slot, setSlot] = React.useState(slots[0])
+
+  if (count === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
+        <ShoppingBag className="size-12 text-muted-foreground" />
+        <div>
+          <h1 className="text-xl font-semibold">{t("cart.empty")}</h1>
+          <p className="text-sm text-muted-foreground">{t("cart.emptySub")}</p>
+        </div>
+        <Button onClick={() => navigate("/menu")}>{t("common.seeMenu")}</Button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-4 pb-4">
+      <h1 className="text-2xl font-semibold">{t("cart.title")}</h1>
+
+      <div className="flex flex-col gap-3">
+        {detailed.map((d) => (
+          <Card key={d.product.id + d.variant}>
+            <CardContent className="flex items-center gap-3 py-3">
+              <div className="grid size-12 place-items-center rounded-lg bg-secondary text-2xl">
+                {d.product.emoji}
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold leading-tight">{d.product.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {d.variant === "signature" ? t("common.signature") : t("common.classic")} ·{" "}
+                  {d.unit.toFixed(2)} €
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="size-8"
+                  onClick={() => remove(d.product.id, d.variant)}
+                >
+                  <Minus />
+                </Button>
+                <span className="w-5 text-center text-sm font-semibold">{d.qty}</span>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="size-8"
+                  onClick={() => add(d.product.id, d.variant)}
+                >
+                  <Plus />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p className="flex items-center gap-2 text-sm font-semibold">
+          <Clock className="size-4 text-primary" /> {t("cart.slot")}
+        </p>
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {slots.map((s) => (
+            <button
+              key={s}
+              onClick={() => setSlot(s)}
+              className={`shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium ${
+                slot === s ? "border-primary bg-primary text-primary-foreground" : "border-border"
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <Card>
+        <CardContent className="flex items-center justify-between py-4">
+          <div>
+            <p className="text-sm text-muted-foreground">
+              {t("cart.total")} {slot}
+            </p>
+            <p className="text-2xl font-semibold">{total.toFixed(2)} €</p>
+          </div>
+          <button onClick={clear} className="text-xs text-muted-foreground underline">
+            {t("cart.clear")}
+          </button>
+        </CardContent>
+      </Card>
+
+      <div className="rounded-xl border border-dashed border-border bg-muted/40 p-3 text-center text-xs text-muted-foreground">
+        🔌 {t("cart.payNote")}
+      </div>
+
+      <Button size="lg" className="w-full">
+        {t("cart.pay")} {total.toFixed(2)} €
+      </Button>
+    </div>
+  )
+}
