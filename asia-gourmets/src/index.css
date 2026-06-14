@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Thème « Jade & Crème » */
+    --background: 44 38% 96%;        /* crème chaude */
+    --foreground: 175 25% 12%;       /* vert très sombre */
+
+    --card: 0 0% 100%;
+    --card-foreground: 175 25% 12%;
+
+    --primary: 173 58% 24%;          /* jade profond */
+    --primary-foreground: 44 38% 97%;
+
+    --secondary: 30 30% 92%;
+    --secondary-foreground: 175 25% 16%;
+
+    --muted: 40 20% 90%;
+    --muted-foreground: 175 8% 38%;
+
+    --accent: 14 72% 60%;            /* terracotta (touches) */
+    --accent-foreground: 0 0% 100%;
+
+    --border: 38 24% 86%;
+    --input: 38 24% 84%;
+    --ring: 173 58% 30%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
