@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claubert — Pop · CNIT, La Défense</title>
+<meta name="description" content="Claubert, la sandwicherie qui réveille La Défense. Click & collect, fidélité, plateaux repas." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--yellow:#ffd23f;--red:#ff4d3d;--blue:#2b59ff;--green:#16a34a;--ink:#15120c;--paper:#fff7ec}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Archivo",sans-serif;line-height:1.55}
+  h1,h2,h3{font-family:"Archivo Black",sans-serif;line-height:.98;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  .demo{background:var(--ink);color:var(--yellow);text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px}
+  header{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:3px solid var(--ink)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .logo{font-family:"Archivo Black";font-size:26px}
+  .logo span{color:var(--red)}
+  .links{display:none;gap:24px;font-weight:700}
+  .links a:hover{color:var(--red)}
+  .btn{display:inline-block;font-weight:700;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);padding:12px 22px;border-radius:40px;box-shadow:4px 4px 0 var(--ink);transition:.1s}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .btn.red{background:var(--red);color:#fff}
+  .btn.blue{background:var(--blue);color:#fff}
+  .hero{padding:54px 0 40px}
+  .hero h1{font-size:clamp(46px,12vw,104px);text-transform:uppercase}
+  .hero h1 .out{-webkit-text-stroke:2px var(--ink);color:transparent}
+  .hero p{font-size:19px;font-weight:600;max-width:30ch;margin:18px 0 26px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .badge{display:inline-block;background:var(--green);color:#fff;font-weight:700;font-size:13px;padding:6px 14px;border-radius:40px;transform:rotate(-2deg)}
+  .strip{background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;padding:12px 0;font-family:"Archivo Black";letter-spacing:1px;text-transform:uppercase}
+  .strip span{margin:0 18px;color:var(--yellow)}
+  section{padding:60px 0}
+  h2.big{font-size:clamp(34px,7vw,64px);text-transform:uppercase;margin-bottom:30px}
+  .grid{display:grid;gap:22px;grid-template-columns:1fr}
+  .card{border:3px solid var(--ink);border-radius:24px;overflow:hidden;background:#fff;box-shadow:6px 6px 0 var(--ink)}
+  .card .top{height:150px;display:flex;align-items:center;justify-content:center;font-size:74px;border-bottom:3px solid var(--ink)}
+  .c1 .top{background:var(--yellow)}.c2 .top{background:#9be15d}.c3 .top{background:#ffb35c}.c4 .top{background:#7cc6ff}
+  .card .body{padding:18px 20px}
+  .card h3{font-size:24px;text-transform:uppercase;margin-bottom:6px}
+  .card p{font-weight:500;font-size:14px;color:#574e3f}
+  .pill{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:30px;padding:3px 10px;margin-top:10px}
+  .price{margin-top:12px;font-family:"Archivo Black";font-size:18px}
+  .price b{color:var(--red)}
+  .promo{display:grid;gap:20px;grid-template-columns:1fr}
+  .promo .box{border:3px solid var(--ink);border-radius:24px;padding:30px;box-shadow:6px 6px 0 var(--ink)}
+  .promo .y{background:var(--yellow)}.promo .b{background:var(--blue);color:#fff}
+  .promo h3{font-size:30px;text-transform:uppercase;margin-bottom:10px}
+  footer{background:var(--ink);color:var(--paper);padding:50px 0;font-weight:600}
+  .foot{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between}
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:12px 16px;background:var(--paper);border-top:3px solid var(--ink)}
+  .sticky .btn{display:block;text-align:center}
+  body{padding-bottom:74px}
+  @media(min-width:820px){.links{display:flex}.grid{grid-template-columns:repeat(4,1fr)}.promo{grid-template-columns:1fr 1fr}.sticky{display:none}body{padding-bottom:0}}
+</style>
+</head>
+<body>
+<div class="demo">Maquette · Variation 2 — Pop</div>
+<header><div class="wrap nav">
+  <div class="logo">Clau<span>bert</span></div>
+  <nav class="links"><a href="#menu">Menu</a><a href="#fidelite">Fidélité</a><a href="#b2b">Entreprises</a></nav>
+  <a class="btn red" href="#menu">Commander</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <span class="badge">● Ouvert · ferme à 16h00</span>
+  <h1 style="margin-top:18px">Le <span class="out">sandwich</span><br>qui réveille<br>La Défense.</h1>
+  <p>Frais, généreux, fait maison chaque matin. Recettes d'un chef Ferrandi. Prêt en 5 min.</p>
+  <div class="cta"><a class="btn red" href="#menu">🥪 Commander</a><a class="btn blue" href="#menu">Voir le menu</a></div>
+</div></section>
+
+<div class="strip">FRAIS DU JOUR <span>★</span> PAIN MAISON <span>★</span> CLICK &amp; COLLECT <span>★</span> CNIT LA DÉFENSE <span>★</span> FIDÉLITÉ <span>★</span> FRAIS DU JOUR <span>★</span> PAIN MAISON <span>★</span></div>
+
+<section id="menu"><div class="wrap">
+  <h2 class="big">Le menu</h2>
+  <div class="grid">
+    <div class="card c1"><div class="top">🥪</div><div class="body"><h3>Le Défense</h3><p>Poulet rôti, tomates confites, pesto de roquette.</p><span class="pill">Signature</span><div class="price"><b>9,90 €</b> · 7,90 €</div></div></div>
+    <div class="card c2"><div class="top">🥗</div><div class="body"><h3>Jardin du CNIT</h3><p>Falafel, houmous, légumes grillés, yaourt-menthe.</p><span class="pill">Végé</span><div class="price"><b>9,50 €</b> · 7,50 €</div></div></div>
+    <div class="card c3"><div class="top">🥓</div><div class="body"><h3>Le Parvis</h3><p>Bœuf braisé 12 h, cheddar, oignons caramélisés.</p><span class="pill">Signature</span><div class="price"><b>11,90 €</b> · 8,90 €</div></div></div>
+    <div class="card c4"><div class="top">🐟</div><div class="body"><h3>L'Esplanade</h3><p>Saumon fumé, fromage frais, concombre, aneth.</p><span class="pill">Nouveau</span><div class="price"><b>10,90 €</b> · 8,50 €</div></div></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap promo">
+  <div class="box y" id="fidelite"><h3>Fidélité 🎁</h3><p style="font-weight:600;margin-bottom:18px">1 € = 1 point. Café, dessert, sandwich offert. Inscription en 30 sec.</p><a class="btn red" href="#">Je m'inscris</a></div>
+  <div class="box b" id="b2b"><h3>Plateaux repas 🍱</h3><p style="font-weight:600;margin-bottom:18px">Livrés à vos étages à La Défense. Devis sous 24 h.</p><a class="btn" href="#">Demander un devis</a></div>
+</div></section>
+
+<footer><div class="wrap foot">
+  <div class="logo" style="color:#fff">Clau<span style="color:var(--yellow)">bert</span></div>
+  <div>CNIT, Place de la Défense, 92090 Puteaux<br>Lun–Ven 11h–16h</div>
+  <div>TikTok · Instagram · LinkedIn</div>
+</div></footer>
+
+<div class="sticky"><a class="btn red" href="#menu">🥪 Commander en click &amp; collect</a></div>
+</body>
+</html>
