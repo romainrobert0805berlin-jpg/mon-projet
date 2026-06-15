@@ -3,121 +3,131 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Claubert — Néo-bistrot · CNIT, La Défense</title>
+<title>Claubert — Maison gastronomique · CNIT, La Défense</title>
 <meta name="description" content="Claubert, sandwicherie d'auteur au CNIT, La Défense. Click & collect, plateaux repas, fidélité." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  :root{
-    --bg:#14110d; --bg2:#1c1813; --ink:#f3ece0; --soft:#b7ab97;
-    --gold:#c9a24b; --line:#322b22; --accent:#c9a24b;
-  }
+  :root{--bg:#0e0c0a;--bg2:#171311;--ink:#f4ece0;--soft:#a99a85;--gold:#cda75a;--gold2:#e7c878;--line:#2b2419}
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Jost",sans-serif;line-height:1.7}
-  h1,h2,h3{font-family:"Playfair Display",serif;font-weight:700;line-height:1.08}
+  body{background:var(--bg);color:var(--ink);font-family:"Jost",sans-serif;line-height:1.7;overflow-x:hidden}
+  /* grain */
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3{font-family:"Playfair Display",serif;font-weight:700;line-height:1.05}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
   .gold{color:var(--gold)}
-  .demo{background:#000;color:var(--gold);text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:7px}
-  header{position:sticky;top:0;z-index:30;background:rgba(20,17,13,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
-  .logo{font-family:"Playfair Display",serif;font-size:26px;font-weight:900;letter-spacing:.5px}
-  .nav a.link{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);margin-left:28px}
-  .nav a.link:hover{color:var(--gold)}
-  .links{display:none}
-  .btn{display:inline-block;border:1px solid var(--gold);color:var(--gold);padding:13px 26px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;transition:.2s}
-  .btn:hover{background:var(--gold);color:#14110d}
-  .btn-fill{background:var(--gold);color:#14110d}
-  .btn-fill:hover{background:#dcb55f}
-  .hero{padding:90px 0 70px;text-align:center;border-bottom:1px solid var(--line)}
-  .kicker{font-size:12px;letter-spacing:5px;text-transform:uppercase;color:var(--gold)}
-  .hero h1{font-size:clamp(44px,9vw,86px);margin:24px 0 18px}
-  .hero h1 em{font-style:italic;font-weight:500}
-  .hero p{max-width:46ch;margin:0 auto 34px;color:var(--soft);font-size:18px}
-  .hero .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-  .status{margin-top:30px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--soft)}
-  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5bbd7e;margin-right:8px}
-  section{padding:80px 0}
-  .sec-h{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:42px}
-  .sec-h h2{font-size:clamp(28px,5vw,44px)}
-  .menu-item{display:grid;grid-template-columns:1fr auto;gap:14px;padding:26px 0;border-bottom:1px solid var(--line);align-items:start}
-  .menu-item h3{font-size:26px}
-  .menu-item .desc{color:var(--soft);font-size:15px;margin-top:6px;max-width:54ch}
-  .menu-item .tags{margin-top:10px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
-  .price{font-family:"Playfair Display",serif;font-size:22px;white-space:nowrap;text-align:right}
+  .demo{background:#000;color:var(--gold);text-align:center;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:8px}
+  [data-reveal]{opacity:0;transform:translateY(26px);transition:.9s cubic-bezier(.2,.7,.2,1)}
+  [data-reveal].in{opacity:1;transform:none}
+  header{position:sticky;top:0;z-index:40;background:rgba(14,12,10,.7);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:80px}
+  .logo{font-family:"Playfair Display";font-size:28px;font-weight:900;letter-spacing:.5px}
+  .logo small{display:block;font-family:"Jost";font-weight:300;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-top:-4px}
+  .links{display:none;gap:34px}
+  .links a{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--soft)}
+  .links a:hover{color:var(--gold)}
+  .btn{position:relative;display:inline-block;border:1px solid var(--gold);color:var(--gold);padding:14px 30px;font-size:11px;letter-spacing:3px;text-transform:uppercase;overflow:hidden;transition:color .3s;z-index:1}
+  .btn::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,var(--gold),var(--gold2));transform:translateY(101%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:-1}
+  .btn:hover{color:#12100c}.btn:hover::before{transform:translateY(0)}
+  .btn.fill{color:#12100c}.btn.fill::before{transform:translateY(0)}
+  .hero{position:relative;padding:120px 0 90px;text-align:center}
+  .hero::before{content:"";position:absolute;left:50%;top:30%;width:680px;height:680px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(205,167,90,.16),transparent 60%);pointer-events:none}
+  .kick{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--gold)}
+  .hero h1{font-size:clamp(50px,10vw,118px);margin:26px 0;letter-spacing:-.01em}
+  .hero h1 em{display:block;font-style:italic;font-weight:400;font-size:.62em;color:var(--gold2)}
+  .hero p{max-width:46ch;margin:0 auto 38px;color:var(--soft);font-size:18px}
+  .cta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  .status{margin-top:34px;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--soft)}
+  .status .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#6ec78c;margin-right:9px;box-shadow:0 0 12px #6ec78c}
+  .marq{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:18px 0;font-family:"Playfair Display";font-style:italic;font-size:24px;color:var(--soft)}
+  .marq div{display:inline-block;animation:scroll 26s linear infinite}
+  .marq span{margin:0 26px}.marq b{color:var(--gold);font-style:normal}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  section{padding:100px 0}
+  .sec-head{text-align:center;margin-bottom:60px}
+  .sec-head h2{font-size:clamp(34px,6vw,58px)}
+  .sec-head .kick{display:block;margin-bottom:14px}
+  .menu{max-width:880px;margin:0 auto}
+  .item{display:grid;grid-template-columns:1fr auto;gap:18px;padding:30px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:padding .3s}
+  .item:hover{padding-left:14px}
+  .item h3{font-size:28px;display:flex;align-items:baseline;gap:14px}
+  .item h3 .tag{font-family:"Jost";font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);padding:3px 9px;border-radius:30px}
+  .item .desc{color:var(--soft);font-size:15px;margin-top:8px;max-width:60ch}
+  .dots{flex:1;border-bottom:1px dotted var(--line);margin:0 6px;transform:translateY(-6px)}
+  .price{font-family:"Playfair Display";font-size:24px;white-space:nowrap;text-align:right}
   .price small{display:block;color:var(--soft);font-size:13px;font-family:"Jost"}
   .two{display:grid;gap:26px}
-  .card{border:1px solid var(--line);background:var(--bg2);padding:40px 34px}
-  .card .kicker{margin-bottom:14px}
-  .card h3{font-size:30px;margin-bottom:12px}
-  .card p{color:var(--soft);margin-bottom:24px}
-  footer{border-top:1px solid var(--line);padding:54px 0;color:var(--soft);font-size:14px}
-  .foot-top{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;margin-bottom:30px}
-  .foot-top .logo{color:var(--ink)}
-  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(20,17,13,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px 16px}
+  .panel{position:relative;border:1px solid var(--line);background:linear-gradient(160deg,var(--bg2),#0e0c0a);padding:50px 40px;overflow:hidden}
+  .panel::before{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border:1px solid var(--gold);opacity:.18;border-radius:50%}
+  .panel h3{font-size:32px;margin-bottom:14px}
+  .panel p{color:var(--soft);margin-bottom:28px}
+  footer{border-top:1px solid var(--line);padding:70px 0 40px;color:var(--soft);font-size:14px}
+  .foot{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between;margin-bottom:36px}
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(14,12,10,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:13px 16px}
   .sticky .btn{display:block;text-align:center}
-  body{padding-bottom:70px}
-  @media(min-width:820px){
-    .links{display:flex}
-    .two{grid-template-columns:1fr 1fr}
-    .sticky{display:none}
-    body{padding-bottom:0}
-  }
+  body{padding-bottom:74px}
+  @media(min-width:860px){.links{display:flex}.two{grid-template-columns:1fr 1fr}.sticky{display:none}body{padding-bottom:0}}
 </style>
 </head>
 <body>
-<div class="demo">Maquette · Variation 1 — Néo-bistrot</div>
+<div class="demo">Maquette · Variation 1 — Gastronomique</div>
 <header><div class="wrap nav">
-  <div class="logo">Claubert</div>
-  <nav class="links">
-    <a class="link" href="#carte">La carte</a>
-    <a class="link" href="#histoire">Histoire</a>
-    <a class="link" href="#fidelite">Fidélité</a>
-    <a class="link" href="#entreprises">Entreprises</a>
-  </nav>
+  <div class="logo">Claubert<small>La Défense</small></div>
+  <nav class="links"><a href="#carte">La carte</a><a href="#histoire">Maison</a><a href="#fidelite">Cercle</a><a href="#b2b">Réceptions</a></nav>
   <a class="btn" href="#carte">Commander</a>
 </div></header>
 
 <section class="hero"><div class="wrap">
-  <p class="kicker">Sandwicherie d'auteur — CNIT, La Défense</p>
-  <h1>Le sandwich,<br><em>élevé au rang d'art.</em></h1>
+  <p class="kick">Sandwicherie d'auteur — CNIT</p>
+  <h1>Le sandwich<em>élevé au rang d'art.</em></h1>
   <p>Pain travaillé chaque matin, produits d'exception, recettes signées d'un chef passé par Ferrandi. À emporter, au cœur de La Défense.</p>
-  <div class="cta">
-    <a class="btn btn-fill" href="#carte">Commander en click &amp; collect</a>
-    <a class="btn" href="#carte">Découvrir la carte</a>
-  </div>
+  <div class="cta"><a class="btn fill" href="#carte">Commander en click &amp; collect</a><a class="btn" href="#carte">Découvrir la carte</a></div>
   <p class="status"><span class="dot"></span>Ouvert · ferme à 16h00</p>
 </div></section>
 
+<div class="marq"><div>
+  <span><b>✦</b> Pain maison</span><span><b>✦</b> Produits d'exception</span><span><b>✦</b> Chef Ferrandi</span><span><b>✦</b> Click &amp; collect</span>
+  <span><b>✦</b> Pain maison</span><span><b>✦</b> Produits d'exception</span><span><b>✦</b> Chef Ferrandi</span><span><b>✦</b> Click &amp; collect</span>
+</div></div>
+
 <section id="carte"><div class="wrap">
-  <div class="sec-h"><h2>La carte</h2><span class="kicker">Classique / Signature</span></div>
-  <div class="menu-item"><div><h3>Le Défense</h3><p class="desc">Poulet rôti maison, tomates confites, pesto de roquette, pain focaccia.</p><div class="tags">Signature · Nouveau</div></div><div class="price">9,90 €<small>Classique 7,90 €</small></div></div>
-  <div class="menu-item"><div><h3>Le Jardin du CNIT</h3><p class="desc">Falafel croustillant, houmous, légumes grillés, sauce yaourt-menthe.</p><div class="tags">Végé</div></div><div class="price">9,50 €<small>Classique 7,50 €</small></div></div>
-  <div class="menu-item"><div><h3>Le Parvis</h3><p class="desc">Bœuf braisé 12 h, cheddar affiné, oignons caramélisés, pain brioché.</p><div class="tags">Signature</div></div><div class="price">11,90 €<small>Classique 8,90 €</small></div></div>
-  <div class="menu-item"><div><h3>L'Esplanade</h3><p class="desc">Saumon fumé, fromage frais aux herbes, concombre, aneth, pain de seigle.</p><div class="tags">Nouveau</div></div><div class="price">10,90 €<small>Classique 8,50 €</small></div></div>
+  <div class="sec-head" data-reveal><span class="kick">La carte</span><h2>Signatures de la maison</h2></div>
+  <div class="menu">
+    <div class="item" data-reveal><div><h3>Le Défense <span class="tag">Signature</span></h3><p class="desc">Poulet rôti maison, tomates confites, pesto de roquette, pain focaccia.</p></div><div class="price">9,90 €<small>Classique 7,90 €</small></div></div>
+    <div class="item" data-reveal><div><h3>Le Jardin du CNIT <span class="tag">Végé</span></h3><p class="desc">Falafel croustillant, houmous, légumes grillés, sauce yaourt-menthe.</p></div><div class="price">9,50 €<small>Classique 7,50 €</small></div></div>
+    <div class="item" data-reveal><div><h3>Le Parvis <span class="tag">Signature</span></h3><p class="desc">Bœuf braisé 12 h, cheddar affiné, oignons caramélisés, pain brioché.</p></div><div class="price">11,90 €<small>Classique 8,90 €</small></div></div>
+    <div class="item" data-reveal><div><h3>L'Esplanade <span class="tag">Nouveau</span></h3><p class="desc">Saumon fumé, fromage frais aux herbes, concombre, aneth, pain de seigle.</p></div><div class="price">10,90 €<small>Classique 8,50 €</small></div></div>
+  </div>
 </div></section>
 
-<section id="histoire" style="background:var(--bg2)"><div class="wrap two">
-  <div><p class="kicker">Notre histoire</p><h2 style="font-size:clamp(30px,5vw,48px);margin-top:14px">Un savoir-faire de chef, <em style="font-style:italic;font-weight:500">dans un sandwich.</em></h2></div>
-  <div><p style="color:var(--soft);font-size:17px">Et si le déjeuner rapide de La Défense avait le goût d'une vraie cuisine ? Sourcing exigeant, producteurs choisis, pain maison quotidien. La table d'un chef, à la vitesse du midi.</p></div>
+<section id="histoire" style="background:var(--bg2);border-block:1px solid var(--line)"><div class="wrap" style="max-width:780px;text-align:center" data-reveal>
+  <span class="kick">La maison</span>
+  <h2 style="font-size:clamp(30px,5vw,52px);margin:18px 0 22px">Un savoir-faire de chef,<br><em style="font-style:italic;font-weight:400;color:var(--gold2)">dans un sandwich.</em></h2>
+  <p style="color:var(--soft);font-size:18px">Et si le déjeuner rapide de La Défense avait le goût d'une vraie cuisine ? Sourcing exigeant, producteurs choisis, pain maison quotidien. La table d'un chef, à la vitesse du midi.</p>
 </div></section>
 
 <section><div class="wrap two">
-  <div class="card" id="fidelite"><p class="kicker">Fidélité</p><h3>1 € dépensé, 1 point gagné.</h3><p>Café, dessert, sandwich offert. Inscription en 30 secondes, récompenses à la clé.</p><a class="btn" href="#">Rejoindre</a></div>
-  <div class="card" id="entreprises"><p class="kicker">Entreprises</p><h3>Plateaux repas, livrés à l'étage.</h3><p>Formules sur mesure pour vos équipes à La Défense. Devis sous 24 h.</p><a class="btn" href="#">Demander un devis</a></div>
+  <div class="panel" id="fidelite" data-reveal><span class="kick">Le Cercle Claubert</span><h3 style="margin-top:12px">1 € dépensé, 1 point gagné.</h3><p>Café, dessert, sandwich offert. Un programme de fidélité aussi soigné que nos recettes.</p><a class="btn" href="#">Rejoindre le cercle</a></div>
+  <div class="panel" id="b2b" data-reveal><span class="kick">Réceptions &amp; entreprises</span><h3 style="margin-top:12px">Plateaux repas d'exception.</h3><p>Livrés à vos étages à La Défense. Formules sur mesure, devis sous 24 h.</p><a class="btn" href="#">Demander un devis</a></div>
 </div></section>
 
 <footer><div class="wrap">
-  <div class="foot-top">
-    <div class="logo">Claubert</div>
+  <div class="foot">
+    <div class="logo" style="color:var(--ink)">Claubert<small>La Défense</small></div>
     <div>CNIT, Place de la Défense<br>92090 Puteaux · Lun–Ven 11h–16h</div>
     <div>TikTok · Instagram · LinkedIn</div>
   </div>
-  <div style="border-top:1px solid var(--line);padding-top:20px;font-size:12px">© 2026 Claubert — Maquette de travail.</div>
+  <div style="border-top:1px solid var(--line);padding-top:22px;font-size:12px;letter-spacing:1px">© 2026 Claubert — Maquette de travail.</div>
 </div></footer>
 
-<div class="sticky"><a class="btn btn-fill" href="#carte">Commander en click &amp; collect</a></div>
+<div class="sticky"><a class="btn fill" href="#carte">Commander en click &amp; collect</a></div>
+<script>
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('[data-reveal]').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.06)+'s';io.observe(el)});
+</script>
 </body>
 </html>
