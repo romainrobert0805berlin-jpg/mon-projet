@@ -29,9 +29,9 @@ export function Layout() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/85 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b-2 border-foreground bg-background/90 px-4 py-3 backdrop-blur">
         {isMain ? (
-          <Link to="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: "Fraunces, serif" }}>
+          <Link to="/" className="text-2xl uppercase tracking-tight" style={{ fontFamily: "'Archivo Black', sans-serif" }}>
             Clau<span className="text-primary">bert</span>
           </Link>
         ) : (
@@ -57,7 +57,7 @@ export function Layout() {
       </main>
 
       {/* Barre d'onglets */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-stretch border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-stretch border-t-2 border-foreground bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
         {tabs.map((tab) => {
           const active =
             tab.to === "/"

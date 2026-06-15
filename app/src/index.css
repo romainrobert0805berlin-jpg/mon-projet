@@ -4,27 +4,27 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 0.9rem;
+  --radius: 1rem;
 
-  /* Claubert — clair (pain / tomate) */
-  --background: oklch(0.98 0.012 83);
-  --foreground: oklch(0.24 0.02 55);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.02 55);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.02 55);
-  --primary: oklch(0.56 0.17 36);
-  --primary-foreground: oklch(0.99 0.01 83);
-  --secondary: oklch(0.95 0.02 80);
-  --secondary-foreground: oklch(0.32 0.03 50);
-  --muted: oklch(0.95 0.015 83);
-  --muted-foreground: oklch(0.52 0.02 60);
-  --accent: oklch(0.93 0.04 75);
-  --accent-foreground: oklch(0.3 0.05 45);
-  --destructive: oklch(0.58 0.2 27);
-  --border: oklch(0.9 0.02 80);
-  --input: oklch(0.9 0.02 80);
-  --ring: oklch(0.56 0.17 36);
+  /* Claubert — POP (jaune / rouge / bleu, bordures noires) */
+  --background: #fff4e0;
+  --foreground: #120f08;
+  --card: #ffffff;
+  --card-foreground: #120f08;
+  --popover: #ffffff;
+  --popover-foreground: #120f08;
+  --primary: #ff3b2f;
+  --primary-foreground: #ffffff;
+  --secondary: #ffcd29;
+  --secondary-foreground: #120f08;
+  --muted: #fbe8cb;
+  --muted-foreground: #6f6346;
+  --accent: #ffe49b;
+  --accent-foreground: #120f08;
+  --destructive: #ff3b2f;
+  --border: #120f08;
+  --input: #120f08;
+  --ring: #2742ff;
   --chart-1: oklch(0.56 0.17 36);
   --chart-2: oklch(0.6 0.12 145);
   --chart-3: oklch(0.7 0.13 80);
@@ -112,6 +112,13 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  /* Couleurs pop additionnelles */
+  --color-pop-yellow: #ffcd29;
+  --color-pop-red: #ff3b2f;
+  --color-pop-blue: #2742ff;
+  --color-pop-green: #0fb15a;
+  --color-pop-pink: #ff6ea8;
+  --color-pop-ink: #120f08;
 }
 
 @keyframes accordion-down {
@@ -139,10 +146,13 @@
   body {
     @apply bg-background text-foreground;
     margin: 0;
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Archivo", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3 {
-    font-family: "Fraunces", Georgia, serif;
+    font-family: "Archivo Black", system-ui, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
   }
 }
