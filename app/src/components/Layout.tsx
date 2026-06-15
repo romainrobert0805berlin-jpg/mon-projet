@@ -1,8 +1,10 @@
+import { useEffect } from "react"
 import { Outlet, useLocation, useNavigate, Link } from "react-router-dom"
 import { Home, UtensilsCrossed, ShoppingBag, User, ChevronLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
+import { Toaster } from "@/components/Toaster"
 
 const tabs = [
   { to: "/", key: "nav.accueil", icon: Home },
@@ -20,6 +22,10 @@ export function Layout() {
   const { t, lang, toggle } = useI18n()
 
   const isMain = mainPaths.includes(pathname)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [pathname])
 
   return (
     <div className="mx-auto flex min-h-svh max-w-md flex-col bg-background shadow-xl">
@@ -53,8 +59,11 @@ export function Layout() {
 
       {/* Contenu */}
       <main className="flex-1 px-4 pt-4 pb-24">
-        <Outlet />
+        <div key={pathname} className="clb-fadeup">
+          <Outlet />
+        </div>
       </main>
+      <Toaster />
 
       {/* Barre d'onglets */}
       <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-stretch border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
@@ -75,7 +84,10 @@ export function Layout() {
               <span className="relative">
                 <tab.icon className={cn("size-5", active && "fill-primary/10")} />
                 {tab.to === "/panier" && count > 0 && (
-                  <span className="absolute -right-2 -top-1.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  <span
+                    key={count}
+                    className="clb-pop absolute -right-2 -top-1.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground"
+                  >
                     {count}
                   </span>
                 )}

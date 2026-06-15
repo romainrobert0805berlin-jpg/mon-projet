@@ -80,6 +80,32 @@ export const dict: Dict = {
     en: "Payment (card, Apple Pay, meal vouchers) via Innovorder — to connect.",
   },
   "cart.pay": { fr: "Payer", en: "Pay" },
+  "cart.notes": { fr: "Note pour la cuisine (option)", en: "Note for the kitchen (optional)" },
+  "cart.notesPlaceholder": {
+    fr: "Sans oignons, pain bien cuit…",
+    en: "No onions, well-baked bread…",
+  },
+  "cart.earn": { fr: "Vous cumulerez {n} points", en: "You'll earn {n} points" },
+
+  // Confirmation de commande
+  "confirm.title": { fr: "Commande confirmée !", en: "Order confirmed!" },
+  "confirm.sub": {
+    fr: "On s'y met. Présentez votre numéro au comptoir.",
+    en: "We're on it. Show your number at the counter.",
+  },
+  "confirm.number": { fr: "Numéro de commande", en: "Order number" },
+  "confirm.pickup": { fr: "Retrait", en: "Pickup" },
+  "confirm.at": { fr: "à", en: "at" },
+  "confirm.recap": { fr: "Récapitulatif", en: "Summary" },
+  "confirm.total": { fr: "Total", en: "Total" },
+  "confirm.points": { fr: "points cumulés", en: "points earned" },
+  "confirm.note": { fr: "Note", en: "Note" },
+  "confirm.home": { fr: "Retour à l'accueil", en: "Back to home" },
+  "confirm.again": { fr: "Commander à nouveau", en: "Order again" },
+  "confirm.payNote": {
+    fr: "Démo : aucun paiement réel n'a été effectué.",
+    en: "Demo: no real payment was made.",
+  },
 
   // Compte
   "account.title": { fr: "Mon compte", en: "My account" },
@@ -96,6 +122,9 @@ export const dict: Dict = {
   },
   "account.signup": { fr: "S'inscrire", en: "Sign up" },
   "account.login": { fr: "Se connecter", en: "Log in" },
+  "account.orders": { fr: "Mes dernières commandes", en: "My recent orders" },
+  "account.reorder": { fr: "Recommander", en: "Reorder" },
+  "account.items": { fr: "article(s)", en: "item(s)" },
 
   // Liens / pages
   "page.story": { fr: "Notre histoire", en: "Our story" },

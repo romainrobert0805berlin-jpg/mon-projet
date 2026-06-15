@@ -1,15 +1,28 @@
-import { Link } from "react-router-dom"
+import * as React from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useI18n } from "@/i18n/I18nProvider"
-import { Gift, Star, Briefcase, Mail, FileText, HelpCircle, ChevronRight } from "lucide-react"
+import { Gift, Star, Briefcase, Mail, FileText, HelpCircle, ChevronRight, RotateCcw } from "lucide-react"
 import { DEMO_POINTS, nextReward, rewardLabel } from "@/data/loyalty"
+import { loadOrders, type Order } from "@/lib/order"
+import { useCart } from "@/store/cart"
 
 export function AccountScreen() {
   const { t, lang } = useI18n()
+  const navigate = useNavigate()
+  const { add } = useCart()
+  const [orders] = React.useState<Order[]>(loadOrders)
   const points = DEMO_POINTS
   const next = nextReward(points)
   const progress = next ? Math.min(100, Math.round((points / next.points) * 100)) : 100
+
+  const reorder = (order: Order) => {
+    for (const it of order.items) {
+      for (let i = 0; i < it.qty; i++) add(it.productId, it.variant)
+    }
+    navigate("/panier")
+  }
 
   const links = [
     { to: "/fidelite", icon: Gift, label: t("home.loyaltyTitle"), sub: t("home.loyaltySub") },
@@ -62,6 +75,43 @@ export function AccountScreen() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Dernieres commandes */}
+      {orders.length > 0 && (
+        <section className="flex flex-col gap-2">
+          <p className="text-sm font-semibold">{t("account.orders")}</p>
+          {orders.map((o) => (
+            <Card key={o.number}>
+              <CardContent className="flex items-center gap-3 py-3">
+                <div className="flex -space-x-1.5">
+                  {o.items.slice(0, 3).map((it, i) => (
+                    <span
+                      key={i}
+                      className="grid size-9 place-items-center rounded-full border-2 border-card bg-secondary text-base"
+                    >
+                      {it.emoji}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold leading-tight">{o.number}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(o.createdAt).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                    })}{" "}
+                    · {o.items.reduce((s, it) => s + it.qty, 0)} {t("account.items")} ·{" "}
+                    {o.total.toFixed(2)} €
+                  </p>
+                </div>
+                <Button size="sm" variant="outline" onClick={() => reorder(o)}>
+                  <RotateCcw /> {t("account.reorder")}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </section>
+      )}
 
       {/* Liens */}
       <div className="flex flex-col gap-2">

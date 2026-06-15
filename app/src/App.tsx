@@ -6,6 +6,7 @@ import { HomeScreen } from "@/screens/HomeScreen"
 import { MenuScreen } from "@/screens/MenuScreen"
 import { ProductScreen } from "@/screens/ProductScreen"
 import { CartScreen } from "@/screens/CartScreen"
+import { ConfirmationScreen } from "@/screens/ConfirmationScreen"
 import { AccountScreen } from "@/screens/AccountScreen"
 import { StoryScreen } from "@/screens/StoryScreen"
 import { AddressesScreen } from "@/screens/AddressesScreen"
@@ -26,6 +27,7 @@ export default function App() {
               <Route path="/menu" element={<MenuScreen />} />
               <Route path="/menu/:id" element={<ProductScreen />} />
               <Route path="/panier" element={<CartScreen />} />
+              <Route path="/confirmation" element={<ConfirmationScreen />} />
               <Route path="/compte" element={<AccountScreen />} />
               <Route path="/histoire" element={<StoryScreen />} />
               <Route path="/adresses" element={<AddressesScreen />} />
