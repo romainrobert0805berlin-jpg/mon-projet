@@ -2,7 +2,6 @@
 import * as React from "react"
 import { products, type Product } from "@/data/menu"
 import { toast } from "@/lib/toast"
-import { ORDER_BONUS_POINTS } from "@/data/loyalty"
 
 export type Variant = "classic" | "signature"
 
@@ -113,8 +112,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const count = lines.reduce((s, l) => s + l.qty, 0)
   const total = detailed.reduce((s, d) => s + d.unit * d.qty, 0)
-  // Points cumules : 1 point par euro + bonus offert a chaque commande.
-  const points = total > 0 ? Math.floor(total) + ORDER_BONUS_POINTS : 0
+  const points = Math.floor(total)
 
   return (
     <Ctx.Provider
