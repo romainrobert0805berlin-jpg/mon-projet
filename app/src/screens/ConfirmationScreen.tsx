@@ -120,11 +120,18 @@ export function ConfirmationScreen() {
         </Card>
       </section>
 
-      <div className="flex items-center justify-center gap-2 rounded-xl bg-primary/8 px-4 py-3 text-sm font-semibold text-primary">
-        <Gift className="size-5" />
-        <span>
+      <div className="flex flex-col items-center gap-1 rounded-xl bg-primary/8 px-4 py-3 text-center">
+        <p className="flex items-center gap-2 text-sm font-semibold text-primary">
+          <Gift className="size-5" />
           +{order.points} {t("confirm.points")}
-        </span>
+        </p>
+        {order.points > Math.floor(order.total) && (
+          <p className="text-xs text-muted-foreground">
+            {t("confirm.bonusBreakdown")
+              .replace("{base}", String(Math.floor(order.total)))
+              .replace("{bonus}", String(order.points - Math.floor(order.total)))}
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
