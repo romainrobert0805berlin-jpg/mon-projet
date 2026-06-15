@@ -14,19 +14,25 @@ export function HomeScreen() {
   return (
     <div className="flex flex-col gap-6 pb-4">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl border-2 border-foreground bg-pop-yellow p-6 shadow-[5px_5px_0_var(--color-pop-ink)]">
-        <div className="absolute -right-5 -top-6 select-none text-[120px] opacity-20" aria-hidden>
-          🥪
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#d9542b] via-[#b8390f] to-[#7a2408] p-6 text-white">
+        <div className="absolute -right-6 -top-6 select-none text-[120px] opacity-25" aria-hidden>
+          🥖
         </div>
-        <span className="inline-flex items-center gap-2 rounded-full border-2 border-foreground bg-pop-green px-3 py-1 text-xs font-extrabold uppercase text-white">
-          <span className="size-2 rounded-full bg-white" />
+        <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur">
+          <span className="size-2 rounded-full bg-green-400 shadow-[0_0_0_4px_rgba(74,222,128,0.3)]" />
           {t("home.open")}
         </span>
-        <h1 className="mt-4 text-4xl leading-[0.95]">{t("home.heroTitle")}</h1>
-        <p className="mt-3 max-w-[30ch] text-sm font-semibold text-foreground/80">{t("home.heroSub")}</p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Button onClick={() => navigate("/menu")}>🥪 {t("common.order")}</Button>
-          <Button variant="outline" onClick={() => navigate("/menu")}>
+        <h1 className="mt-4 text-3xl font-semibold leading-[1.1]">{t("home.heroTitle")}</h1>
+        <p className="mt-2 max-w-[28ch] text-sm text-white/85">{t("home.heroSub")}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button onClick={() => navigate("/menu")} className="bg-white text-[#7a2408] hover:bg-white/90">
+            🥪 {t("common.order")}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/menu")}
+            className="border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+          >
             {t("common.seeMenu")}
           </Button>
         </div>
@@ -74,7 +80,7 @@ export function HomeScreen() {
       {/* Histoire */}
       <Link
         to="/histoire"
-        className="flex items-center gap-4 rounded-2xl border-2 border-foreground bg-card p-5 shadow-[4px_4px_0_var(--color-pop-ink)]"
+        className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5"
       >
         <ChefHat className="size-7 shrink-0 text-primary" />
         <div className="flex-1">
@@ -87,7 +93,7 @@ export function HomeScreen() {
       {/* Fidélité */}
       <Link
         to="/fidelite"
-        className="flex items-center gap-4 rounded-2xl border-2 border-foreground bg-pop-blue p-5 text-white shadow-[4px_4px_0_var(--color-pop-ink)]"
+        className="flex items-center gap-4 rounded-2xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-5 text-white"
       >
         <Gift className="size-7 shrink-0" />
         <div className="flex-1">
@@ -100,7 +106,7 @@ export function HomeScreen() {
       {/* B2B */}
       <Link
         to="/b2b"
-        className="flex items-center gap-4 rounded-2xl border-2 border-foreground bg-foreground p-5 text-background shadow-[4px_4px_0_var(--color-pop-ink)]"
+        className="flex items-center gap-4 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-5 text-white"
       >
         <Briefcase className="size-7 shrink-0" />
         <div className="flex-1">
