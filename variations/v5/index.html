@@ -3,106 +3,132 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Claubert — CNIT, La Défense</title>
-<meta name="description" content="Claubert. Sandwicherie d'auteur au CNIT, La Défense. Click & collect, fidélité, plateaux repas." />
+<title>Claubert — Artisan · CNIT, La Défense</title>
+<meta name="description" content="Claubert, sandwicherie artisanale au CNIT, La Défense. Pain maison, produits frais, click & collect." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
-  :root{--bg:#ffffff;--ink:#111111;--soft:#6b6b6b;--line:#e6e6e6;--accent:#e5251b}
+  :root{--bg:#efe6d3;--surf:#fbf5e8;--ink:#39281a;--soft:#7c6650;--brick:#c0512e;--olive:#6f7b3e;--mustard:#d59a2e;--line:#e0d3ba}
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Inter",sans-serif;line-height:1.6;font-feature-settings:"cv11","ss01"}
+  body{background:var(--bg);color:var(--ink);font-family:"Nunito Sans",sans-serif;line-height:1.7;overflow-x:hidden}
+  /* texture papier kraft */
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  h1,h2,h3{font-family:"Fraunces",serif;font-weight:600;line-height:1.07}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-  .demo{border-bottom:1px solid var(--line);text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);padding:8px}
-  header{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .logo{font-weight:800;font-size:21px;letter-spacing:-.02em}
-  .logo i{color:var(--accent);font-style:normal}
-  .links{display:none;gap:30px;font-size:14px;font-weight:500;color:var(--soft)}
-  .links a:hover{color:var(--ink)}
-  .btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:14px;padding:11px 20px;border-radius:6px}
-  .btn:hover{background:#c41d14}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--ink)}
-  .hero{padding:96px 0 72px;border-bottom:1px solid var(--line)}
-  .ey{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.02em}
-  .hero h1{font-size:clamp(40px,8vw,76px);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:20px 0 22px;max-width:14ch}
-  .hero p{color:var(--soft);font-size:19px;max-width:48ch;margin-bottom:30px}
-  .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:54px}
-  .meta div{background:#fff;padding:18px 20px}
-  .meta .k{font-size:12px;color:var(--soft);text-transform:uppercase;letter-spacing:.04em}
-  .meta .v{font-weight:600;margin-top:4px}
-  section{padding:72px 0;border-bottom:1px solid var(--line)}
-  .sec-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:40px}
-  h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em}
-  .grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
-  .cell{background:#fff;padding:26px}
-  .cell .num{font-size:12px;color:var(--soft)}
-  .cell h3{font-size:20px;font-weight:700;margin:10px 0 6px;letter-spacing:-.01em}
-  .cell p{color:var(--soft);font-size:14px}
-  .cell .tag{display:inline-block;font-size:11px;font-weight:600;color:var(--accent);margin-top:10px;text-transform:uppercase;letter-spacing:.04em}
-  .cell .price{margin-top:14px;font-weight:700;font-size:15px}
-  .cell .price s{color:var(--soft);text-decoration:none}
-  .two{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
-  .two > a{background:#fff;padding:36px;display:block}
-  .two > a:hover{background:#fafafa}
-  .two h3{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-  .two p{color:var(--soft);margin-bottom:16px}
-  .two .go{font-weight:600;color:var(--accent)}
-  footer{padding:56px 0;color:var(--soft);font-size:14px}
-  .foot{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between}
-  .foot .logo{color:var(--ink)}
-  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);padding:12px 16px}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  .demo{background:var(--brick);color:#fbeede;text-align:center;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:8px}
+  [data-reveal]{opacity:0;transform:translateY(26px);transition:.85s cubic-bezier(.2,.7,.2,1)}
+  [data-reveal].in{opacity:1;transform:none}
+  header{position:sticky;top:0;z-index:40;background:rgba(239,230,211,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .logo{font-family:"Fraunces";font-size:27px;font-weight:600}.logo span{color:var(--brick)}
+  .links{display:none;gap:28px;font-weight:700}
+  .links a:hover{color:var(--brick)}
+  .btn{display:inline-block;background:var(--brick);color:#fff;font-weight:800;padding:14px 28px;border-radius:50px;transition:.2s;box-shadow:0 8px 20px -8px rgba(192,81,46,.7)}
+  .btn:hover{background:#a8431f;transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);box-shadow:none}
+  .btn.ghost:hover{background:var(--ink);color:var(--surf)}
+  .hero{position:relative;padding:64px 0 50px}
+  .hero .in{display:grid;gap:36px;align-items:center}
+  .seal{position:absolute;top:18px;right:24px;width:108px;height:108px;border-radius:50%;background:var(--mustard);color:#3b2a12;display:none;align-items:center;justify-content:center;text-align:center;font-family:"Fraunces";font-weight:600;font-size:13px;line-height:1.2;transform:rotate(-10deg);box-shadow:0 10px 24px -8px rgba(0,0,0,.3)}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#e7ddc4;color:var(--olive);font-weight:800;font-size:13px;padding:7px 15px;border-radius:50px}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--olive)}
+  .hero h1{font-size:clamp(42px,8.5vw,76px);margin:18px 0 16px}
+  .hero h1 em{font-style:italic;color:var(--brick)}
+  .hero p{color:var(--soft);font-size:18px;max-width:42ch;margin-bottom:26px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .art{position:relative;aspect-ratio:1;border-radius:46% 54% 58% 42%/52% 44% 56% 48%;background:
+    radial-gradient(circle at 32% 30%,#e7b65a,transparent 42%),
+    radial-gradient(circle at 75% 72%,#cf6a3e,transparent 50%),
+    linear-gradient(150deg,#8a9a44,#5c6a32);
+    display:flex;align-items:center;justify-content:center;font-size:120px;box-shadow:inset 0 0 60px rgba(0,0,0,.15)}
+  .ribbon{overflow:hidden;white-space:nowrap;background:var(--olive);color:#f4efe0;padding:12px 0;font-family:"Fraunces";font-style:italic;font-size:20px}
+  .ribbon div{display:inline-block;animation:scroll 24s linear infinite}.ribbon span{margin:0 22px}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  section{padding:70px 0}
+  .ey{font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--mustard)}
+  h2.t{font-size:clamp(32px,5.5vw,50px);margin:8px 0 34px}
+  .grid{display:grid;gap:22px;grid-template-columns:1fr}
+  .card{background:var(--surf);border:1px solid var(--line);border-radius:26px;overflow:hidden;transition:.22s}
+  .card:hover{transform:translateY(-5px);box-shadow:0 20px 40px -22px rgba(57,40,26,.5)}
+  .card .top{aspect-ratio:16/11;display:flex;align-items:center;justify-content:center;font-size:68px}
+  .card:nth-child(1) .top{background:#f0e0bc}.card:nth-child(2) .top{background:#e2ecc8}.card:nth-child(3) .top{background:#f2d8c0}
+  .card .body{padding:20px 22px}
+  .card h3{font-size:23px;margin-bottom:6px}
+  .card p{color:var(--soft);font-size:14px}
+  .leaf{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--olive);background:#e7ddc4;border-radius:30px;padding:3px 11px;margin-top:10px}
+  .price{margin-top:12px;font-weight:800}.price b{color:var(--brick)}
+  .two{display:grid;gap:22px;grid-template-columns:1fr}
+  .panel{border-radius:28px;padding:38px;color:#fff;position:relative;overflow:hidden}
+  .panel.a{background:linear-gradient(150deg,#7a8a3f,#4f5a2c)}.panel.b{background:linear-gradient(150deg,#cf6a3e,#a8431f)}
+  .panel h3{font-size:28px;margin-bottom:10px}.panel p{opacity:.94;margin-bottom:22px}
+  .panel .btn{background:#fff;color:var(--ink);box-shadow:none}
+  footer{background:var(--ink);color:#d8c8b3;padding:54px 0;font-size:14px}
+  .foot{display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between}.foot .logo{color:#fff}
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(239,230,211,.95);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px 16px}
   .sticky .btn{display:block;text-align:center}
-  body{padding-bottom:70px}
-  @media(min-width:820px){.links{display:flex}.grid{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:1fr 1fr}.sticky{display:none}body{padding-bottom:0}}
+  body{padding-bottom:76px}
+  @media(min-width:860px){.links{display:flex}.seal{display:flex}.hero .in{grid-template-columns:1.05fr .95fr}.grid{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:1fr 1fr}.sticky{display:none}body{padding-bottom:0}}
 </style>
 </head>
 <body>
-<div class="demo">Maquette · Variation 5 — Minimal</div>
+<div class="demo">Maquette · Variation 5 — Artisan</div>
 <header><div class="wrap nav">
-  <div class="logo">Claubert<i>.</i></div>
-  <nav class="links"><a href="#menu">Menu</a><a href="#fid">Fidélité</a><a href="#b2b">Entreprises</a><a href="#infos">Infos</a></nav>
+  <div class="logo">Clau<span>bert</span></div>
+  <nav class="links"><a href="#menu">Menu</a><a href="#histoire">Histoire</a><a href="#fid">Fidélité</a><a href="#b2b">Entreprises</a></nav>
   <a class="btn" href="#menu">Commander</a>
 </div></header>
 
-<section class="hero"><div class="wrap">
-  <p class="ey">Sandwicherie d'auteur — CNIT, La Défense</p>
-  <h1>Le déjeuner, fait avec exigence.</h1>
-  <p>Pain travaillé chaque matin, produits frais, recettes d'un chef Ferrandi. Click &amp; collect, prêt en 5 minutes.</p>
-  <div class="cta"><a class="btn" href="#menu">Commander</a><a class="btn ghost" href="#menu">Voir le menu →</a></div>
-  <div class="meta" id="infos">
-    <div><div class="k">Adresse</div><div class="v">CNIT, La Défense</div></div>
-    <div><div class="k">Horaires</div><div class="v">Lun–Ven · 11h–16h</div></div>
-    <div><div class="k">Accès</div><div class="v">RER A · Métro 1</div></div>
-    <div><div class="k">Statut</div><div class="v" style="color:#1a8a4b">● Ouvert</div></div>
+<section class="hero"><div class="wrap" style="position:relative">
+  <div class="seal">Fait<br>maison<br>chaque matin</div>
+  <div class="in">
+    <div>
+      <span class="chip"><span class="dot"></span>Ouvert · ferme à 16h00</span>
+      <h1>L'artisan du <em>bon déjeuner.</em></h1>
+      <p>Pain pétri chaque matin, producteurs choisis, légumes de saison. Le goût du fait-maison, au cœur de La Défense.</p>
+      <div class="cta"><a class="btn" href="#menu">Commander en click &amp; collect</a><a class="btn ghost" href="#menu">Voir le menu</a></div>
+    </div>
+    <div class="art">🥖</div>
   </div>
 </div></section>
+
+<div class="ribbon"><div>
+  <span>✺ Pain maison</span><span>✺ Produits de saison</span><span>✺ Sourcing local</span><span>✺ Click &amp; collect</span>
+  <span>✺ Pain maison</span><span>✺ Produits de saison</span><span>✺ Sourcing local</span><span>✺ Click &amp; collect</span>
+</div></div>
 
 <section id="menu"><div class="wrap">
-  <div class="sec-h"><h2>Menu</h2><a class="ey" href="#menu">Classique / Signature</a></div>
+  <p class="ey" data-reveal>La carte</p><h2 class="t" data-reveal>Nos sandwichs signature</h2>
   <div class="grid">
-    <div class="cell"><div class="num">01</div><h3>Le Défense</h3><p>Poulet rôti, tomates confites, pesto de roquette, focaccia.</p><span class="tag">Signature</span><div class="price">9,90 € <s>· 7,90 €</s></div></div>
-    <div class="cell"><div class="num">02</div><h3>Le Jardin du CNIT</h3><p>Falafel, houmous, légumes grillés, yaourt-menthe.</p><span class="tag">Végé</span><div class="price">9,50 € <s>· 7,50 €</s></div></div>
-    <div class="cell"><div class="num">03</div><h3>Le Parvis</h3><p>Bœuf braisé 12 h, cheddar, oignons caramélisés, brioché.</p><span class="tag">Signature</span><div class="price">11,90 € <s>· 8,90 €</s></div></div>
-    <div class="cell"><div class="num">04</div><h3>L'Esplanade</h3><p>Saumon fumé, fromage frais, concombre, aneth, seigle.</p><span class="tag">Nouveau</span><div class="price">10,90 € <s>· 8,50 €</s></div></div>
+    <div class="card" data-reveal><div class="top">🥪</div><div class="body"><h3>Le Défense</h3><p>Poulet rôti maison, tomates confites, pesto de roquette.</p><span class="leaf">Signature</span><div class="price"><b>9,90 €</b> · Classique 7,90 €</div></div></div>
+    <div class="card" data-reveal><div class="top">🥗</div><div class="body"><h3>Le Jardin du CNIT</h3><p>Falafel, houmous, légumes grillés, yaourt-menthe.</p><span class="leaf">Végé</span><div class="price"><b>9,50 €</b> · Classique 7,50 €</div></div></div>
+    <div class="card" data-reveal><div class="top">🧀</div><div class="body"><h3>La Coupole</h3><p>Chèvre frais, miel, noix, roquette, pain aux céréales.</p><span class="leaf">Végé</span><div class="price"><b>9,20 €</b> · Classique 7,20 €</div></div></div>
   </div>
 </div></section>
 
-<section style="padding:0;border:0"><div class="wrap"><div class="two">
-  <a href="#" id="fid"><h3>Fidélité</h3><p>1 € dépensé = 1 point. Café, dessert, sandwich offert. Inscription en 30 secondes.</p><span class="go">Rejoindre →</span></a>
-  <a href="#" id="b2b"><h3>Entreprises</h3><p>Plateaux repas livrés à vos étages à La Défense. Devis sous 24 h.</p><span class="go">Demander un devis →</span></a>
-</div></div></section>
+<section id="histoire" style="padding-top:0"><div class="wrap" data-reveal style="background:var(--surf);border:1px solid var(--line);border-radius:30px;padding:42px">
+  <p class="ey">Notre histoire</p>
+  <h2 class="t" style="margin-bottom:14px">Un savoir-faire de chef, <em style="font-style:italic;color:var(--brick)">dans un sandwich.</em></h2>
+  <p style="color:var(--soft);max-width:62ch;font-size:17px">Et si le déjeuner rapide avait le goût d'une vraie cuisine ? Recettes d'un chef formé à Ferrandi, sourcing exigeant et pain maison quotidien.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap two">
+  <div class="panel a" id="fid" data-reveal><h3>Programme fidélité</h3><p>1 € dépensé = 1 point. Café, dessert, sandwich offert. Inscription en 30 secondes.</p><a class="btn" href="#">Rejoindre</a></div>
+  <div class="panel b" id="b2b" data-reveal><h3>Plateaux repas</h3><p>Livrés à vos étages à La Défense. Formules sur mesure, devis sous 24 h.</p><a class="btn" href="#">Demander un devis</a></div>
+</div></section>
 
 <footer><div class="wrap foot">
-  <div class="logo">Claubert<i style="color:var(--accent)">.</i></div>
-  <div>CNIT, Place de la Défense, 92090 Puteaux</div>
+  <div class="logo">Clau<span style="color:var(--mustard)">bert</span></div>
+  <div>CNIT, Place de la Défense<br>92090 Puteaux · Lun–Ven 11h–16h</div>
   <div>TikTok · Instagram · LinkedIn</div>
 </div></footer>
 
 <div class="sticky"><a class="btn" href="#menu">Commander en click &amp; collect</a></div>
+<script>
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('[data-reveal]').forEach((el,i)=>{el.style.transitionDelay=(i%3*0.07)+'s';io.observe(el)});
+</script>
 </body>
 </html>

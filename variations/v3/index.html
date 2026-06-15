@@ -9,50 +9,58 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Anton&display=swap" rel="stylesheet" />
 <style>
-  :root{--bg:#f2f0eb;--ink:#0a0a0a;--accent:#e5251b}
+  :root{--bg:#eeece4;--ink:#080808;--accent:#ec1c24}
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace;line-height:1.5}
+  body{background:var(--bg);color:var(--ink);font-family:"Space Mono",monospace;line-height:1.5;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
-  .demo{background:var(--ink);color:var(--bg);text-align:center;font-size:11px;letter-spacing:3px;padding:7px;text-transform:uppercase}
-  header{border-bottom:3px solid var(--ink);position:sticky;top:0;background:var(--bg);z-index:30}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{font-family:"Anton";font-size:30px;letter-spacing:1px}
-  .links{display:none;gap:22px;font-size:13px;text-transform:uppercase}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 18px}
+  .demo{background:var(--ink);color:var(--bg);text-align:center;font-size:10px;letter-spacing:4px;padding:8px;text-transform:uppercase}
+  [data-reveal]{opacity:0;transform:translateY(24px);transition:.6s cubic-bezier(.2,.8,.2,1)}
+  [data-reveal].in{opacity:1;transform:none}
+  header{border-bottom:4px solid var(--ink);position:sticky;top:0;background:var(--bg);z-index:40}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:"Anton";font-size:32px;letter-spacing:1px}
+  .links{display:none;gap:0}
+  .links a{font-size:12px;text-transform:uppercase;padding:8px 14px;border-left:2px solid var(--ink)}
   .links a:hover{background:var(--ink);color:var(--bg)}
-  .btn{border:3px solid var(--ink);padding:11px 20px;font-weight:700;text-transform:uppercase;font-size:13px;background:var(--accent);color:#fff}
+  .btn{border:3px solid var(--ink);padding:12px 22px;font-weight:700;text-transform:uppercase;font-size:13px;background:var(--accent);color:#fff;transition:.12s}
   .btn:hover{background:var(--ink)}
-  .btn.ghost{background:transparent;color:var(--ink)}
-  .btn.ghost:hover{background:var(--ink);color:var(--bg)}
-  .hero{border-bottom:3px solid var(--ink);padding:40px 0}
-  .hero h1{font-family:"Anton";font-size:clamp(56px,16vw,150px);line-height:.9;text-transform:uppercase}
-  .hero .meta{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;font-size:12px;text-transform:uppercase;margin-top:18px;border-top:3px solid var(--ink);padding-top:14px}
-  .hero p{font-size:16px;max-width:60ch;margin:22px 0}
-  .cta{display:flex;gap:14px;flex-wrap:wrap}
-  .label{font-size:12px;text-transform:uppercase;letter-spacing:2px;border:3px solid var(--ink);display:inline-block;padding:5px 12px}
-  section{border-bottom:3px solid var(--ink);padding:40px 0}
-  h2{font-family:"Anton";font-size:clamp(34px,8vw,68px);text-transform:uppercase;margin-bottom:24px}
-  .row{display:grid;grid-template-columns:1fr;border-top:3px solid var(--ink)}
-  .item{border-bottom:3px solid var(--ink);padding:20px 0;display:grid;grid-template-columns:1fr auto;gap:12px}
-  .item:last-child{border-bottom:0}
+  .btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:var(--ink);color:var(--bg)}
+  .hero{border-bottom:4px solid var(--ink);padding:30px 0 0}
+  .hero h1{font-family:"Anton";font-size:clamp(64px,19vw,210px);line-height:.86;text-transform:uppercase;letter-spacing:-.01em}
+  .hero h1 .out{-webkit-text-stroke:3px var(--ink);color:transparent}
+  .hero .sub{display:grid;grid-template-columns:1fr;border-top:4px solid var(--ink);margin-top:18px}
+  .hero .sub > div{padding:18px 0;border-bottom:0}
+  .hero p{font-size:16px;max-width:62ch}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .label{font-size:12px;text-transform:uppercase;letter-spacing:2px;border:3px solid var(--ink);display:inline-block;padding:6px 13px}
+  .marq{background:var(--accent);color:#fff;border-bottom:4px solid var(--ink);overflow:hidden;white-space:nowrap;padding:10px 0;font-family:"Anton";text-transform:uppercase;letter-spacing:2px;font-size:22px}
+  .marq div{display:inline-block;animation:scroll 18s linear infinite}
+  .marq span{margin:0 22px}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  section{border-bottom:4px solid var(--ink);padding:48px 0}
+  h2{font-family:"Anton";font-size:clamp(40px,9vw,86px);text-transform:uppercase;margin-bottom:28px;letter-spacing:-.01em}
+  .row{border-top:3px solid var(--ink)}
+  .item{border-bottom:3px solid var(--ink);padding:22px 0;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:baseline;transition:.15s}
+  .item:hover{background:var(--ink);color:var(--bg);padding-inline:14px}
+  .item .no{font-family:"Anton";font-size:24px}
   .item h3{font-family:"Anton";font-size:30px;text-transform:uppercase;font-weight:400}
-  .item p{font-size:13px;max-width:52ch;margin-top:6px}
-  .item .tag{font-size:11px;text-transform:uppercase;border:2px solid var(--ink);display:inline-block;padding:2px 8px;margin-top:8px}
-  .price{font-family:"Anton";font-size:26px;text-align:right;white-space:nowrap}
+  .item p{font-size:13px;max-width:54ch;margin-top:4px}
+  .item .tag{font-size:11px;text-transform:uppercase;border:2px solid currentColor;display:inline-block;padding:2px 8px;margin-top:8px}
+  .price{font-family:"Anton";font-size:28px;text-align:right;white-space:nowrap}
   .price small{display:block;font-family:"Space Mono";font-size:12px}
   .two{display:grid;grid-template-columns:1fr}
-  .two > div{padding:34px;border-bottom:3px solid var(--ink)}
-  .two > div:first-child{border-right:0}
-  .two h3{font-family:"Anton";font-size:30px;text-transform:uppercase;font-weight:400;margin-bottom:10px}
-  .two p{font-size:14px;margin-bottom:18px}
-  .inv{background:var(--ink);color:var(--bg)}
+  .two > div{padding:40px 22px}
+  .two .inv{background:var(--ink);color:var(--bg)}
+  .two h3{font-family:"Anton";font-size:36px;text-transform:uppercase;font-weight:400;margin-bottom:12px}
+  .two p{font-size:14px;margin-bottom:20px;max-width:44ch}
   footer{padding:40px 0;font-size:13px;text-transform:uppercase}
   .foot{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between}
-  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;border-top:3px solid var(--ink);background:var(--bg);padding:10px 14px}
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;border-top:4px solid var(--ink);background:var(--bg);padding:10px 14px}
   .sticky .btn{display:block;text-align:center}
   body{padding-bottom:64px}
-  @media(min-width:820px){.links{display:flex}.two{grid-template-columns:1fr 1fr}.two>div:first-child{border-right:3px solid var(--ink)}.sticky{display:none}body{padding-bottom:0}}
+  @media(min-width:860px){.links{display:flex}.hero .sub{grid-template-columns:2fr 1fr}.two{grid-template-columns:1fr 1fr}.sticky{display:none}body{padding-bottom:0}}
 </style>
 </head>
 <body>
@@ -64,26 +72,33 @@
 </div></header>
 
 <section class="hero"><div class="wrap">
-  <span class="label">● Ouvert — ferme à 16:00</span>
-  <h1>Sand-<br>wich<br>d'auteur.</h1>
-  <p>// Pain travaillé chaque matin. Produits frais. Recettes d'un chef Ferrandi. À emporter, au CNIT, La Défense.</p>
-  <div class="cta"><a class="btn" href="#menu">Commander →</a><a class="btn ghost" href="#menu">Le menu</a></div>
-  <div class="meta"><span>CNIT / LA DÉFENSE</span><span>RER A · M°1</span><span>LUN–VEN 11–16H</span><span>CLICK &amp; COLLECT</span></div>
+  <span class="label" style="margin-bottom:14px;display:inline-block">● OUVERT — FERME À 16:00</span>
+  <h1>SAND<span class="out">WICH</span><br>D'AUTEUR</h1>
+  <div class="sub">
+    <div><p>// Pain travaillé chaque matin. Produits frais. Recettes d'un chef formé à Ferrandi. À emporter, au CNIT, La Défense.</p>
+      <div class="cta"><a class="btn" href="#menu">Commander →</a><a class="btn ghost" href="#menu">Le menu</a></div></div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;align-self:end;text-align:right">CNIT / LA DÉFENSE<br>RER A · M°1<br>LUN–VEN 11–16H</div>
+  </div>
 </div></section>
 
+<div class="marq"><div>
+  <span>CLICK &amp; COLLECT ✕</span><span>PAIN MAISON ✕</span><span>FRAIS DU JOUR ✕</span><span>CNIT ✕</span>
+  <span>CLICK &amp; COLLECT ✕</span><span>PAIN MAISON ✕</span><span>FRAIS DU JOUR ✕</span><span>CNIT ✕</span>
+</div></div>
+
 <section id="menu"><div class="wrap">
-  <h2>Menu / 01</h2>
+  <h2 data-reveal>MENU / 01</h2>
   <div class="row">
-    <div class="item"><div><h3>Le Défense</h3><p>Poulet rôti maison / tomates confites / pesto de roquette / focaccia.</p><span class="tag">SIGNATURE</span></div><div class="price">9,90€<small>CLASSIQUE 7,90€</small></div></div>
-    <div class="item"><div><h3>Jardin du CNIT</h3><p>Falafel / houmous / légumes grillés / yaourt-menthe.</p><span class="tag">VÉGÉ</span></div><div class="price">9,50€<small>CLASSIQUE 7,50€</small></div></div>
-    <div class="item"><div><h3>Le Parvis</h3><p>Bœuf braisé 12h / cheddar affiné / oignons caramélisés / brioché.</p><span class="tag">SIGNATURE</span></div><div class="price">11,90€<small>CLASSIQUE 8,90€</small></div></div>
-    <div class="item"><div><h3>L'Esplanade</h3><p>Saumon fumé / fromage frais herbes / concombre / aneth / seigle.</p><span class="tag">NOUVEAU</span></div><div class="price">10,90€<small>CLASSIQUE 8,50€</small></div></div>
+    <div class="item" data-reveal><div class="no">01</div><div><h3>Le Défense</h3><p>Poulet rôti maison / tomates confites / pesto de roquette / focaccia.</p><span class="tag">SIGNATURE</span></div><div class="price">9,90€<small>CLASS. 7,90€</small></div></div>
+    <div class="item" data-reveal><div class="no">02</div><div><h3>Jardin du CNIT</h3><p>Falafel / houmous / légumes grillés / yaourt-menthe.</p><span class="tag">VÉGÉ</span></div><div class="price">9,50€<small>CLASS. 7,50€</small></div></div>
+    <div class="item" data-reveal><div class="no">03</div><div><h3>Le Parvis</h3><p>Bœuf braisé 12h / cheddar affiné / oignons caramélisés / brioché.</p><span class="tag">SIGNATURE</span></div><div class="price">11,90€<small>CLASS. 8,90€</small></div></div>
+    <div class="item" data-reveal><div class="no">04</div><div><h3>L'Esplanade</h3><p>Saumon fumé / fromage frais herbes / concombre / aneth / seigle.</p><span class="tag">NOUVEAU</span></div><div class="price">10,90€<small>CLASS. 8,50€</small></div></div>
   </div>
 </div></section>
 
 <section style="padding:0"><div class="two">
-  <div id="fid"><h3>Fidélité</h3><p>1€ DÉPENSÉ = 1 POINT. Café, dessert, sandwich offert. Inscription 30 secondes.</p><a class="btn" href="#">Rejoindre →</a></div>
-  <div class="inv" id="b2b"><h3>Entreprises</h3><p>PLATEAUX REPAS LIVRÉS À VOS ÉTAGES. LA DÉFENSE. DEVIS SOUS 24H.</p><a class="btn ghost" style="color:#fff;border-color:#fff" href="#">Devis →</a></div>
+  <div id="fid" data-reveal><h3>FIDÉLITÉ</h3><p>1€ DÉPENSÉ = 1 POINT. CAFÉ, DESSERT, SANDWICH OFFERT. INSCRIPTION 30 SECONDES.</p><a class="btn" href="#">Rejoindre →</a></div>
+  <div class="inv" id="b2b" data-reveal><h3>ENTREPRISES</h3><p>PLATEAUX REPAS LIVRÉS À VOS ÉTAGES. LA DÉFENSE. DEVIS SOUS 24H.</p><a class="btn ghost" style="color:#fff;border-color:#fff" href="#">Devis →</a></div>
 </div></section>
 
 <footer><div class="wrap foot">
@@ -93,5 +108,9 @@
 </div></footer>
 
 <div class="sticky"><a class="btn" href="#menu">COMMANDER — CLICK &amp; COLLECT</a></div>
+<script>
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('[data-reveal]').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.05)+'s';io.observe(el)});
+</script>
 </body>
 </html>
