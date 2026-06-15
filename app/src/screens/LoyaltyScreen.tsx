@@ -65,13 +65,9 @@ export function LoyaltyScreen() {
                     {r.points} {t("loyalty.pointsShort")}
                   </p>
                 </div>
-                {unlocked ? (
+                {unlocked && (
                   <span className="flex items-center gap-1 text-xs font-semibold text-primary">
                     <CheckCircle2 className="size-4" /> {t("loyalty.unlocked")}
-                  </span>
-                ) : (
-                  <span className="text-xs font-semibold text-muted-foreground">
-                    +{r.points - points}
                   </span>
                 )}
               </div>
