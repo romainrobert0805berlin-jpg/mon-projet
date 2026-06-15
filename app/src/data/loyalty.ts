@@ -4,9 +4,6 @@ import type { Lang } from "@/i18n/dict"
 
 export const POINTS_PER_EURO = 1
 
-// Bonus de points offert a chaque commande (en plus des points d'achat).
-export const ORDER_BONUS_POINTS = 100
-
 // Points de démo de l'utilisateur connecté (placeholder).
 export const DEMO_POINTS = 120
 
