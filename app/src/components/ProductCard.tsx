@@ -2,15 +2,11 @@ import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { ProductImage } from "@/components/ProductImage"
 import { Plus } from "lucide-react"
 import { useCart } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
 import { allergenLabels, loc, type Product } from "@/data/menu"
-
-const gradients: Record<string, string> = {
-  viande: "from-orange-400 to-red-600",
-  vege: "from-lime-400 to-green-600",
-}
 
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart()
@@ -21,12 +17,13 @@ export function ProductCard({ product }: { product: Product }) {
     <Card className="pt-0">
       <button
         onClick={() => navigate(`/menu/${product.id}`)}
-        className={`group relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-gradient-to-br text-6xl transition-transform active:scale-[0.99] ${gradients[product.diet]}`}
+        className="group relative block aspect-[16/10] w-full overflow-hidden"
         aria-label={product.name}
       >
-        <span aria-hidden className="transition-transform duration-300 group-hover:scale-110">
-          {product.emoji}
-        </span>
+        <ProductImage
+          product={product}
+          className="size-full transition-transform duration-500 group-hover:scale-105"
+        />
         {!product.inStock && (
           <span className="absolute inset-0 grid place-items-center bg-black/55 text-sm font-semibold text-white">
             {t("common.soldOut")}

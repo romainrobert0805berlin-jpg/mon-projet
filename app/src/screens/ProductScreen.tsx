@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { useCart, type Variant } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
+import { ProductImage } from "@/components/ProductImage"
 import {
   getProduct,
   allergenLabels,
@@ -12,11 +13,6 @@ import {
   loc,
 } from "@/data/menu"
 import { cn } from "@/lib/utils"
-
-const gradients: Record<string, string> = {
-  viande: "from-orange-400 to-red-600",
-  vege: "from-lime-400 to-green-600",
-}
 
 export function ProductScreen() {
   const { id } = useParams()
@@ -41,10 +37,8 @@ export function ProductScreen() {
 
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div
-        className={`relative -mx-4 -mt-4 flex aspect-[4/3] items-center justify-center bg-gradient-to-br text-[120px] ${gradients[product.diet]}`}
-      >
-        <span aria-hidden>{product.emoji}</span>
+      <div className="relative -mx-4 -mt-4 aspect-[4/3] overflow-hidden">
+        <ProductImage product={product} className="size-full" />
         {!product.inStock && (
           <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white">
             {t("common.soldOut")}
