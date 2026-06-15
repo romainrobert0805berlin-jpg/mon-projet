@@ -13,6 +13,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Service worker auto-destructeur : evite que le cache hors-ligne intercepte
+      // les sous-pages (variations /v1../v5/) et purge les anciens caches chez les visiteurs.
+      selfDestroying: true,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'Claubert — Sandwicherie',
