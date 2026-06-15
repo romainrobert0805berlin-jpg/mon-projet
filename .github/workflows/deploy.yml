@@ -29,12 +29,23 @@ jobs:
       - run: npm run build
         working-directory: app
 
+      # Assemble : app a la racine + variations de design sous /v1../v5/ et /variations/
+      - name: Assemble site
+        run: |
+          rm -rf _site && mkdir _site
+          cp -r app/dist/. _site/
+          cp -r variations/. _site/variations/
+          for v in v1 v2 v3 v4 v5; do
+            mkdir -p "_site/$v"
+            cp -r "variations/$v/." "_site/$v/"
+          done
+
       - uses: actions/configure-pages@v5
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: app/dist
+          path: _site
 
   deploy:
     needs: build
