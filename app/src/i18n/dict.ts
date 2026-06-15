@@ -99,6 +99,10 @@ export const dict: Dict = {
   "confirm.recap": { fr: "Récapitulatif", en: "Summary" },
   "confirm.total": { fr: "Total", en: "Total" },
   "confirm.points": { fr: "points cumulés", en: "points earned" },
+  "confirm.bonusBreakdown": {
+    fr: "{base} pts d'achat + {bonus} pts offerts",
+    en: "{base} purchase pts + {bonus} bonus pts",
+  },
   "confirm.note": { fr: "Note", en: "Note" },
   "confirm.home": { fr: "Retour à l'accueil", en: "Back to home" },
   "confirm.again": { fr: "Commander à nouveau", en: "Order again" },
