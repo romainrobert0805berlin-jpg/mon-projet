@@ -21,10 +21,12 @@ export function ProductCard({ product }: { product: Product }) {
     <Card className="pt-0">
       <button
         onClick={() => navigate(`/menu/${product.id}`)}
-        className={`relative flex aspect-[16/10] items-center justify-center bg-gradient-to-br text-6xl ${gradients[product.diet]}`}
+        className={`group relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-gradient-to-br text-6xl transition-transform active:scale-[0.99] ${gradients[product.diet]}`}
         aria-label={product.name}
       >
-        <span aria-hidden>{product.emoji}</span>
+        <span aria-hidden className="transition-transform duration-300 group-hover:scale-110">
+          {product.emoji}
+        </span>
         {!product.inStock && (
           <span className="absolute inset-0 grid place-items-center bg-black/55 text-sm font-semibold text-white">
             {t("common.soldOut")}

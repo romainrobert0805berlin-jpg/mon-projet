@@ -7,6 +7,42 @@ import { Gift, CheckCircle2, Users } from "lucide-react"
 import { rewards, rewardLabel, DEMO_POINTS, nextReward } from "@/data/loyalty"
 import { cn } from "@/lib/utils"
 
+function ProgressRing({ value, target }: { value: number; target: number }) {
+  const r = 34
+  const c = 2 * Math.PI * r
+  const pct = target > 0 ? Math.min(1, value / target) : 1
+  const offset = c * (1 - pct)
+  return (
+    <div className="relative grid size-[88px] shrink-0 place-items-center">
+      <svg width="88" height="88" viewBox="0 0 88 88" className="-rotate-90">
+        <circle cx="44" cy="44" r={r} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="7" />
+        <circle
+          cx="44"
+          cy="44"
+          r={r}
+          fill="none"
+          stroke="white"
+          strokeWidth="7"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={offset}
+          className="clb-ring"
+          style={
+            {
+              "--clb-ring-from": `${c}`,
+              "--clb-ring-to": `${offset}`,
+            } as React.CSSProperties
+          }
+        />
+      </svg>
+      <div className="absolute text-center leading-none">
+        <span className="block text-lg font-bold">{value}</span>
+        <span className="block text-[10px] uppercase tracking-wide text-white/80">pts</span>
+      </div>
+    </div>
+  )
+}
+
 export function LoyaltyScreen() {
   const { t, lang } = useI18n()
   const [done, setDone] = React.useState(false)
@@ -17,10 +53,13 @@ export function LoyaltyScreen() {
 
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div className="rounded-2xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-5 text-white">
-        <Gift className="size-7" />
-        <h1 className="mt-3 text-2xl font-semibold">{t("loyalty.title")}</h1>
-        <p className="mt-1 text-sm text-white/85">{t("loyalty.rate")}</p>
+      <div className="flex items-center gap-5 rounded-2xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-5 text-white">
+        <ProgressRing value={points} target={next ? next.points : points} />
+        <div>
+          <Gift className="size-6" />
+          <h1 className="mt-2 text-2xl font-semibold">{t("loyalty.title")}</h1>
+          <p className="mt-1 text-sm text-white/85">{t("loyalty.rate")}</p>
+        </div>
       </div>
 
       {/* Comment ça marche */}

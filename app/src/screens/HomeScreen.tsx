@@ -15,7 +15,7 @@ export function HomeScreen() {
     <div className="flex flex-col gap-6 pb-4">
       {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#d9542b] via-[#b8390f] to-[#7a2408] p-6 text-white">
-        <div className="absolute -right-6 -top-6 select-none text-[120px] opacity-25" aria-hidden>
+        <div className="clb-float absolute -right-6 -top-6 select-none text-[120px] opacity-25" aria-hidden>
           🥖
         </div>
         <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur">

@@ -2,17 +2,42 @@ import * as React from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
 import { useCart } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
-import { Minus, Plus, ShoppingBag, Clock } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Clock, Gift } from "lucide-react"
+import { newOrderNumber, saveOrder, type Order } from "@/lib/order"
 
 const slots = ["11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30"]
 
 export function CartScreen() {
   const navigate = useNavigate()
   const { t } = useI18n()
-  const { detailed, add, remove, total, count, clear } = useCart()
+  const { detailed, add, remove, total, count, points, clear } = useCart()
   const [slot, setSlot] = React.useState(slots[0])
+  const [notes, setNotes] = React.useState("")
+
+  const checkout = () => {
+    const order: Order = {
+      number: newOrderNumber(),
+      slot,
+      items: detailed.map((d) => ({
+        productId: d.product.id,
+        name: d.product.name,
+        emoji: d.product.emoji,
+        variant: d.variant,
+        qty: d.qty,
+        unit: d.unit,
+      })),
+      total,
+      points,
+      notes: notes.trim() || undefined,
+      createdAt: Date.now(),
+    }
+    saveOrder(order)
+    clear()
+    navigate("/confirmation", { state: { order } })
+  }
 
   if (count === 0) {
     return (
@@ -88,6 +113,20 @@ export function CartScreen() {
         </div>
       </div>
 
+      {/* Note cuisine */}
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="cart-notes" className="text-sm font-semibold">
+          {t("cart.notes")}
+        </label>
+        <Textarea
+          id="cart-notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          placeholder={t("cart.notesPlaceholder")}
+          rows={2}
+        />
+      </div>
+
       <Card>
         <CardContent className="flex items-center justify-between py-4">
           <div>
@@ -102,11 +141,15 @@ export function CartScreen() {
         </CardContent>
       </Card>
 
+      <p className="flex items-center justify-center gap-1.5 text-sm font-medium text-primary">
+        <Gift className="size-4" /> {t("cart.earn").replace("{n}", String(points))}
+      </p>
+
       <div className="rounded-xl border border-dashed border-border bg-muted/40 p-3 text-center text-xs text-muted-foreground">
         🔌 {t("cart.payNote")}
       </div>
 
-      <Button size="lg" className="w-full">
+      <Button size="lg" className="w-full" onClick={checkout}>
         {t("cart.pay")} {total.toFixed(2)} €
       </Button>
     </div>
