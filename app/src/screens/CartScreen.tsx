@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
+import { ProductImage } from "@/components/ProductImage"
 import { useCart } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
 import { Minus, Plus, ShoppingBag, Clock, Gift } from "lucide-react"
@@ -60,8 +61,8 @@ export function CartScreen() {
         {detailed.map((d) => (
           <Card key={d.product.id + d.variant}>
             <CardContent className="flex items-center gap-3 py-3">
-              <div className="grid size-12 place-items-center rounded-lg bg-secondary text-2xl">
-                {d.product.emoji}
+              <div className="size-12 shrink-0 overflow-hidden rounded-lg">
+                <ProductImage product={d.product} className="size-full" />
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold leading-tight">{d.product.name}</p>
@@ -146,7 +147,7 @@ export function CartScreen() {
       </p>
 
       <div className="rounded-xl border border-dashed border-border bg-muted/40 p-3 text-center text-xs text-muted-foreground">
-        🔌 {t("cart.payNote")}
+        {t("cart.payNote")}
       </div>
 
       <Button size="lg" className="w-full" onClick={checkout}>

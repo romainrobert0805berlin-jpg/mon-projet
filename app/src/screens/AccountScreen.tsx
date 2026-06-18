@@ -52,10 +52,10 @@ export function AccountScreen() {
         {next && (
           <p className="mt-2 text-xs text-white/80">
             {t("loyalty.toReward").replace("{n}", String(next.points - points))}{" "}
-            {rewardLabel(next, lang)} {next.emoji}
+            {rewardLabel(next, lang)}
           </p>
         )}
-        <p className="mt-3 text-[11px] text-white/60">🔌 {t("account.heypongoNote")}</p>
+        <p className="mt-3 text-[11px] text-background/60">{t("account.heypongoNote")}</p>
       </div>
 
       {/* Connexion (placeholder) */}

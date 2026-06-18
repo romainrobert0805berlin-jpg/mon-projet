@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/i18n/I18nProvider"
-import { Sprout } from "lucide-react"
+import { Sprout, ChefHat } from "lucide-react"
 
 export function StoryScreen() {
   const { t } = useI18n()
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div className="flex aspect-[5/4] items-center justify-center rounded-2xl bg-[#9cd8e4] text-7xl">
-        👨‍🍳
+      <div className="flex aspect-[5/4] items-center justify-center rounded-2xl bg-[#9cd8e4]">
+        <ChefHat className="size-20 text-foreground/70" strokeWidth={1.2} />
       </div>
       <div>
         <p className="text-xs font-bold uppercase tracking-[2px] text-primary">

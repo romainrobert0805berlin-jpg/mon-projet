@@ -15,7 +15,7 @@ export function AddressesScreen() {
 
       {/* Carte (placeholder) */}
       <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-border bg-[repeating-linear-gradient(45deg,#ece3d4,#ece3d4_18px,#e4d8c4_18px,#e4d8c4_36px)] text-sm font-semibold text-foreground/60 dark:bg-[repeating-linear-gradient(45deg,#2a2622,#2a2622_18px,#332e29_18px,#332e29_36px)]">
-        🗺️ {t("addr.mapPlaceholder")}
+        {t("addr.mapPlaceholder")}
       </div>
 
       <Card>
