@@ -2,18 +2,12 @@ import * as React from "react"
 import type { Product, ProteinKey } from "@/data/menu"
 import { cn } from "@/lib/utils"
 
-// Photos produits (placeholders Unsplash, chargées par le navigateur).
-// Remplacer par les vraies photos Claubert quand elles seront prêtes.
-// Si une URL ne charge pas, on retombe automatiquement sur l'illustration.
-const photos: Record<string, string> = {
-  rome: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=800&q=70",
-  nievre: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=70",
-  lisbonne: "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=800&q=70",
-  bali: "https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?auto=format&fit=crop&w=800&q=70",
-  paris: "https://images.unsplash.com/photo-1554433607-66b5efe9d304?auto=format&fit=crop&w=800&q=70",
-  "kuala-lumpur":
-    "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=70",
-}
+// Photos produits. Vide pour l'instant : on affiche les illustrations (fiables).
+// Pour activer de vraies photos, mettre une URL par id de produit, ex :
+//   rome: "https://.../rome.jpg",
+// (ou déposer les fichiers dans /public/photos et référencer "/mon-projet/photos/rome.jpg").
+// Si une URL ne charge pas, repli automatique sur l'illustration.
+const photos: Record<string, string> = {}
 
 interface Palette {
   bg: [string, string]
