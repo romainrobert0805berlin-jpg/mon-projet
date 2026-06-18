@@ -54,7 +54,7 @@ export function ConfirmationScreen() {
       <div className="relative -mx-4 -mt-4 overflow-hidden bg-gradient-to-br from-[#2f7d4e] to-[#1f5a37] px-6 py-10 text-center text-white">
         <Confetti />
         <div className="relative">
-          <span className="clb-check mx-auto grid size-20 place-items-center rounded-full bg-white/15 backdrop-blur">
+          <span className="clb-check mx-auto grid size-20 place-items-center rounded-full bg-white/20">
             <CheckCircle2 className="size-12" />
           </span>
           <h1 className="mt-4 text-2xl font-semibold">{t("confirm.title")}</h1>

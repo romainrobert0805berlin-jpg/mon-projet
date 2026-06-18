@@ -18,7 +18,7 @@ export function HomeScreen() {
         <div className="clb-float absolute -right-6 -top-6 select-none text-[120px] opacity-25" aria-hidden>
           🥖
         </div>
-        <span className="inline-flex items-center gap-2 rounded-full bg-white/65 px-3 py-1 text-xs font-semibold backdrop-blur">
+        <span className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1 text-xs font-semibold">
           <span className="size-2 rounded-full bg-green-600" />
           {t("home.open")}
         </span>
