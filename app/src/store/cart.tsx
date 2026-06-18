@@ -46,21 +46,24 @@ function breadPrice(p: Product, bread: Bread) {
   return bread === "ciabatta" ? p.priceSignature : p.priceClassic
 }
 
-function supplementsTotal(sup: Record<string, number>) {
+function supplementsTotal(sup: Record<string, number> | undefined) {
+  if (!sup) return 0
   return supplements.reduce((s, def) => s + (sup[def.key] || 0) * def.price, 0)
 }
 
 export function unitPrice(p: Product, o: LineOptions) {
-  return breadPrice(p, o.bread) + supplementsTotal(o.supplements) + (o.formula ? MENU_FORMULA_PRICE : 0)
+  return (
+    breadPrice(p, o.bread) + supplementsTotal(o.supplements) + (o.formula ? MENU_FORMULA_PRICE : 0)
+  )
 }
 
 export function optionsKey(productId: string, o: LineOptions) {
-  const sup = Object.entries(o.supplements)
+  const sup = Object.entries(o.supplements || {})
     .filter(([, n]) => n > 0)
     .sort()
     .map(([k, n]) => `${k}:${n}`)
     .join(",")
-  return `${productId}|${o.bread}|${sup}|${o.formula ? "menu" : ""}`
+  return `${productId}|${o.bread || "baguette"}|${sup}|${o.formula ? "menu" : ""}`
 }
 
 export const defaultOptions = (): LineOptions => ({
@@ -117,9 +120,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         {
           key,
           productId,
-          bread: options.bread,
-          supplements: options.supplements,
-          formula: options.formula,
+          bread: options.bread || "baguette",
+          supplements: options.supplements || {},
+          formula: !!options.formula,
           qty,
         },
       ]

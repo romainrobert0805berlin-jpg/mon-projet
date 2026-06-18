@@ -21,8 +21,12 @@ export function AccountScreen() {
     for (const it of order.items) {
       add(
         it.productId,
-        { bread: it.bread, supplements: it.supplements, formula: it.formula },
-        it.qty
+        {
+          bread: it.bread ?? "baguette",
+          supplements: it.supplements ?? {},
+          formula: it.formula ?? false,
+        },
+        it.qty ?? 1
       )
     }
     navigate("/panier")

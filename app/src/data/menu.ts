@@ -165,8 +165,9 @@ export function describeLine(
   lang: Lang
 ): string {
   const parts: string[] = [o.bread === "ciabatta" ? "Ciabatta" : "Baguette"]
+  const sup = o.supplements || {}
   for (const s of supplements) {
-    const n = o.supplements[s.key] || 0
+    const n = sup[s.key] || 0
     if (n > 0) parts.push(`${loc(s.label, lang)}${n > 1 ? ` ×${n}` : ""}`)
   }
   if (o.formula) parts.push(lang === "fr" ? "Formule menu" : "Menu deal")
