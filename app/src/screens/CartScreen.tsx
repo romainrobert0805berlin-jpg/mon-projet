@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { ProductImage } from "@/components/ProductImage"
 import { useCart } from "@/store/cart"
 import { useI18n } from "@/i18n/I18nProvider"
+import { describeLine } from "@/data/menu"
 import { Minus, Plus, ShoppingBag, Clock, Gift } from "lucide-react"
 import { newOrderNumber, saveOrder, type Order } from "@/lib/order"
 
@@ -13,8 +14,8 @@ const slots = ["11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30"]
 
 export function CartScreen() {
   const navigate = useNavigate()
-  const { t } = useI18n()
-  const { detailed, add, remove, total, count, points, clear } = useCart()
+  const { t, lang } = useI18n()
+  const { detailed, setQty, total, count, points, clear } = useCart()
   const [slot, setSlot] = React.useState(slots[0])
   const [notes, setNotes] = React.useState("")
 
@@ -26,7 +27,9 @@ export function CartScreen() {
         productId: d.product.id,
         name: d.product.name,
         emoji: d.product.emoji,
-        variant: d.variant,
+        bread: d.bread,
+        supplements: d.supplements,
+        formula: d.formula,
         qty: d.qty,
         unit: d.unit,
       })),
@@ -59,24 +62,24 @@ export function CartScreen() {
 
       <div className="flex flex-col gap-3">
         {detailed.map((d) => (
-          <Card key={d.product.id + d.variant}>
+          <Card key={d.key}>
             <CardContent className="flex items-center gap-3 py-3">
               <div className="size-12 shrink-0 overflow-hidden rounded-lg">
                 <ProductImage product={d.product} className="size-full" />
               </div>
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold leading-tight">{d.product.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {d.variant === "signature" ? t("common.ciabatta") : t("common.baguette")} ·{" "}
-                  {d.unit.toFixed(2)} €
+                <p className="text-xs leading-snug text-muted-foreground">
+                  {describeLine(d, lang)}
                 </p>
+                <p className="text-xs font-medium">{d.unit.toFixed(2)} €</p>
               </div>
               <div className="flex items-center gap-2">
                 <Button
                   size="icon"
                   variant="outline"
                   className="size-8"
-                  onClick={() => remove(d.product.id, d.variant)}
+                  onClick={() => setQty(d.key, d.qty - 1)}
                 >
                   <Minus />
                 </Button>
@@ -85,7 +88,7 @@ export function CartScreen() {
                   size="icon"
                   variant="outline"
                   className="size-8"
-                  onClick={() => add(d.product.id, d.variant)}
+                  onClick={() => setQty(d.key, d.qty + 1)}
                 >
                   <Plus />
                 </Button>

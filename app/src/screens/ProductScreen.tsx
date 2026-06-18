@@ -3,24 +3,30 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { useCart, type Variant } from "@/store/cart"
-import { useI18n } from "@/i18n/I18nProvider"
 import { ProductImage } from "@/components/ProductImage"
+import { useCart, unitPrice, type Bread } from "@/store/cart"
+import { useI18n } from "@/i18n/I18nProvider"
 import {
   getProduct,
   allergenLabels,
   proteinLabels,
   supplements,
+  MENU_FORMULA_PRICE,
   loc,
 } from "@/data/menu"
 import { cn } from "@/lib/utils"
+import { Minus, Plus, Check } from "lucide-react"
 
 export function ProductScreen() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { add } = useCart()
   const { t, lang } = useI18n()
-  const [variant, setVariant] = React.useState<Variant>("signature")
+
+  const [bread, setBread] = React.useState<Bread>("baguette")
+  const [sup, setSup] = React.useState<Record<string, number>>({})
+  const [formula, setFormula] = React.useState(false)
+  const [qty, setQty] = React.useState(1)
 
   const product = id ? getProduct(id) : undefined
   if (!product) {
@@ -34,7 +40,18 @@ export function ProductScreen() {
     )
   }
 
-  const price = variant === "signature" ? product.priceSignature : product.priceClassic
+  const options = { bread, supplements: sup, formula }
+  const unit = unitPrice(product, options)
+  const total = unit * qty
+
+  const bumpSup = (key: string, d: number) =>
+    setSup((prev) => {
+      const n = Math.max(0, (prev[key] || 0) + d)
+      const next = { ...prev }
+      if (n === 0) delete next[key]
+      else next[key] = n
+      return next
+    })
 
   return (
     <div className="flex flex-col gap-5 pb-4">
@@ -58,11 +75,9 @@ export function ProductScreen() {
       </div>
 
       <div>
-        <h1 className="text-2xl font-semibold">{product.name}</h1>
+        <h1 className="text-2xl">{product.name}</h1>
         <p className="mt-1 text-muted-foreground">{loc(product.description, lang)}</p>
       </div>
-
-      <Separator />
 
       <div className="grid grid-cols-2 gap-3 text-sm">
         <div>
@@ -71,12 +86,6 @@ export function ProductScreen() {
           </p>
           <p className="font-medium">{loc(proteinLabels[product.protein], lang)}</p>
         </div>
-        {product.kcal && (
-          <div>
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Kcal</p>
-            <p className="font-medium">{product.kcal} kcal</p>
-          </div>
-        )}
         <div className="col-span-2">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">
             {t("common.allergens")}
@@ -89,23 +98,23 @@ export function ProductScreen() {
 
       <Separator />
 
-      {/* Choix variante */}
+      {/* Pain */}
       <div>
         <p className="mb-2 text-sm font-semibold">{t("product.chooseVariant")}</p>
         <div className="grid grid-cols-2 gap-2">
-          {(["classic", "signature"] as Variant[]).map((v) => {
-            const p = v === "signature" ? product.priceSignature : product.priceClassic
+          {(["baguette", "ciabatta"] as Bread[]).map((b) => {
+            const p = b === "ciabatta" ? product.priceSignature : product.priceClassic
             return (
               <button
-                key={v}
-                onClick={() => setVariant(v)}
+                key={b}
+                onClick={() => setBread(b)}
                 className={cn(
                   "rounded-xl border p-3 text-left transition-colors",
-                  variant === v ? "border-primary bg-primary/5" : "border-border"
+                  bread === b ? "border-primary bg-accent" : "border-border"
                 )}
               >
                 <p className="text-sm font-semibold">
-                  {v === "signature" ? t("common.ciabatta") : t("common.baguette")}
+                  {b === "ciabatta" ? t("common.ciabatta") : t("common.baguette")}
                 </p>
                 <p className="text-sm text-muted-foreground">{p.toFixed(2)} €</p>
               </button>
@@ -114,25 +123,93 @@ export function ProductScreen() {
         </div>
       </div>
 
-      <Separator />
-
       {/* Suppléments */}
       <div>
         <p className="mb-2 text-sm font-semibold">{t("product.supplements")}</p>
-        <div className="flex flex-col gap-1.5">
-          {supplements.map((s) => (
-            <div key={s.key} className="flex items-center justify-between text-sm">
-              <span>{loc(s.label, lang)}</span>
-              <span className="text-muted-foreground">+ {s.price.toFixed(2)} €</span>
-            </div>
-          ))}
+        <div className="flex flex-col gap-2">
+          {supplements.map((s) => {
+            const n = sup[s.key] || 0
+            return (
+              <div
+                key={s.key}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl border p-2.5 pl-3.5 transition-colors",
+                  n > 0 ? "border-primary bg-accent" : "border-border"
+                )}
+              >
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{loc(s.label, lang)}</p>
+                  <p className="text-xs text-muted-foreground">+ {s.price.toFixed(2)} €</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="size-8"
+                    disabled={n === 0}
+                    onClick={() => bumpSup(s.key, -1)}
+                    aria-label="−"
+                  >
+                    <Minus />
+                  </Button>
+                  <span className="w-4 text-center text-sm font-semibold">{n}</span>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="size-8"
+                    onClick={() => bumpSup(s.key, 1)}
+                    aria-label="+"
+                  >
+                    <Plus />
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
       {/* Formule menu */}
-      <div className="rounded-xl border border-border bg-accent/50 p-3">
-        <p className="text-sm font-semibold">{t("product.formula")}</p>
-        <p className="text-sm text-muted-foreground">{t("product.formulaDesc")}</p>
+      <button
+        onClick={() => setFormula((f) => !f)}
+        className={cn(
+          "flex items-center gap-3 rounded-xl border p-3.5 text-left transition-colors",
+          formula ? "border-primary bg-accent" : "border-border"
+        )}
+      >
+        <span
+          className={cn(
+            "grid size-6 shrink-0 place-items-center rounded-md border",
+            formula ? "border-primary bg-primary text-primary-foreground" : "border-border"
+          )}
+        >
+          {formula && <Check className="size-4" />}
+        </span>
+        <div className="flex-1">
+          <p className="text-sm font-semibold">{t("product.formula")}</p>
+          <p className="text-xs text-muted-foreground">{t("product.formulaDesc")}</p>
+        </div>
+        <span className="text-sm font-semibold">+ {MENU_FORMULA_PRICE.toFixed(2)} €</span>
+      </button>
+
+      {/* Quantité */}
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-semibold">{lang === "fr" ? "Quantité" : "Quantity"}</p>
+        <div className="flex items-center gap-3">
+          <Button
+            size="icon"
+            variant="outline"
+            className="size-9"
+            disabled={qty <= 1}
+            onClick={() => setQty((q) => Math.max(1, q - 1))}
+          >
+            <Minus />
+          </Button>
+          <span className="w-6 text-center text-base font-semibold">{qty}</span>
+          <Button size="icon" variant="outline" className="size-9" onClick={() => setQty((q) => q + 1)}>
+            <Plus />
+          </Button>
+        </div>
       </div>
 
       <Button
@@ -140,11 +217,11 @@ export function ProductScreen() {
         className="w-full"
         disabled={!product.inStock}
         onClick={() => {
-          add(product.id, variant)
+          add(product.id, options, qty)
           navigate("/panier")
         }}
       >
-        {t("product.addToCart")} · {price.toFixed(2)} €
+        {t("product.addToCart")} · {total.toFixed(2)} €
       </Button>
     </div>
   )

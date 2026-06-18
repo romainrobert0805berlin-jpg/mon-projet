@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useI18n } from "@/i18n/I18nProvider"
 import { CheckCircle2, Clock, MapPin, Gift } from "lucide-react"
-import { getProduct } from "@/data/menu"
+import { getProduct, describeLine } from "@/data/menu"
 import { ProductImage } from "@/components/ProductImage"
 import type { Order } from "@/lib/order"
 
@@ -45,7 +45,7 @@ function Confetti() {
 
 export function ConfirmationScreen() {
   const navigate = useNavigate()
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const location = useLocation()
   const order = (location.state as { order?: Order } | null)?.order
 
@@ -99,9 +99,7 @@ export function ConfirmationScreen() {
                   <p className="text-sm font-medium leading-tight">
                     {it.qty}× {it.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {it.variant === "signature" ? t("common.ciabatta") : t("common.baguette")}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{describeLine(it, lang)}</p>
                 </div>
                 <p className="text-sm font-semibold">{(it.unit * it.qty).toFixed(2)} €</p>
               </div>

@@ -1,11 +1,13 @@
 // Modele de commande (cote demo). Passe via l'etat de navigation vers la confirmation.
-import type { Variant } from "@/store/cart"
+import type { Bread } from "@/store/cart"
 
 export interface OrderItem {
   productId: string
   name: string
   emoji: string
-  variant: Variant
+  bread: Bread
+  supplements: Record<string, number>
+  formula: boolean
   qty: number
   unit: number
 }

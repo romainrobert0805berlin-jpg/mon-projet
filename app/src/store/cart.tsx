@@ -1,34 +1,73 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
-import { products, type Product } from "@/data/menu"
+import { products, supplements, MENU_FORMULA_PRICE, type Product } from "@/data/menu"
 import { toast } from "@/lib/toast"
 
-export type Variant = "classic" | "signature"
+export type Bread = "baguette" | "ciabatta"
 
-export interface CartLine {
+export interface LineOptions {
+  bread: Bread
+  supplements: Record<string, number> // clé supplément -> quantité
+  formula: boolean
+}
+
+export interface CartLine extends LineOptions {
+  key: string
   productId: string
-  variant: Variant
   qty: number
+}
+
+export interface DetailedLine {
+  key: string
+  product: Product
+  bread: Bread
+  supplements: Record<string, number>
+  formula: boolean
+  qty: number
+  unit: number
 }
 
 interface CartCtx {
   lines: CartLine[]
-  add: (productId: string, variant: Variant) => void
-  remove: (productId: string, variant: Variant) => void
-  setQty: (productId: string, variant: Variant, qty: number) => void
+  add: (productId: string, options: LineOptions, qty?: number) => void
+  setQty: (key: string, qty: number) => void
+  remove: (key: string) => void
   count: number
   total: number
   points: number
-  detailed: { product: Product; variant: Variant; qty: number; unit: number }[]
+  detailed: DetailedLine[]
   clear: () => void
 }
 
 const Ctx = React.createContext<CartCtx | null>(null)
-const STORAGE_KEY = "claubert.cart.v1"
+const STORAGE_KEY = "claubert.cart.v2"
 
-function priceOf(p: Product, v: Variant) {
-  return v === "signature" ? p.priceSignature : p.priceClassic
+function breadPrice(p: Product, bread: Bread) {
+  return bread === "ciabatta" ? p.priceSignature : p.priceClassic
 }
+
+function supplementsTotal(sup: Record<string, number>) {
+  return supplements.reduce((s, def) => s + (sup[def.key] || 0) * def.price, 0)
+}
+
+export function unitPrice(p: Product, o: LineOptions) {
+  return breadPrice(p, o.bread) + supplementsTotal(o.supplements) + (o.formula ? MENU_FORMULA_PRICE : 0)
+}
+
+export function optionsKey(productId: string, o: LineOptions) {
+  const sup = Object.entries(o.supplements)
+    .filter(([, n]) => n > 0)
+    .sort()
+    .map(([k, n]) => `${k}:${n}`)
+    .join(",")
+  return `${productId}|${o.bread}|${sup}|${o.formula ? "menu" : ""}`
+}
+
+export const defaultOptions = (): LineOptions => ({
+  bread: "baguette",
+  supplements: {},
+  formula: false,
+})
 
 function loadLines(): CartLine[] {
   if (typeof localStorage === "undefined") return []
@@ -41,9 +80,12 @@ function loadLines(): CartLine[] {
       (l) =>
         l &&
         typeof l.productId === "string" &&
-        (l.variant === "classic" || l.variant === "signature") &&
+        products.some((p) => p.id === l.productId) &&
+        (l.bread === "baguette" || l.bread === "ciabatta") &&
+        l.supplements && typeof l.supplements === "object" &&
+        typeof l.formula === "boolean" &&
         typeof l.qty === "number" &&
-        products.some((p) => p.id === l.productId)
+        typeof l.key === "string"
     )
   } catch {
     return []
@@ -61,63 +103,63 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [lines])
 
-  const add = (productId: string, variant: Variant) => {
+  const add = (productId: string, options: LineOptions, qty = 1) => {
     setLines((prev) => {
-      const i = prev.findIndex(
-        (l) => l.productId === productId && l.variant === variant
-      )
+      const key = optionsKey(productId, options)
+      const i = prev.findIndex((l) => l.key === key)
       if (i >= 0) {
         const copy = [...prev]
-        copy[i] = { ...copy[i], qty: copy[i].qty + 1 }
+        copy[i] = { ...copy[i], qty: copy[i].qty + qty }
         return copy
       }
-      return [...prev, { productId, variant, qty: 1 }]
+      return [
+        ...prev,
+        {
+          key,
+          productId,
+          bread: options.bread,
+          supplements: options.supplements,
+          formula: options.formula,
+          qty,
+        },
+      ]
     })
     const product = products.find((p) => p.id === productId)
     if (product) toast(`${product.name} ajouté`)
   }
 
-  const setQty = (productId: string, variant: Variant, qty: number) =>
+  const setQty = (key: string, qty: number) =>
     setLines((prev) =>
-      prev
-        .map((l) =>
-          l.productId === productId && l.variant === variant
-            ? { ...l, qty: Math.max(0, qty) }
-            : l
-        )
-        .filter((l) => l.qty > 0)
+      prev.map((l) => (l.key === key ? { ...l, qty: Math.max(0, qty) } : l)).filter((l) => l.qty > 0)
     )
 
-  const remove = (productId: string, variant: Variant) =>
-    setLines((prev) =>
-      prev
-        .map((l) =>
-          l.productId === productId && l.variant === variant
-            ? { ...l, qty: l.qty - 1 }
-            : l
-        )
-        .filter((l) => l.qty > 0)
-    )
+  const remove = (key: string) => setLines((prev) => prev.filter((l) => l.key !== key))
 
   const clear = () => setLines([])
 
   const detailed = lines
     .map((l) => {
-      const product = products.find((p) => p.id === l.productId)!
-      return product
-        ? { product, variant: l.variant, qty: l.qty, unit: priceOf(product, l.variant) }
-        : null
+      const product = products.find((p) => p.id === l.productId)
+      if (!product) return null
+      const options = { bread: l.bread, supplements: l.supplements, formula: l.formula }
+      return {
+        key: l.key,
+        product,
+        bread: l.bread,
+        supplements: l.supplements,
+        formula: l.formula,
+        qty: l.qty,
+        unit: unitPrice(product, options),
+      }
     })
-    .filter(Boolean) as CartCtx["detailed"]
+    .filter(Boolean) as DetailedLine[]
 
   const count = lines.reduce((s, l) => s + l.qty, 0)
   const total = detailed.reduce((s, d) => s + d.unit * d.qty, 0)
   const points = Math.floor(total)
 
   return (
-    <Ctx.Provider
-      value={{ lines, add, remove, setQty, count, total, points, detailed, clear }}
-    >
+    <Ctx.Provider value={{ lines, add, setQty, remove, count, total, points, detailed, clear }}>
       {children}
     </Ctx.Provider>
   )

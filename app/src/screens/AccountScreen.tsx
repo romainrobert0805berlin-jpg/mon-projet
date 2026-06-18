@@ -19,7 +19,11 @@ export function AccountScreen() {
 
   const reorder = (order: Order) => {
     for (const it of order.items) {
-      for (let i = 0; i < it.qty; i++) add(it.productId, it.variant)
+      add(
+        it.productId,
+        { bread: it.bread, supplements: it.supplements, formula: it.formula },
+        it.qty
+      )
     }
     navigate("/panier")
   }
