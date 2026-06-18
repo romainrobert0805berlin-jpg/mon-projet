@@ -35,7 +35,7 @@ export function Layout() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/85 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background px-4 py-3">
         {isMain ? (
           <Link
             to="/"
@@ -70,7 +70,7 @@ export function Layout() {
       <Toaster />
 
       {/* Barre d'onglets */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-stretch border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+      <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-stretch border-t border-border bg-background pb-[env(safe-area-inset-bottom)]">
         {tabs.map((tab) => {
           const active =
             tab.to === "/"
