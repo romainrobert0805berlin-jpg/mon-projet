@@ -30,15 +30,19 @@ export function Layout() {
   return (
     <div className="mx-auto flex min-h-svh max-w-md flex-col bg-background shadow-xl">
       {/* Bandeau maquette */}
-      <div className="bg-foreground py-1 text-center text-[10px] font-semibold tracking-wide text-amber-300">
+      <div className="bg-foreground py-1 text-center text-[10px] font-semibold tracking-wide text-[#9cd8e4]">
         {t("common.draft")}
       </div>
 
       {/* Header */}
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-background/85 px-4 py-3 backdrop-blur">
         {isMain ? (
-          <Link to="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: "Fraunces, serif" }}>
-            Clau<span className="text-primary">bert</span>
+          <Link
+            to="/"
+            className="text-2xl font-semibold uppercase tracking-[0.12em]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Claubert
           </Link>
         ) : (
           <button

@@ -37,7 +37,7 @@ export function AccountScreen() {
       <h1 className="text-2xl font-semibold">{t("account.title")}</h1>
 
       {/* Carte fidélité Heypongo (placeholder) */}
-      <div className="rounded-2xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-5 text-white">
+      <div className="rounded-2xl bg-foreground p-5 text-background">
         <div className="flex items-center gap-2">
           <Gift className="size-5" />
           <p className="font-semibold">{t("account.loyaltyCard")}</p>

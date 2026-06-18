@@ -96,7 +96,7 @@ export function ConfirmationScreen() {
                     {it.qty}× {it.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {it.variant === "signature" ? t("common.signature") : t("common.classic")}
+                    {it.variant === "signature" ? t("common.ciabatta") : t("common.baguette")}
                   </p>
                 </div>
                 <p className="text-sm font-semibold">{(it.unit * it.qty).toFixed(2)} €</p>

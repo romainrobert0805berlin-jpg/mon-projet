@@ -1,4 +1,6 @@
-// Données menu Claubert — provisoires (à remplacer par les vraies données client).
+// Données menu Claubert — d'après la carte officielle (A1 MENU).
+// Concept : sandwichs à composer, base baguette tradition ou ciabatta grillée (+1 €).
+// La base protéine détermine le prix. Ici "classic" = baguette, "signature" = ciabatta (+1 €).
 import type { Lang } from "@/i18n/dict"
 
 export type Diet = "viande" | "vege"
@@ -17,8 +19,8 @@ export interface Product {
   description: Localized
   protein: ProteinKey
   diet: Diet
-  priceClassic: number
-  priceSignature: number
+  priceClassic: number // baguette tradition
+  priceSignature: number // ciabatta grillée (+1 €)
   allergens: AllergenKey[]
   kcal?: number
   badges: ("signature" | "new" | "veg")[]
@@ -35,10 +37,10 @@ export const allergenLabels: Record<AllergenKey, Localized> = {
 }
 
 export const proteinLabels: Record<ProteinKey, Localized> = {
-  chicken: { fr: "Poulet", en: "Chicken" },
+  chicken: { fr: "Poulet rôti", en: "Roast chicken" },
   beef: { fr: "Bœuf", en: "Beef" },
   fish: { fr: "Poisson", en: "Fish" },
-  cheese: { fr: "Fromage", en: "Cheese" },
+  cheese: { fr: "Halloumi", en: "Halloumi" },
   vegetal: { fr: "Végétal", en: "Plant-based" },
 }
 
@@ -46,89 +48,108 @@ export function loc(value: Localized, lang: Lang) {
   return value[lang]
 }
 
+// Suppléments (par portion) et formule menu.
+export const MENU_FORMULA_PRICE = 9.9
+export const supplements: { key: string; label: Localized; price: number }[] = [
+  { key: "avocat", label: { fr: "Avocat", en: "Avocado" }, price: 1.5 },
+  { key: "fromage", label: { fr: "Extra fromage", en: "Extra cheese" }, price: 1.5 },
+  { key: "proteine", label: { fr: "Extra protéine", en: "Extra protein" }, price: 2 },
+]
+
 export const products: Product[] = [
   {
-    id: "le-defense",
-    name: "Le Défense",
-    emoji: "🥪",
+    id: "rome",
+    name: "Rome",
+    emoji: "🍗",
     description: {
-      fr: "Poulet rôti maison, tomates confites, pesto de roquette, pain focaccia.",
-      en: "House-roasted chicken, confit tomatoes, rocket pesto, focaccia bread.",
+      fr: "Poulet rôti, comté AOP, roquette, tomates confites, oignons caramélisés, sauce poulet rôti.",
+      en: "Roast chicken, Comté AOP, rocket, confit tomatoes, caramelized onions, roast chicken sauce.",
     },
     protein: "chicken",
     diet: "viande",
-    priceClassic: 7.9,
-    priceSignature: 9.9,
-    allergens: ["gluten", "nuts"],
-    kcal: 540,
+    priceClassic: 10.9,
+    priceSignature: 11.9,
+    allergens: ["gluten", "milk"],
     badges: ["signature", "new"],
     inStock: true,
   },
   {
-    id: "jardin-cnit",
-    name: "Le Jardin du CNIT",
-    emoji: "🥗",
+    id: "nievre",
+    name: "Nièvre",
+    emoji: "🥩",
     description: {
-      fr: "Falafel croustillant, houmous, légumes grillés, sauce yaourt-menthe.",
-      en: "Crispy falafel, hummus, grilled vegetables, mint-yogurt sauce.",
-    },
-    protein: "vegetal",
-    diet: "vege",
-    priceClassic: 7.5,
-    priceSignature: 9.5,
-    allergens: ["gluten", "sesame", "milk"],
-    kcal: 480,
-    badges: ["veg"],
-    inStock: true,
-  },
-  {
-    id: "le-parvis",
-    name: "Le Parvis",
-    emoji: "🥓",
-    description: {
-      fr: "Bœuf braisé 12h, cheddar affiné, oignons caramélisés, pain brioché.",
-      en: "12h braised beef, aged cheddar, caramelized onions, brioche bun.",
+      fr: "Pastrami de bœuf, comté, roquette, cornichon, oignons caramélisés, moutarde à l'ancienne, huile d'olive.",
+      en: "Beef pastrami, Comté, rocket, gherkin, caramelized onions, wholegrain mustard, olive oil.",
     },
     protein: "beef",
     diet: "viande",
-    priceClassic: 8.9,
-    priceSignature: 11.9,
+    priceClassic: 9.9,
+    priceSignature: 10.9,
     allergens: ["gluten", "milk", "mustard"],
-    kcal: 690,
     badges: ["signature"],
     inStock: true,
   },
   {
-    id: "le-coupole",
-    name: "La Coupole",
+    id: "lisbonne",
+    name: "Lisbonne",
+    emoji: "🥩",
+    description: {
+      fr: "Bresaola de bœuf, mozzarella, roquette, tomates confites, huile d'olive.",
+      en: "Beef bresaola, mozzarella, rocket, confit tomatoes, olive oil.",
+    },
+    protein: "beef",
+    diet: "viande",
+    priceClassic: 9.9,
+    priceSignature: 10.9,
+    allergens: ["gluten", "milk"],
+    badges: ["signature"],
+    inStock: true,
+  },
+  {
+    id: "bali",
+    name: "Bali",
     emoji: "🧀",
     description: {
-      fr: "Chèvre frais, miel, noix, roquette, pain aux céréales.",
-      en: "Fresh goat cheese, honey, walnuts, rocket, multigrain bread.",
+      fr: "Halloumi grillé, poivrons au four, aubergines, roquette, pesto, tomates confites.",
+      en: "Grilled halloumi, roasted peppers, eggplant, rocket, pesto, confit tomatoes.",
     },
     protein: "cheese",
     diet: "vege",
-    priceClassic: 7.2,
-    priceSignature: 9.2,
+    priceClassic: 9.9,
+    priceSignature: 10.9,
     allergens: ["gluten", "milk", "nuts"],
-    kcal: 510,
     badges: ["veg"],
-    inStock: false,
+    inStock: true,
   },
   {
-    id: "esplanade",
-    name: "L'Esplanade",
+    id: "paris",
+    name: "Paris",
     emoji: "🐟",
     description: {
-      fr: "Saumon fumé, fromage frais aux herbes, concombre, aneth, pain seigle.",
-      en: "Smoked salmon, herb cream cheese, cucumber, dill, rye bread.",
+      fr: "Thon cuit mayo, concombre, cornichon, oignon rouge pickles, roquette.",
+      en: "Cooked tuna mayo, cucumber, gherkin, pickled red onion, rocket.",
     },
     protein: "fish",
     diet: "viande",
-    priceClassic: 8.5,
+    priceClassic: 9.9,
+    priceSignature: 10.9,
+    allergens: ["gluten", "fish", "mustard"],
+    badges: [],
+    inStock: true,
+  },
+  {
+    id: "kuala-lumpur",
+    name: "Kuala Lumpur",
+    emoji: "🐟",
+    description: {
+      fr: "Saumon fumé, cream cheese, oignon rouge pickles, roquette, concombre, huile d'olive.",
+      en: "Smoked salmon, cream cheese, pickled red onion, rocket, cucumber, olive oil.",
+    },
+    protein: "fish",
+    diet: "viande",
+    priceClassic: 9.9,
     priceSignature: 10.9,
     allergens: ["gluten", "fish", "milk"],
-    kcal: 460,
     badges: ["new"],
     inStock: true,
   },

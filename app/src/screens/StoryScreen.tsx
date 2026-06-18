@@ -7,7 +7,7 @@ export function StoryScreen() {
   const { t } = useI18n()
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div className="flex aspect-[5/4] items-center justify-center rounded-2xl bg-gradient-to-br from-[#2b2320] to-[#4a3a30] text-7xl">
+      <div className="flex aspect-[5/4] items-center justify-center rounded-2xl bg-[#9cd8e4] text-7xl">
         👨‍🍳
       </div>
       <div>

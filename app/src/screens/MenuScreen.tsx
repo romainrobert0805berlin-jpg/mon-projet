@@ -64,6 +64,11 @@ export function MenuScreen() {
         placeholder={lang === "fr" ? "Rechercher un sandwich, un ingrédient…" : "Search a sandwich, an ingredient…"}
       />
 
+      <div className="rounded-xl border border-border bg-accent/60 p-3 text-sm">
+        <p className="font-semibold">{t("menu.composeTitle")}</p>
+        <p className="text-muted-foreground">{t("menu.composeBody")}</p>
+      </div>
+
       {/* Régime */}
       <div className="flex gap-2 overflow-x-auto pb-1">
         {([

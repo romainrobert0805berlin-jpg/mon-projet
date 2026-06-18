@@ -66,7 +66,7 @@ export function CartScreen() {
               <div className="flex-1">
                 <p className="text-sm font-semibold leading-tight">{d.product.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {d.variant === "signature" ? t("common.signature") : t("common.classic")} ·{" "}
+                  {d.variant === "signature" ? t("common.ciabatta") : t("common.baguette")} ·{" "}
                   {d.unit.toFixed(2)} €
                 </p>
               </div>

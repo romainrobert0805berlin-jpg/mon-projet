@@ -59,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
           disabled={!product.inStock}
           onClick={() => add(product.id, "classic")}
         >
-          <Plus /> {t("common.classic")} · {product.priceClassic.toFixed(2)} €
+          <Plus /> {t("common.baguette")} · {product.priceClassic.toFixed(2)} €
         </Button>
         <Button
           size="sm"
@@ -67,7 +67,7 @@ export function ProductCard({ product }: { product: Product }) {
           disabled={!product.inStock}
           onClick={() => add(product.id, "signature")}
         >
-          <Plus /> {t("common.signature")} · {product.priceSignature.toFixed(2)} €
+          <Plus /> {t("common.ciabatta")}
         </Button>
       </div>
     </Card>

@@ -17,6 +17,8 @@ export const dict: Dict = {
   "common.back": { fr: "Retour", en: "Back" },
   "common.classic": { fr: "Classique", en: "Classic" },
   "common.signature": { fr: "Signature", en: "Signature" },
+  "common.baguette": { fr: "Baguette", en: "Baguette" },
+  "common.ciabatta": { fr: "Ciabatta +1 €", en: "Ciabatta +1 €" },
   "common.add": { fr: "Ajouter", en: "Add" },
   "common.soldOut": { fr: "Épuisé aujourd'hui", en: "Sold out today" },
   "common.allergens": { fr: "Allergènes", en: "Allergens" },
@@ -27,7 +29,7 @@ export const dict: Dict = {
   },
 
   // Statut / hero
-  "home.open": { fr: "Ouvert · ferme à 16h00", en: "Open · closes at 4:00 PM" },
+  "home.open": { fr: "Ouvert 7/7 · 11h – 20h", en: "Open 7/7 · 11am – 8pm" },
   "home.heroTitle": {
     fr: "Le sandwich d'auteur, au cœur de La Défense.",
     en: "Signature sandwiches, in the heart of La Défense.",
@@ -58,8 +60,13 @@ export const dict: Dict = {
   // Menu
   "menu.title": { fr: "Le menu", en: "The menu" },
   "menu.sub": {
-    fr: "Chaque recette en Classique ou Signature. Allergènes affichés.",
-    en: "Each recipe in Classic or Signature. Allergens shown.",
+    fr: "Sandwichs à composer, baguette tradition ou ciabatta grillée. Allergènes affichés.",
+    en: "Build-your-own sandwiches, baguette or grilled ciabatta. Allergens shown.",
+  },
+  "menu.composeTitle": { fr: "À composer", en: "Build your own" },
+  "menu.composeBody": {
+    fr: "Base baguette ou ciabatta, votre protéine, légumes à volonté, 1 fromage, 1 assaisonnement.",
+    en: "Baguette or ciabatta base, your protein, unlimited veggies, 1 cheese, 1 seasoning.",
   },
   "menu.filter.all": { fr: "Tout", en: "All" },
   "menu.filter.meat": { fr: "Viande / poisson", en: "Meat / fish" },
@@ -152,14 +159,13 @@ export const dict: Dict = {
   // Adresses
   "addr.title": { fr: "Au CNIT, La Défense", en: "At CNIT, La Défense" },
   "addr.address": {
-    fr: "CNIT, Place de la Défense, 92090 Puteaux (adresse exacte à confirmer)",
-    en: "CNIT, Place de la Défense, 92090 Puteaux (exact address to confirm)",
+    fr: "2 place de la Défense, 92800 Puteaux — CNIT",
+    en: "2 place de la Défense, 92800 Puteaux — CNIT",
   },
   "addr.access": { fr: "Accès", en: "Access" },
   "addr.hours": { fr: "Horaires", en: "Opening hours" },
-  "addr.weekdays": { fr: "Lundi – Vendredi", en: "Monday – Friday" },
-  "addr.weekend": { fr: "Samedi – Dimanche", en: "Saturday – Sunday" },
-  "addr.closed": { fr: "Fermé", en: "Closed" },
+  "addr.everyday": { fr: "7 jours / 7", en: "7 days a week" },
+  "addr.hoursValue": { fr: "11h – 20h", en: "11am – 8pm" },
   "addr.mapPlaceholder": {
     fr: "Emplacement carte Google Maps",
     en: "Google Maps location placeholder",
@@ -225,7 +231,13 @@ export const dict: Dict = {
   "faq.title": { fr: "Questions fréquentes", en: "Frequently asked questions" },
 
   // Détail produit
-  "product.chooseVariant": { fr: "Choisissez votre version", en: "Choose your version" },
+  "product.chooseVariant": { fr: "Choisissez votre pain", en: "Choose your bread" },
   "product.addToCart": { fr: "Ajouter au panier", en: "Add to cart" },
-  "product.protein": { fr: "Protéine", en: "Protein" },
+  "product.protein": { fr: "Base protéine", en: "Protein base" },
+  "product.supplements": { fr: "Suppléments (par portion)", en: "Add-ons (per portion)" },
+  "product.formula": { fr: "Formule menu", en: "Menu deal" },
+  "product.formulaDesc": {
+    fr: "+ boisson + dessert pour +9,90 €",
+    en: "+ drink + dessert for +€9.90",
+  },
 }
