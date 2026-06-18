@@ -57,7 +57,7 @@ export function ProductCard({ product }: { product: Product }) {
           variant="outline"
           className="h-9 flex-1 px-2 text-xs"
           disabled={!product.inStock}
-          onClick={() => add(product.id, "classic")}
+          onClick={() => add(product.id, { bread: "baguette", supplements: {}, formula: false })}
         >
           <Plus /> {t("common.baguette")} · {product.priceClassic.toFixed(2)} €
         </Button>
@@ -65,7 +65,7 @@ export function ProductCard({ product }: { product: Product }) {
           size="sm"
           className="h-9 flex-1 px-2 text-xs"
           disabled={!product.inStock}
-          onClick={() => add(product.id, "signature")}
+          onClick={() => add(product.id, { bread: "ciabatta", supplements: {}, formula: false })}
         >
           <Plus /> {t("common.ciabatta")}
         </Button>

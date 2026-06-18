@@ -158,3 +158,17 @@ export const products: Product[] = [
 export function getProduct(id: string) {
   return products.find((p) => p.id === id)
 }
+
+// Résumé lisible des options d'une ligne (pain · suppléments · formule).
+export function describeLine(
+  o: { bread: "baguette" | "ciabatta"; supplements: Record<string, number>; formula: boolean },
+  lang: Lang
+): string {
+  const parts: string[] = [o.bread === "ciabatta" ? "Ciabatta" : "Baguette"]
+  for (const s of supplements) {
+    const n = o.supplements[s.key] || 0
+    if (n > 0) parts.push(`${loc(s.label, lang)}${n > 1 ? ` ×${n}` : ""}`)
+  }
+  if (o.formula) parts.push(lang === "fr" ? "Formule menu" : "Menu deal")
+  return parts.join(" · ")
+}
