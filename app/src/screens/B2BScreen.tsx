@@ -11,10 +11,10 @@ export function B2BScreen() {
 
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div className="rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 p-5 text-white">
+      <div className="rounded-2xl bg-foreground p-5 text-background">
         <Briefcase className="size-7" />
-        <h1 className="mt-3 text-2xl font-semibold">{t("b2b.title")}</h1>
-        <p className="mt-2 text-sm text-white/85">{t("b2b.value")}</p>
+        <h1 className="mt-3 text-2xl">{t("b2b.title")}</h1>
+        <p className="mt-2 text-sm text-background/80">{t("b2b.value")}</p>
       </div>
 
       <Button variant="outline" className="w-full">

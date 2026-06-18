@@ -53,7 +53,7 @@ export function LoyaltyScreen() {
 
   return (
     <div className="flex flex-col gap-5 pb-4">
-      <div className="flex items-center gap-5 rounded-2xl bg-gradient-to-br from-[#a8360f] to-[#6e2208] p-5 text-white">
+      <div className="flex items-center gap-5 rounded-2xl bg-foreground p-5 text-background">
         <ProgressRing value={points} target={next ? next.points : points} />
         <div>
           <Gift className="size-6" />

@@ -36,10 +36,7 @@ export function AddressesScreen() {
             <div className="text-sm">
               <p className="font-medium">{t("addr.hours")}</p>
               <p className="text-muted-foreground">
-                {t("addr.weekdays")} : 11:00 – 16:00
-              </p>
-              <p className="text-muted-foreground">
-                {t("addr.weekend")} : {t("addr.closed")}
+                {t("addr.everyday")} : {t("addr.hoursValue")}
               </p>
             </div>
           </div>

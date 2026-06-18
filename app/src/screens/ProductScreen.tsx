@@ -10,6 +10,7 @@ import {
   getProduct,
   allergenLabels,
   proteinLabels,
+  supplements,
   loc,
 } from "@/data/menu"
 import { cn } from "@/lib/utils"
@@ -104,13 +105,34 @@ export function ProductScreen() {
                 )}
               >
                 <p className="text-sm font-semibold">
-                  {v === "signature" ? t("common.signature") : t("common.classic")}
+                  {v === "signature" ? t("common.ciabatta") : t("common.baguette")}
                 </p>
                 <p className="text-sm text-muted-foreground">{p.toFixed(2)} €</p>
               </button>
             )
           })}
         </div>
+      </div>
+
+      <Separator />
+
+      {/* Suppléments */}
+      <div>
+        <p className="mb-2 text-sm font-semibold">{t("product.supplements")}</p>
+        <div className="flex flex-col gap-1.5">
+          {supplements.map((s) => (
+            <div key={s.key} className="flex items-center justify-between text-sm">
+              <span>{loc(s.label, lang)}</span>
+              <span className="text-muted-foreground">+ {s.price.toFixed(2)} €</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Formule menu */}
+      <div className="rounded-xl border border-border bg-accent/50 p-3">
+        <p className="text-sm font-semibold">{t("product.formula")}</p>
+        <p className="text-sm text-muted-foreground">{t("product.formulaDesc")}</p>
       </div>
 
       <Button
