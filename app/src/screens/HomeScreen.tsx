@@ -15,9 +15,6 @@ export function HomeScreen() {
     <div className="flex flex-col gap-6 pb-4">
       {/* Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-[#9cd8e4] p-6 text-foreground">
-        <div className="clb-float absolute -right-6 -top-6 select-none text-[120px] opacity-25" aria-hidden>
-          🥖
-        </div>
         <span className="inline-flex items-center gap-2 rounded-full bg-white/75 px-3 py-1 text-xs font-semibold">
           <span className="size-2 rounded-full bg-green-600" />
           {t("home.open")}
@@ -25,7 +22,7 @@ export function HomeScreen() {
         <h1 className="mt-4 text-3xl leading-[1.1]">{t("home.heroTitle")}</h1>
         <p className="mt-2 max-w-[30ch] text-sm text-foreground/70">{t("home.heroSub")}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button onClick={() => navigate("/menu")}>🥪 {t("common.order")}</Button>
+          <Button onClick={() => navigate("/menu")}>{t("common.order")}</Button>
           <Button
             variant="outline"
             onClick={() => navigate("/menu")}

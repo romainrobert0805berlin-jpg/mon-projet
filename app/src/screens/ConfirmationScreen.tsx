@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useI18n } from "@/i18n/I18nProvider"
 import { CheckCircle2, Clock, MapPin, Gift } from "lucide-react"
+import { getProduct } from "@/data/menu"
+import { ProductImage } from "@/components/ProductImage"
 import type { Order } from "@/lib/order"
 
 const confettiColors = ["#c8431f", "#e0a23a", "#3f7d4e", "#2742ff", "#d96a3e", "#f3c969"]
@@ -86,10 +88,12 @@ export function ConfirmationScreen() {
         <p className="text-sm font-semibold">{t("confirm.recap")}</p>
         <Card>
           <CardContent className="flex flex-col gap-3 py-4">
-            {order.items.map((it, i) => (
+            {order.items.map((it, i) => {
+              const pr = getProduct(it.productId)
+              return (
               <div key={i} className="flex items-center gap-3">
-                <span className="grid size-9 place-items-center rounded-lg bg-secondary text-lg">
-                  {it.emoji}
+                <span className="size-9 shrink-0 overflow-hidden rounded-lg bg-secondary">
+                  {pr && <ProductImage product={pr} className="size-full" />}
                 </span>
                 <div className="flex-1">
                   <p className="text-sm font-medium leading-tight">
@@ -101,7 +105,8 @@ export function ConfirmationScreen() {
                 </div>
                 <p className="text-sm font-semibold">{(it.unit * it.qty).toFixed(2)} €</p>
               </div>
-            ))}
+              )
+            })}
             {order.notes && (
               <>
                 <Separator />
@@ -137,7 +142,7 @@ export function ConfirmationScreen() {
       </div>
 
       <p className="text-center text-[11px] text-muted-foreground">
-        🔌 {t("confirm.payNote")}
+        {t("confirm.payNote")}
       </p>
     </div>
   )

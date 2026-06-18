@@ -95,8 +95,8 @@ export function LoyaltyScreen() {
                   unlocked ? "border-primary/40 bg-primary/5" : "border-border"
                 )}
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-secondary text-xl">
-                  {r.emoji}
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-secondary text-secondary-foreground">
+                  <Gift className="size-5" />
                 </span>
                 <div className="flex-1">
                   <p className="text-sm font-medium">{rewardLabel(r, lang)}</p>
@@ -147,7 +147,7 @@ export function LoyaltyScreen() {
             {t("account.signup")}
           </Button>
           <p className="text-center text-[11px] text-muted-foreground">
-            🔌 {t("account.heypongoNote")}
+            {t("account.heypongoNote")}
           </p>
         </form>
       )}

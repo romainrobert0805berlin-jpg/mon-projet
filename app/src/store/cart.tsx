@@ -74,7 +74,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { productId, variant, qty: 1 }]
     })
     const product = products.find((p) => p.id === productId)
-    if (product) toast(`${product.name} ajouté`, product.emoji)
+    if (product) toast(`${product.name} ajouté`)
   }
 
   const setQty = (productId: string, variant: Variant, qty: number) =>

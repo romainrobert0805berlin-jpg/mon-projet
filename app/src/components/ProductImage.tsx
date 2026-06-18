@@ -1,7 +1,20 @@
+import * as React from "react"
 import type { Product, ProteinKey } from "@/data/menu"
+import { cn } from "@/lib/utils"
 
-// Illustrations vectorielles maison (visuels d'attente avant vraies photos).
-// Palette par garniture, rendu fiable et sans dependance externe.
+// Photos produits (placeholders Unsplash, chargées par le navigateur).
+// Remplacer par les vraies photos Claubert quand elles seront prêtes.
+// Si une URL ne charge pas, on retombe automatiquement sur l'illustration.
+const photos: Record<string, string> = {
+  rome: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=800&q=70",
+  nievre: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=70",
+  lisbonne: "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=800&q=70",
+  bali: "https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?auto=format&fit=crop&w=800&q=70",
+  paris: "https://images.unsplash.com/photo-1554433607-66b5efe9d304?auto=format&fit=crop&w=800&q=70",
+  "kuala-lumpur":
+    "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=70",
+}
+
 interface Palette {
   bg: [string, string]
   bunTop: [string, string]
@@ -75,16 +88,9 @@ function lettucePath(y: number) {
   return d
 }
 
-export function ProductImage({
-  product,
-  className,
-}: {
-  product: Product
-  className?: string
-}) {
+function Illustration({ product, className }: { product: Product; className?: string }) {
   const p = palettes[product.protein]
   const uid = product.id
-
   return (
     <svg
       viewBox="0 0 240 170"
@@ -111,44 +117,31 @@ export function ProductImage({
           <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
         </radialGradient>
       </defs>
-
-      {/* Fond */}
       <rect x="0" y="0" width="240" height="170" fill={`url(#bg-${uid})`} />
       <rect x="0" y="0" width="240" height="170" fill={`url(#glow-${uid})`} />
-      {/* pois decoratifs */}
       <g fill="#ffffff" opacity="0.18">
         <circle cx="34" cy="34" r="4" />
         <circle cx="210" cy="28" r="6" />
         <circle cx="198" cy="120" r="4" />
         <circle cx="40" cy="128" r="5" />
       </g>
-
-      {/* Ombre */}
       <ellipse cx="120" cy="150" rx="78" ry="10" fill="#000000" opacity="0.08" />
-
-      {/* Pain du bas */}
       <rect x="50" y="116" width="140" height="26" rx="13" fill={`url(#bunBot-${uid})`} />
-
-      {/* Garniture proteine */}
       <rect x="48" y="98" width="144" height="22" rx="9" fill={p.filling} />
-
-      {/* Extra (fromage / miel / houmous) */}
       {p.extra && (
         <rect x="52" y="92" width="136" height="12" rx="6" fill={p.extra} opacity="0.95" />
       )}
-
-      {/* Rondelles (tomate / concombre / noix) */}
       <circle cx="66" cy="104" r="9" fill={p.garnish} />
       <circle cx="174" cy="104" r="9" fill={p.garnish} />
-
-      {/* Salade */}
       <path d={lettucePath(94)} fill={p.veg} />
-
-      {/* Pain du haut */}
       <path d={`M 46 100 Q 120 40 194 100 Z`} fill={`url(#bunTop-${uid})`} />
-      <path d={`M 46 100 Q 120 40 194 100`} fill="none" stroke="#ffffff" strokeOpacity="0.25" strokeWidth="3" />
-
-      {/* Graines de sesame */}
+      <path
+        d={`M 46 100 Q 120 40 194 100`}
+        fill="none"
+        stroke="#ffffff"
+        strokeOpacity="0.25"
+        strokeWidth="3"
+      />
       {p.sesame && (
         <g fill="#fff7e6">
           <ellipse cx="100" cy="78" rx="3" ry="2" transform="rotate(-20 100 78)" />
@@ -160,4 +153,28 @@ export function ProductImage({
       )}
     </svg>
   )
+}
+
+export function ProductImage({
+  product,
+  className,
+}: {
+  product: Product
+  className?: string
+}) {
+  const [failed, setFailed] = React.useState(false)
+  const src = photos[product.id]
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={product.name}
+        loading="lazy"
+        className={cn("object-cover", className)}
+        onError={() => setFailed(true)}
+      />
+    )
+  }
+  return <Illustration product={product} className={className} />
 }
