@@ -10,7 +10,14 @@ import { describeLine } from "@/data/menu"
 import { Minus, Plus, ShoppingBag, Clock, Gift } from "lucide-react"
 import { newOrderNumber, saveOrder, type Order } from "@/lib/order"
 
-const slots = ["11:30", "11:40", "11:50", "12:00", "12:10", "12:20", "12:30"]
+// Créneaux de retrait toutes les 15 min, sur les horaires d'ouverture (11h–20h).
+const slots = (() => {
+  const out: string[] = []
+  for (let h = 11; h < 20; h++) {
+    for (const m of ["00", "15", "30", "45"]) out.push(`${h}:${m}`)
+  }
+  return out
+})()
 
 export function CartScreen() {
   const navigate = useNavigate()

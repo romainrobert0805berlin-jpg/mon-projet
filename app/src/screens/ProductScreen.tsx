@@ -114,13 +114,14 @@ export function ProductScreen() {
                 )}
               >
                 <p className="text-sm font-semibold">
-                  {b === "ciabatta" ? t("common.ciabatta") : t("common.baguette")}
+                  {b === "ciabatta" ? `${t("common.ciabatta")} *` : t("common.baguette")}
                 </p>
                 <p className="text-sm text-muted-foreground">{p.toFixed(2)} €</p>
               </button>
             )
           })}
         </div>
+        <p className="mt-1.5 text-xs text-muted-foreground">{t("common.ciabattaNote")}</p>
       </div>
 
       {/* Suppléments */}

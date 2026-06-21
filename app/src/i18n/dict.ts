@@ -19,6 +19,10 @@ export const dict: Dict = {
   "common.signature": { fr: "Signature", en: "Signature" },
   "common.baguette": { fr: "Baguette", en: "Baguette" },
   "common.ciabatta": { fr: "Ciabatta +1 €", en: "Ciabatta +1 €" },
+  "common.ciabattaNote": {
+    fr: "* Ciabatta : pain italien moelleux, grillé minute (+1 €).",
+    en: "* Ciabatta: soft Italian bread, grilled to order (+1 €).",
+  },
   "common.add": { fr: "Ajouter", en: "Add" },
   "common.soldOut": { fr: "Épuisé aujourd'hui", en: "Sold out today" },
   "common.allergens": { fr: "Allergènes", en: "Allergens" },
