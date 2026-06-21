@@ -83,6 +83,7 @@ export const dict: Dict = {
 
   // Panier
   "cart.title": { fr: "Votre panier", en: "Your cart" },
+  "cart.view": { fr: "Voir le panier", en: "View cart" },
   "cart.empty": { fr: "Votre panier est vide", en: "Your cart is empty" },
   "cart.emptySub": {
     fr: "Ajoutez un sandwich depuis le menu.",

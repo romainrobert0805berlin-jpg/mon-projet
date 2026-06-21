@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Search } from "lucide-react"
 import { ProductCard } from "@/components/ProductCard"
 import { Input } from "@/components/ui/input"
 import {
@@ -57,12 +58,16 @@ export function MenuScreen() {
         <p className="text-sm text-muted-foreground">{t("menu.sub")}</p>
       </div>
 
-      <Input
-        type="search"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={lang === "fr" ? "Rechercher un sandwich, un ingrédient…" : "Search a sandwich, an ingredient…"}
-      />
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          className="pl-9"
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={lang === "fr" ? "Rechercher un sandwich, un ingrédient…" : "Search a sandwich, an ingredient…"}
+        />
+      </div>
 
       <div className="rounded-xl border border-border bg-accent/60 p-3 text-sm">
         <p className="font-semibold">{t("menu.composeTitle")}</p>
