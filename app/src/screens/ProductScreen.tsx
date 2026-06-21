@@ -15,7 +15,40 @@ import {
   loc,
 } from "@/data/menu"
 import { cn } from "@/lib/utils"
-import { Minus, Plus, Check } from "lucide-react"
+import { Minus, Plus, Check, Info } from "lucide-react"
+
+function InfoTip({ label, text }: { label: string; text: string }) {
+  const [open, setOpen] = React.useState(false)
+  const ref = React.useRef<HTMLSpanElement>(null)
+  React.useEffect(() => {
+    if (!open) return
+    const handler = (e: PointerEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("pointerdown", handler)
+    return () => document.removeEventListener("pointerdown", handler)
+  }, [open])
+  return (
+    <span ref={ref} className="relative mt-2 inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground underline-offset-2 hover:underline"
+      >
+        <Info className="size-3.5" /> {label}
+      </button>
+      {open && (
+        <span
+          role="tooltip"
+          className="clb-fadeup absolute bottom-full left-0 z-20 mb-2 w-60 rounded-lg bg-foreground p-3 text-xs leading-snug text-background shadow-lg"
+        >
+          {text}
+          <span className="absolute -bottom-1 left-4 size-2 rotate-45 bg-foreground" />
+        </span>
+      )}
+    </span>
+  )
+}
 
 export function ProductScreen() {
   const { id } = useParams()
@@ -121,7 +154,10 @@ export function ProductScreen() {
             )
           })}
         </div>
-        <p className="mt-1.5 text-xs text-muted-foreground">{t("common.ciabattaNote")}</p>
+        <InfoTip
+          label={lang === "fr" ? "Ciabatta, c'est quoi ?" : "What is ciabatta?"}
+          text={t("common.ciabattaNote").replace(/^\*\s*/, "")}
+        />
       </div>
 
       {/* Suppléments */}
