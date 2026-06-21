@@ -55,6 +55,11 @@ export const dict: Dict = {
     fr: "Livrés à vos étages. Devis sous 24h.",
     en: "Delivered to your floor. Quote within 24h.",
   },
+  "home.deliveryTitle": { fr: "Aussi en livraison", en: "Also on delivery" },
+  "home.deliverySub": {
+    fr: "Faites-vous livrer via Uber Eats ou Deliveroo.",
+    en: "Get it delivered via Uber Eats or Deliveroo.",
+  },
   "home.storyTitle": { fr: "Notre histoire", en: "Our story" },
   "home.storySub": {
     fr: "Un savoir-faire de chef, dans un sandwich.",
@@ -84,6 +89,7 @@ export const dict: Dict = {
     en: "Add a sandwich from the menu.",
   },
   "cart.slot": { fr: "Créneau de retrait", en: "Pickup time" },
+  "cart.asap": { fr: "Dès que prêt (~10 min)", en: "As soon as ready (~10 min)" },
   "cart.total": { fr: "Total · retrait", en: "Total · pickup" },
   "cart.clear": { fr: "Vider", en: "Clear" },
   "cart.payNote": {

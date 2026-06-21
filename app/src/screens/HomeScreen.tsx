@@ -4,7 +4,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ProductCard } from "@/components/ProductCard"
 import { products } from "@/data/menu"
 import { useI18n } from "@/i18n/I18nProvider"
-import { Clock, MapPin, Gift, Briefcase, ChefHat, ChevronRight } from "lucide-react"
+import { Clock, MapPin, Gift, Briefcase, ChefHat, ChevronRight, Bike } from "lucide-react"
+
+// Liens de livraison — à remplacer par les URLs exactes de la fiche Claubert.
+const UBER_EATS_URL = "https://www.ubereats.com/"
+const DELIVEROO_URL = "https://deliveroo.fr/"
 
 export function HomeScreen() {
   const { t } = useI18n()
@@ -55,6 +59,29 @@ export function HomeScreen() {
             </CardContent>
           </Card>
         </Link>
+      </div>
+
+      {/* Livraison */}
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="flex items-center gap-3">
+          <Bike className="size-6 shrink-0 text-primary" />
+          <div className="flex-1">
+            <p className="font-semibold">{t("home.deliveryTitle")}</p>
+            <p className="text-sm text-muted-foreground">{t("home.deliverySub")}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-2">
+          <Button asChild variant="outline" className="flex-1">
+            <a href={UBER_EATS_URL} target="_blank" rel="noopener noreferrer">
+              Uber Eats
+            </a>
+          </Button>
+          <Button asChild variant="outline" className="flex-1">
+            <a href={DELIVEROO_URL} target="_blank" rel="noopener noreferrer">
+              Deliveroo
+            </a>
+          </Button>
+        </div>
       </div>
 
       {/* Signatures */}

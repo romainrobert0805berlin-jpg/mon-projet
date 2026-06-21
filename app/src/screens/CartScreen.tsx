@@ -23,13 +23,14 @@ export function CartScreen() {
   const navigate = useNavigate()
   const { t, lang } = useI18n()
   const { detailed, setQty, total, count, points, clear } = useCart()
-  const [slot, setSlot] = React.useState(slots[0])
+  const [slot, setSlot] = React.useState("asap")
   const [notes, setNotes] = React.useState("")
+  const slotLabel = slot === "asap" ? t("cart.asap") : slot
 
   const checkout = () => {
     const order: Order = {
       number: newOrderNumber(),
-      slot,
+      slot: slotLabel,
       items: detailed.map((d) => ({
         productId: d.product.id,
         name: d.product.name,
@@ -110,6 +111,14 @@ export function CartScreen() {
           <Clock className="size-4 text-primary" /> {t("cart.slot")}
         </p>
         <div className="flex gap-2 overflow-x-auto pb-1">
+          <button
+            onClick={() => setSlot("asap")}
+            className={`shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium ${
+              slot === "asap" ? "border-primary bg-primary text-primary-foreground" : "border-border"
+            }`}
+          >
+            {t("cart.asap")}
+          </button>
           {slots.map((s) => (
             <button
               key={s}
@@ -142,7 +151,7 @@ export function CartScreen() {
         <CardContent className="flex items-center justify-between py-4">
           <div>
             <p className="text-sm text-muted-foreground">
-              {t("cart.total")} {slot}
+              {t("cart.total")} · {slotLabel}
             </p>
             <p className="text-2xl font-semibold">{total.toFixed(2)} €</p>
           </div>
